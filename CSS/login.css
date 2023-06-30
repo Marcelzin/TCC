@@ -1,0 +1,265 @@
+body {
+    margin: 0;
+    box-sizing: border-box;
+}
+
+.textfield svg {
+    position: absolute;
+    top: 42px;
+    right: 16px;
+    width: 24;
+    height: 24;
+    fill: none;
+    stroke: currentColor;
+    stroke-width: 2;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+}
+
+.main {
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.textfield span {
+    color: #043fa5;
+    font-weight: 900;
+}
+
+.right {
+    width: 50vw;
+    height: 100vh;
+    justify-content: center;
+    align-items: center;
+    display: flex;
+    background-color: #061733;
+    flex-direction: row-reverse;
+    margin: 0;
+}
+
+.left {
+    width: 50vw;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 0;
+
+}
+
+.card {
+    width: 60%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+
+}
+
+.textfield {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: center;
+    margin: 10px 0px;
+    position: relative;
+}
+
+.textfield input {
+    border-color: #0a2654;
+    width: 100%;
+    border-style: solid;
+    border-width: 1px;
+    border-radius: 5px;
+    padding: 15px;
+    font-size: 12pt;
+    outline: none;
+    box-sizing: border-box;
+    margin-bottom: 30px;
+    font-weight: bold;
+}
+
+/*.textfield > input:invalid{
+    border-color: red;
+}*/
+
+.textfield label {
+    color: #0a2654;
+    margin-bottom: 5px;
+    font-size: 20px;
+    font-family: Arial, Helvetica, sans-serif;
+    font-weight: bold;
+}
+
+section{
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+
+
+}
+
+section .btn {
+    position: relative;
+    left: 35%;
+    width: 30%;
+    bottom: 5%;
+    padding: 16px 0px;
+    margin: 0px;
+    border: none;
+    box-sizing: border-box;
+    border-radius: 30px;
+    outline: none;
+    text-transform: uppercase;
+    background: #061733;
+    cursor: pointer;
+    transition: 0.5s;
+    box-shadow: 0px 3px 3px #011029;
+    color: white;
+    font-size: 1rem;
+}
+
+.btn:hover {
+    background: #1e5cbe;
+}
+
+.textfield>h1 {
+    position: relative;
+    box-sizing: border-box;
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+.img {
+    width: 50%;
+}
+
+.link {
+    text-decoration: none;
+    position: relative;
+    bottom: 0%;
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 17px;
+    color: #061733;
+    font-weight: bold;
+
+}
+
+.link:hover {
+    color: #1e5cbe;
+}
+
+.tri {
+    position: relative;
+    left: 80%;
+    bottom: 50%;
+    display: flex;
+    width: 100px;
+    height: 100px;
+    top: 0%;
+    right: 580px;
+    background: white;
+    transform: rotate(45deg);
+    box-sizing: border-box;
+}
+
+/* tablets */
+@media (max-width: 1024px) {
+
+
+    .card {
+        display: flex;
+        width: 50vw;
+        height: 100vh;
+        box-sizing: border-box;
+        justify-content: center;
+    }
+
+    .left {
+        display: flex;
+        flex-direction: column-reverse;
+        width: 100vw;
+        height: 100vh;
+
+    }
+
+    .right {
+        display: none;
+    }
+
+    .tri {
+        display: none;
+    }
+}
+
+/* celulares */
+@media (max-width: 375px) {
+
+    .card {
+        display: flex;
+        width: 90%;
+        box-sizing: border-box;
+        justify-content: space-evenly;
+
+    }
+
+    .left {
+        display: flex;
+        flex-direction: column-reverse;
+        width: 100vw;
+        height: 100vh;
+        padding: 5px;
+
+    }
+
+    .btn {
+
+        width: 100%;
+        border-style: solid;
+        border-width: 3px;
+        border-radius: 7px;
+        padding: 15px;
+        font-size: 12pt;
+        box-shadow: 0px 3px 3px #00000056;
+        outline: none;
+        box-sizing: border-box;
+        margin-bottom: 30px;
+        font-weight: bold;
+        position: relative;
+        left: 0px;
+    }
+
+    .textfield input {
+        padding: 15px;
+        margin-bottom: 4px;
+        font-size: 15px;
+    }
+
+    .textfield label {
+        font-size: 17px;
+    }
+
+    .textfield a {
+        display: none;
+    }
+
+    .textfield {
+        font-size: 10px;
+        width: 90%;
+
+    }
+
+    .right {
+        display: none;
+    }
+
+    .tri {
+        display: none;
+    }
+
+}

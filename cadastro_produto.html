@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>cadastro de item</title>
+    <link rel="stylesheet" href="/CSS/cadastro_produto.css">
+    <link rel="stylesheet" href="/CSS/menu.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700&display=swap" rel="stylesheet">
+</head>
+
+<body>
+
+    <div class="main">
+        <div class="navigation">
+            <ul>
+                <li class="list">
+                    <a href="/HTML/home.html">
+                        <span class="icon"><ion-icon name="home-outline"></ion-icon></span>
+                        <span class="title">Início</span>
+                    </a>
+                </li>
+                <li class="list">
+                    <a href="/HTML/vendas.html">
+                        <span class="icon"><ion-icon name="grid-outline"></ion-icon></span>
+                        <span class="title">Menu</span>
+                    </a>
+                </li>
+                <li class="list active">
+                    <a href="">
+                        <span class="icon"><ion-icon name="pricetag-outline"></ion-icon></span>
+                        <span class="title">Cadastro</span>
+                    </a>
+                </li>
+                <li class="list">
+                    <a href="/HTML/funcionarios.html">
+                        <span class="icon"><ion-icon name="person-outline"></ion-icon></span>
+                        <span class="title">Funcionário</span>
+                    </a>
+                </li>
+                <div class="out">
+                <li class="list-out">
+                    <a href="/HTML/index.html">
+                        <span class="icon"><ion-icon name="log-out-outline"></ion-icon></span>
+                        <span class="title">sair</span>
+                    </a>
+                </li>
+                </div>
+            </ul>
+        </div>
+
+        <div class="card-cadastro">
+            <div class="left">
+                <form>
+                    <div>
+                        <label for="descricion">Descrição do produto</label>
+                        <input type="text" placeholder="Digite a descrição do produto aqui..." id="descricion">
+                    </div>
+                    <div>
+                        <label for="type">Tipo de produto</label>
+                        <input id="color" list="tipos" placeholder="Digite o tipo de produto aqui..." class="lista">
+                        <datalist class="lista-tipos-de-produto" id="tipos">
+                            <option>Chocolate</option>
+                            <option>Creme</option>
+                            <option>M&M</option>
+                        </datalist>
+                    </div>
+
+                    <div class="valor-type">
+
+                        <div class="valor">
+
+                            <label for="valorfab">Valor de produção</label>
+                            <input type="text" placeholder="Valor de fabrica" id="valorfab">
+
+                        </div>
+                        <div class="valor">
+
+                            <label for="price">Preço</label>
+                            <input type="text" placeholder="Digite o preço aqui..." id="price" class="price">
+                        </div>
+
+                    </div>
+                    <div class="buttons-submit">
+                        <button type="reset" class="reset"><ion-icon name="trash-outline" class="icon"></ion-icon>Limpar
+                        </button>
+
+                        <button type="submit" class="btn-submit">Pronto</button>
+                    </div>
+                
+
+
+
+            </div>
+
+            <div class="right">
+
+                <h1>Adicionar produtos</h1>
+                <div class="image">
+
+                </div>
+
+                <section class="right-input">
+                    <form action="">
+                        <label for="name">Nome do produto</label>
+                        <input type="text" placeholder="Digite o nome do produto aqui..." id="name">
+                    </form>
+                </section>
+
+            </div>
+        </form>
+        </div>
+
+        <script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
+        <script nomodule src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
+
+</div>
+</body>
+
+</html>

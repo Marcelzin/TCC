@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>funcionarios</title>
+    <link rel="stylesheet" href="/TCC/CSS/funcionarios.css">
+    <link rel="stylesheet" href="/TCC/CSS/menu.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700&display=swap" rel="stylesheet">
+</head>
+
+<body>
+    <main>
+        <div class="navigation">
+            <ul>
+                <li class="list">
+                    <a href="/HTML/home.html">
+                        <span class="icon"><ion-icon name="home-outline"></ion-icon></span>
+                        <span class="title">Início</span>
+                    </a>
+                </li>
+                <li class="list">
+                    <a href="/HTML/vendas.html">
+                        <span class="icon"><ion-icon name="grid-outline"></ion-icon></span>
+                        <span class="title">Menu</span>
+                    </a>
+                </li>
+                <li class="list">
+                    <a href="/HTML/cadastro_produto.html">
+                        <span class="icon"><ion-icon name="pricetag-outline"></ion-icon></span>
+                        <span class="title">Cadastro</span>
+                    </a>
+                </li>
+                <li class="list active">
+                    <a href="/HTML/funcionarios.html">
+                        <span class="icon"><ion-icon name="person-outline"></ion-icon></span>
+                        <span class="title">Funcionário</span>
+                    </a>
+                </li>
+                <div class="out">
+                <li class="list-out">
+                    <a href="/HTML/index.html">
+                        <span class="icon"><ion-icon name="log-out-outline"></ion-icon></span>
+                        <span class="title">sair</span>
+                    </a>
+                </li>
+                </div>
+            </ul>
+        </div>
+        
+
+    <script>
+        const list = document.querySelectorAll('.list');
+        function activelink() {
+            list.forEach((item) =>
+                item.classList.remove('active'));
+            this.classList.add('active');
+        }
+        list.forEach((item) =>
+            item.addEventListener('click', activeLink));
+    </script>
+
+    <script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
+    <script nomodule src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
+
+    <div class="funcionarios">
+        <div class="search">
+            <input type="search" id="search-bar" placeholder="Pesquisar...">
+            <button id="add-funci">+</button>
+        </div>
+        <div class="card-funcionario">
+            <div id="foto-funci"></div>
+            <span id="nome-funci">Roberto da Silva Pereira</span>
+            <span id="funci-delete">X</span>
+        </div>
+        
+</main>
+
+</body>
+
+</html>

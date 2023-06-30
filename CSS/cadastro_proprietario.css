@@ -1,0 +1,238 @@
+body {
+    margin: 0;
+    box-sizing: border-box;
+    font-family: 'roboto', monospace;
+    
+}
+
+.textfield svg {
+    position: absolute;
+    top: 42px;
+    right: 16px;
+    width: 24;
+    height: 24;
+    fill: none;
+    stroke: currentColor;
+    stroke-width: 2;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+}
+
+.main {
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.right {
+    width: 50vw;
+    height: 100vh;
+    justify-content: center;
+    align-items: center;
+    display: flex;
+    background-color: #061733;
+}
+
+
+.left {
+    width: 100vw;
+    margin: 10px 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+form {
+    width: 50%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    flex-direction: column;
+
+}
+
+.card{
+    width: 100%;
+}
+
+.textfield {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: center;
+}
+
+.textfield input {
+    border: #0a2654;
+    width: 100%;
+    border-style: solid;
+    border-width: 1px;
+    border-radius: 5px;
+    padding: 15px;
+    font-size: 12pt;
+    outline: none;
+    box-sizing: border-box;
+    margin-bottom: 30px;
+    font-weight: bold;
+}
+
+.textfield span {
+    color: #2E3559;
+    font-weight: 900;
+}
+
+.textfield label {
+    color: #061733;
+    margin-bottom: 5px;
+    font-size: 20px;
+    font-weight: bold;
+}
+
+.textfield h1 {
+    position: relative;
+    box-sizing: border-box;
+    justify-content: flex-start;
+}
+
+.btn {
+    position: relative;
+    left: 70%;
+    width: 30%;
+    padding: 15px 0px;
+    margin: 0;
+    border: none;
+    box-sizing: border-box;
+    border-radius: 30px;
+    background: #2E3559;
+    cursor: pointer;
+    transition: 0.5s;
+    color: white;
+    font-size: 1rem;
+}
+
+.btn a{
+    text-decoration: none;
+    color: white;
+}
+
+.btn:hover {
+    background: #061733;
+}
+
+.img {
+    width: 70%;
+}
+
+.link {
+    text-decoration: none;
+    position: relative;
+    bottom: 37px;
+    font-size: 17px;
+    color: #2E3559;
+    font-weight: bold;
+
+}
+
+.link:hover {
+    color: #061733;
+}
+
+
+@media (max-width: 1024px) {
+
+
+    .card {
+        display: flex;
+        width: 50vw;
+        height: 100vh;
+        box-sizing: border-box;
+        justify-content: center;
+    }
+
+    .left {
+        display: flex;
+        flex-direction: column-reverse;
+        width: 100vw;
+        height: 100vh;
+
+    }
+
+    .right {
+        display: none;
+    }
+
+    .tri {
+        display: none;
+    }
+}
+
+/* celulares */
+@media (max-width: 375px) {
+
+    .card {
+        display: flex;
+        width: 90%;
+        box-sizing: border-box;
+        justify-content: space-evenly;
+
+    }
+
+    .left {
+        display: flex;
+        flex-direction: column-reverse;
+        width: 100vw;
+        height: 100vh;
+        padding: 5px;
+
+    }
+
+    .btn {
+
+        width: 100%;
+        border-style: solid;
+        border-width: 3px;
+        border-radius: 7px;
+        padding: 15px;
+        font-size: 12pt;
+        box-shadow: 0px 3px 3px #00000056;
+        outline: none;
+        box-sizing: border-box;
+        margin-bottom: 30px;
+        font-weight: bold;
+        position: relative;
+        left: 0px;
+    }
+
+    .textfield input {
+        padding: 15px;
+        margin-bottom: 15px;
+        font-size: 15px;
+    }
+
+    .textfield label {
+        font-size: 17px;
+    }
+
+    .link {
+        display: none;
+    }
+
+    .textfield {
+        font-size: 10px;
+        width: 90%;
+
+    }
+
+    .right {
+        display: none;
+    }
+
+    .tri {
+        display: none;
+    }
+
+}

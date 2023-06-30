@@ -1,0 +1,113 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Roboto', serif;
+}
+
+main{
+    width: 100%;
+    height: 100%;
+    display: flex;
+}
+
+.circle{
+    width: 25%;
+    height: 45%;
+    position: absolute;
+    background-color: #2E3559;
+    border-radius: 50%;
+}
+
+#c-top{
+    left: 20%;
+    top: -25%;
+}
+
+#c-bottom-left{
+    bottom: 0%;
+    left: -16%;
+}
+
+#c-bottom-right{
+    bottom: -15rem;
+    right: -3%;
+}
+
+svg{
+    width: 45%;
+    height: 60%;
+    position: absolute;
+    right: 0;
+    bottom: 10%;
+
+}
+
+.start-business{
+    position: absolute;
+    width: 25%;
+    height: 20%;
+    top: 33%;
+    margin-left: 5rem;
+}
+
+.start-business span{
+    color: #868ba3;
+}
+
+.start-business button{
+    width: 50%;
+    height: 2rem;
+    background-color: #2E3559;
+    outline: none;
+    border: none;
+    color: #FFFFFF;
+    font-size: 1rem;
+    border-radius: 5px;
+    margin-top: 1rem;
+    font-weight: 400;
+    cursor: pointer;
+} 
+
+.start-business a{
+    text-decoration: none;
+    color: #FFFFFF;
+}
+
+.login-acount{
+    position: absolute;
+    width: 25%;
+    height: 20%;
+    top: 2%;
+    right: 0;
+    margin-right: 2rem;
+}
+
+.login-acount a{
+    text-decoration: none;
+    color: black;
+}
+
+a:active{
+    text-decoration: none;
+}
+
+.login-acount span{
+    color: #868ba3;
+}
+
+.login-acount button{
+    width: 45%;
+    height: 2rem;
+    background-color: transparent;
+    border-color: #2E3559;
+    border-style: solid;
+    border-radius: 5px;
+    font-size: 1rem;
+    font-weight: 700;
+    cursor: pointer;
+}
+
+#proprietario{
+    margin-right: 1rem;
+}

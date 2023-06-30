@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>tela de vendas</title>
+    <link rel="stylesheet" href="/CSS/vendas.css">
+    <link rel="stylesheet" href="/CSS/menu.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700&display=swap');
+      </style>
+</head>
+
+<body>
+    <div class="main">
+        <div class="navigation">
+            <ul>
+                <li class="list">
+                    <a href="./home.html">
+                        <span class="icon"><ion-icon name="home-outline"></ion-icon></span>
+                        <span class="title">Início</span>
+                    </a>
+                </li>
+                <li class="list active">
+                    <a href="">
+                        <span class="icon"><ion-icon name="grid-outline"></ion-icon></span>
+                        <span class="title">Menu</span>
+                    </a>
+                </li>
+                <li class="list">
+                    <a href="/HTML/cadastro_produto.html">
+                        <span class="icon"><ion-icon name="pricetag-outline"></ion-icon></span>
+                        <span class="title">Cadastro</span>
+                    </a>
+                </li>
+                <li class="list">
+                    <a href="/HTML/funcionarios.html">
+                        <span class="icon"><ion-icon name="person-outline"></ion-icon></span>
+                        <span class="title">Funcionário</span>
+                    </a>
+                </li>
+                <div class="out">
+                <li class="list-out">
+                    <a href="/HTML/index.html">
+                        <span class="icon"><ion-icon name="log-out-outline"></ion-icon></span>
+                        <span class="title">sair</span>
+                    </a>
+                </li>
+                </div>
+            </ul>
+        </div>
+
+
+    <script>
+        const list = document.querySelectorAll('.list');
+        function activelink() {
+            list.forEach((item) =>
+                item.classList.remove('active'));
+            this.classList.add('active');
+        }
+        list.forEach((item) =>
+            item.addEventListener('click', activeLink));
+    </script>
+
+    <script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
+    <script nomodule src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
+
+
+    <!-- <main class="main"> -->
+
+        
+        
+
+        <div class="item-menu">
+            <section class="search-bar">
+                <input style="margin-left:20px" type="search" placeholder="Pesquisar..." id="search"> 
+                <svg id="filter-icon" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="black" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="feather feather-filter"><polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"></polygon></svg>
+            </section> 
+            <ul class="card-itens">
+                <li class="item">
+                    <section id="left-side">
+                        <div class="top">
+                            <h1>Nome do produto</h1>
+                            <h2>descrição do produto</h2>
+                        </div>
+                        <div class="product-price-bottom">
+                            <span id="product-price">R$7,50</span>
+                        </div>
+                    </section>
+                    <section id="right-side">
+                        <div class="right-side-top">
+                            <div class="product-image" id="product-image">
+
+                            </div>
+                        </div>
+                        <div class="button-qnt">
+                            <span class="minus">-</span>
+                            <span class="num">00</span>
+                            <span class="plus">+</span>
+                        </div>
+                    </section>
+                </li>
+                <li class="item">
+                    <section id="left-side">
+                        <div class="top">
+                            <h1>Nome do produto</h1>
+                            <h2>descrição do produto</h2>
+                        </div>
+                        <div class="product-price-bottom">
+                            <span id="product-price">R$7,50</span>
+                        </div>
+                    </section>
+                    <section id="right-side">
+                        <div class="right-side-top">
+                            <div class="product-image" id="product-image">
+
+                            </div>
+                        </div>
+                        <div class="button-qnt">
+                            <span class="minus">-</span>
+                            <span class="num">00</span>
+                            <span class="plus">+</span>
+                        </div>
+                    </section>
+                </li>
+                    <li class="item">
+                        <section id="left-side">
+                            <div class="top">
+                                <h1>Nome do produto</h1>
+                                <h2>descrição do produto</h2>
+                            </div>
+                            <div class="product-price-bottom">
+                                <span id="product-price">R$7,50</span>
+                            </div>
+                        </section>
+                        <section id="right-side">
+                            <div class="right-side-top">
+                                <div class="product-image" id="product-image">
+    
+                                </div>
+                            </div>
+                            <div class="button-qnt">
+                                <span class="minus">-</span>
+                                <span class="num">00</span>
+                                <span class="plus">+</span>
+                            </div>
+                        </section>
+                    </li>
+                    <li class="item">
+                        <section id="left-side">
+                            <div class="top">
+                                <h1>Nome do produto</h1>
+                                <h2>descrição do produto</h2>
+                            </div>
+                            <div class="product-price-bottom">
+                                <span id="product-price">R$7,50</span>
+                            </div>
+                        </section>
+                        <section id="right-side">
+                            <div class="right-side-top">
+                                <div class="product-image" id="product-image">
+    
+                                </div>
+                            </div>
+                            <div class="button-qnt">
+                                <span class="minus">-</span>
+                                <span class="num">00</span>
+                                <span class="plus">+</span>
+                            </div>
+                        </section>
+                    </li>
+                    <li class="item">
+                        <section id="left-side">
+                            <div class="top">
+                                <h1>Nome do produto</h1>
+                                <h2>descrição do produto</h2>
+                            </div>
+                            <div class="product-price-bottom">
+                                <span id="product-price">R$7,50</span>
+                            </div>
+                        </section>
+                        <section id="right-side">
+                            <div class="right-side-top">
+                                <div class="product-image" id="product-image">
+    
+                                </div>
+                            </div>
+                            <div class="button-qnt">
+                                <span class="minus">-</span>
+                                <span class="num">00</span>
+                                <span class="plus">+</span>
+                            </div>
+                        </section>
+                    </li>
+                    <li class="item">
+                        <section id="left-side">
+                            <div class="top">
+                                <h1>Nome do produto</h1>
+                                <h2>descrição do produto</h2>
+                            </div>
+                            <div class="product-price-bottom">
+                                <span id="product-price">R$7,50</span>
+                            </div>
+                        </section>
+                        <section id="right-side">
+                            <div class="right-side-top">
+                                <div class="product-image" id="product-image">
+    
+                                </div>
+                            </div>
+                            <div class="button-qnt">
+                                <span class="minus">-</span>
+                                <span class="num">00</span>
+                                <span class="plus">+</span>
+                            </div>
+                        </section>
+                    </li>
+            </ul>
+        </div>
+<script>
+        
+const plus = document.querySelector(".plus"),
+minus = document.querySelector(".minus"),
+num = document.querySelector(".num");
+
+let a = 0;
+
+plus.addEventListener("click", ()=>{
+    a++;
+    a = (a <10) ? "0" + a : a;
+    num.innerText = a;
+    console.log("a");
+});
+
+minus.addEventListener("click", ()=>{
+    if(a > 0){
+        a--;
+        a = (a <10) ? "0" + a : a;
+        num.innerText = a;
+    }
+    
+});
+
+</script>
+
+
+        <div class="item-list">
+            <span class="lista">Lista</span>
+            <div class="item-list-card">
+                <div class="item-list-final-image"></div>
+                    <div class="item-list-final-description">
+                        <section id="name-product">
+                            <span class="name-product">Nome do produto</span>
+                        </section>
+                        <section id="item-qtd">
+                            <span class="item-qnt">x4</span> 
+                        </section>
+                        <span class="final-price">R$30,00</span>
+                    </div>
+            </div>
+            <!-- <div class="item-list-final">
+                <span class="total-price">Total</span>
+                <span class="total-price">R$30,00</span>
+            </div> -->
+                <div class="sale-summary">
+                    <div id="total"><h5>Total</h5><h5>R$00,00</h5></div>
+                    <div class="button-pay-form">
+                        <button id="pay-form"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#2E3559" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-dollar-sign"><line x1="12" y1="1" x2="12" y2="23"></line><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path></svg>Dinheiro</button>
+                        <button id="pay-form"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#2E3559" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-credit-card"><rect x="1" y="4" width="22" height="16" rx="2" ry="2"></rect><line x1="1" y1="10" x2="23" y2="10"></line></svg>Debito</button>
+                        <button id="pay-form"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#2E3559" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-credit-card"><rect x="1" y="4" width="22" height="16" rx="2" ry="2"></rect><line x1="1" y1="10" x2="23" y2="10"></line></svg>Credito</button>
+                        <button id="pay-form"><svg viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg">
+                            <defs/>
+                            <g fill="#2E3559" fill-rule="evenodd">
+                              <path d="M112.57 391.19c20.056 0 38.928-7.808 53.12-22l76.693-76.692c5.385-5.404 14.765-5.384 20.15 0l76.989 76.989c14.191 14.172 33.045 21.98 53.12 21.98h15.098l-97.138 97.139c-30.326 30.344-79.505 30.344-109.85 0l-97.415-97.416h9.232zm280.068-271.294c-20.056 0-38.929 7.809-53.12 22l-76.97 76.99c-5.551 5.53-14.6 5.568-20.15-.02l-76.711-76.693c-14.192-14.191-33.046-21.999-53.12-21.999h-9.234l97.416-97.416c30.344-30.344 79.523-30.344 109.867 0l97.138 97.138h-15.116z"/>
+                              <path d="M22.758 200.753l58.024-58.024h31.787c13.84 0 27.384 5.605 37.172 15.394l76.694 76.693c7.178 7.179 16.596 10.768 26.033 10.768 9.417 0 18.854-3.59 26.014-10.75l76.989-76.99c9.787-9.787 23.331-15.393 37.171-15.393h37.654l58.3 58.302c30.343 30.344 30.343 79.523 0 109.867l-58.3 58.303H392.64c-13.84 0-27.384-5.605-37.171-15.394l-76.97-76.99c-13.914-13.894-38.172-13.894-52.066.02l-76.694 76.674c-9.788 9.788-23.332 15.413-37.172 15.413H80.782L22.758 310.62c-30.344-30.345-30.344-79.524 0-109.868"/>
+                            </g>
+                          </svg>Pix</button>
+                    </div>
+                    
+                    <div class="button-close-sale">
+                        <button id="clean"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#000000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-trash-2"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path><line x1="10" y1="11" x2="10" y2="17"></line><line x1="14" y1="11" x2="14" y2="17"></line></svg>Limpar</button>
+                        <button id="finalize"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#FFFFFF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-check"><polyline points="20 6 9 17 4 12"></polyline></svg>Finalizar</button>
+                    </div>
+                </div>
+                
+            </div>
+        </div>
+    </div>
+
+
+</body>
+
+</html>
