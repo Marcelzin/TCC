@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html lang="pt-br">
-
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -12,40 +11,97 @@
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11.0.18/dist/sweetalert2.min.css">
 </head>
-
 <body>
-    <form action="/TCC/QUERYS/login_func.php" method="POST">
-        <div class="main">
-
-            <div class="left">
-
-                <div class="card">
+<form id="form_login" name="form_login" method="POST">
+    <div class="main">
+        <div class="left">
+            <div class="card">
+                <div class="textfield">
+                
+                    <h1>Entre na sua <span>conta</span> <br> como <span>funcionario</span>!</h1>
+                    
+                    <div class="textfield">
+                        <label for="email">Email</label>
+                        <input type="text" placeholder="Digite seu Email..." id="email" name="email">
+                    </div>
 
                     <div class="textfield">
-
-                        <h1>Entre na sua <span>conta</span> <br> como <span>funcionário</span>!</h1>
-
-                        <div class="textfield">
-                            <label for="email">Email</label>
-                            <input type="text" placeholder="Digite seu Email..." id="email" name="email">
-                        </div>
-
-                        <div class="textfield">
-                            <label for="senha">Senha</label>
-                            <input type="password" placeholder="Digite sua senha..." id="senha" name="senha">
-                        </div>
-
-                        <button type="submit" class="btn" id="submit" name="submit">Entrar</button>
-                        <a href="/TCC/index.html" class="link"><i class="fas fa-arrow-left"></i> Voltar</a>
+                        <label for="senha">Senha</label>
+                        <input type="password" placeholder="Digite sua senha..." id="senha" name="senha">
                     </div>
+
+                    <input type="button" class="btn" name="btn_login" id="btn_cadastrar" value="Entrar" onclick="cadastraDoc()">
+                    <a href="/TCC/index.html" class="link"><i class="fas fa-arrow-left"></i> Voltar</a>
                 </div>
             </div>
+        </div>
     </form>
-    <div class="right">
+    <div class="right"> 
         <img src="" class="img">
     </div>
     </div>
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.0.18/dist/sweetalert2.min.js"></script>
-</body>
 
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.0.18/dist/sweetalert2.min.js"></script>
+    <script>
+        function cadastraDoc() {
+            // Obtenha os valores dos campos de email e senha
+            var email = $("#email").val();
+            var senha = $("#senha").val();
+        
+            // Verifique se os campos estão preenchidos
+            if (email === "" || senha === "") {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Erro ao cadastrar',
+                    text: 'Por favor, preencha todos os campos.',
+                });
+                return; // Impede o envio da requisição se os campos estiverem vazios
+            }
+        
+            // Se os campos estiverem preenchidos, prossiga com a requisição AJAX
+            var formData = $("form[name='form_login']").serialize();
+        
+            $.ajax({
+                method: "POST",
+                url: 'http://localhost:8181/TCC/QUERYS/login_func.php',
+                data: formData,
+                success: function (retorno) {
+                    var response = JSON.parse(retorno);
+                    if (response.status === 'success') {
+                        // Login bem-sucedido, redirecione o usuário
+                        Swal.fire({
+                            icon: 'success',
+                            title: 'Usuário logado com sucesso!',
+                            text: response.message,
+                            timer: 2000, // Redirecionar após 2 segundos
+                            timerProgressBar: true,
+                            didOpen: (toast) => {
+                                toast.addEventListener('mouseenter', Swal.stopTimer);
+                                toast.addEventListener('mouseleave', Swal.resumeTimer);
+                            }
+                        }).then(() => {
+                            window.location.href = '/TCC/PAGES/home.html'; // Redirecionar para a página desejada
+                        });
+                    } else {
+                        // Exiba a mensagem de erro retornada pelo PHP
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Erro ao cadastrar',
+                            text: response.message,
+                        });
+                    }
+                },
+                error: function (xhr, status, error) {
+                    // Trate o erro aqui, por exemplo, exibindo uma mensagem de erro genérica
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Erro ao cadastrar',
+                        text: 'Ocorreu um erro ao acessar a página.',
+                    });
+                }
+            });
+        }
+    </script>    
+</body>
 </html>

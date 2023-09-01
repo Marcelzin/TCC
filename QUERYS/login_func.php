@@ -1,21 +1,40 @@
 <?php
-include_once('config.php');
+    session_start(); // Iniciar a sessão
 
-if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    $email = $_POST['email'];
-    $senha = $_POST['senha'];
+    include_once('config.php');
 
-    // Consulta no banco de dados para verificar se o usuário existe e tem o nível de acesso adequado
-    $query = "SELECT * FROM usuario WHERE email = '$email' AND senha = '$senha' AND nivel_acesso = 'Funcionario'";
-    $result = mysqli_query($conexao, $query);
+    $response = array(); // Array para armazenar a resposta
 
-    if (mysqli_num_rows($result) == 1) {
-        // Usuário válido, redireciona para a página principal ou faz outras ações necessárias
-        header("Location: /TCC/PAGES/home.html");
-        exit();
+    if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+        $email = $_POST['email'];
+        $senha = $_POST['senha'];
+
+        // Consulta no banco de dados para verificar se o usuário existe e tem o nível de acesso adequado e a senha está correta
+        $query = "SELECT * FROM usuario WHERE email = '$email' AND nivel_acesso = 'Funcionario' AND senha = '$senha'";
+        $result = mysqli_query($conexao, $query);
+
+        if (mysqli_num_rows($result) == 1) {
+            // Usuário encontrado, senha correta
+            $row = mysqli_fetch_assoc($result);
+
+            // Armazenar os dados do usuário na sessão
+            $_SESSION['usuario_id'] = $row['id'];
+            $_SESSION['usuario_email'] = $row['email'];
+            $_SESSION['usuario_nivel_acesso'] = $row['nivel_acesso'];
+
+            $response['status'] = 'success';
+            $response['message'] = 'Login bem-sucedido! Redirecionando...';
+        } else {
+            // Usuário não encontrado ou senha incorreta
+            $response['status'] = 'error';
+            $response['message'] = 'Email não cadastrado como funcionário ou senha incorreta.';
+        }
     } else {
-        // Usuário inválido, exibe uma mensagem de erro ou redireciona para a página de login novamente
-        echo "Email, senha ou nível de acesso inválidos";
+        // Método de requisição inválido (não é POST)
+        $response['status'] = 'error';
+        $response['message'] = 'Método de requisição inválido.';
     }
-}
+
+    // Retorna a resposta em formato JSON
+    echo json_encode($response);
 ?>
