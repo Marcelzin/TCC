@@ -11,9 +11,16 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11.0.18/dist/sweetalert2.min.css">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-4bw+/aepP/YC94hEpVNVgiZdgIC5+VKNBQNGCHeKRQN+PtmoHDEXuppvnDJzQIu9" crossorigin="anonymous">
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-HwwvtgBNo3bZJJLYd8oVXjrBZt8cqVSpeBNS5n7C8IVInixGAoxmnlMuBnhbgrkm" crossorigin="anonymous"></script>
-
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-4bw+/aepP/YC94hEpVNVgiZdgIC5+VKNBQNGCHeKRQN+PtmoHDEXuppvnDJzQIu9" crossorigin="anonymous">    <link href="//cdn.datatables.net/1.13.6/css/jquery.dataTables.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-HwwvtgBNo3bZJJLYd8oVXjrBZt8cqVSpeBNS5n7C8IVInixGAoxmnlMuBnhbgrkm" crossorigin="anonymous"></script>    <style>
+        .dataTables_length {
+            width: auto;
+            position: absolute;
+        }
+        #tb_produtos_filter {
+            float: right;
+        }
+    </style>
 </head>
 
 <body style="flex-direction: column">
@@ -107,8 +114,8 @@
     
 </div>
 
-<table class="table table-striped">
-    <thead class="thead-dark">
+<table id="tb_produtos" name="tb_produtos">
+    <thead style="background-color: #0a2654; color: #FFF">
         <tr>
             <th>ID</th>
             <th>Descrição do Produto</th>
@@ -119,7 +126,7 @@
             <th>Editar</th>
         </tr>
     </thead>
-    <tbody id="tabela-produtos">
+    <tbody>
         <?php
         include_once('config.php');
 
@@ -135,7 +142,7 @@
                 echo "<td>" . $row["nome"] . "</td>";
                 echo "<td>R$" . $row["valor_fabrica"] . "</td>";
                 echo "<td>R$" . $row["valor_venda"] . "</td>";
-                echo '<td><ion-icon name="trash-outline" style="cursor: pointer;" onclick="excluirProd(' . $row["id"] . ')"></ion-icon></td>'; // Ícone de exclusão do Ionicons
+                echo '<td><ion-icon name="trash-outline" style="cursor: pointer;" onclick="exibirModalExclusao(' . $row["id"] . ')"></ion-icon></td>';
                 echo '<td><ion-icon name="pencil-outline" style="cursor: pointer;" onclick="abrirModalEdicao(' . $row["id"] . ')"></ion-icon></td>';                echo "</tr>";
             }
         } else {
@@ -146,52 +153,122 @@
         ?>
     </tbody>
 </table>
-<!-- Modal de Edição -->
-<div class="modal fade" id="editarModal" tabindex="-1" role="dialog" aria-labelledby="editarModalLabel" aria-hidden="true">
+<div class="modal" id="editarModal" tabindex="-1" role="dialog" aria-labelledby="editarModalLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title" id="editarModalLabel">Editar Produto</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Fechar">
-                    <span aria-hidden="true">&times;</span>
-                </button>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Fechar"></button>
             </div>
             <div class="modal-body">
                 <form id="form_edicao_prod">
                     <input type="hidden" id="produto_id">
-                    <div class="form-group">
-                        <label for="edit_descricao">Descrição do produto</label>
+                    <div class="mb-3">
+                        <label for="edit_descricao" class="form-label">Descrição do produto</label>
                         <input type="text" class="form-control" id="edit_descricao">
                     </div>
-                    <div class="form-group">
-                        <label for="edit_nome">Nome do produto</label>
+                    <div class="mb-3">
+                        <label for="edit_nome" class="form-label">Nome do produto</label>
                         <input type="text" class="form-control" id="edit_nome">
                     </div>
-                    <div class="form-group">
-                        <label for="edit_valor_fabrica">Valor de produção</label>
+                    <div class="mb-3">
+                        <label for="edit_valor_fabrica" class="form-label">Valor de produção</label>
                         <input type="text" class="form-control" id="edit_valor_fabrica">
                     </div>
-                    <div class="form-group">
-                        <label for="edit_valor_venda">Preço</label>
+                    <div class="mb-3">
+                        <label for="edit_valor_venda" class="form-label">Preço</label>
                         <input type="text" class="form-control" id="edit_valor_venda">
                     </div>
                 </form>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Fechar</button>
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>
                 <button type="button" class="btn btn-primary" onclick="salvarEdicao()">Salvar</button>
             </div>
         </div>
     </div>
 </div>
 
-
+<!-- Crie a modal de confirmação -->
+<div class="modal" id="excluirModal" tabindex="-1" role="dialog" aria-labelledby="excluirModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="excluirModalLabel">Confirmar Exclusão</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Fechar"></button>
+            </div>
+            <div class="modal-body">
+                Tem certeza de que deseja excluir este registro?
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                <button type="button" class="btn btn-danger" onclick="excluirRegistro()">Excluir</button>
+            </div>
+        </div>
+    </div>
+</div>
 
     <script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
     <script nomodule src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.mask/1.14.16/jquery.mask.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.0.18/dist/sweetalert2.min.js"></script>
+    <script src="//cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
+    
+    <!-- Modifique a função exibirModalExclusao para definir o atributo data-id -->
+<script>
+    // Função para abrir a modal de exclusão
+    function exibirModalExclusao(id) {
+        // Defina o atributo data-id no elemento da modal
+        $("#excluirModal").attr("data-id", id);
+        $("#excluirModal").modal("show");
+    }
+
+    // Função para excluir o registro após a confirmação
+    function excluirRegistro() {
+        // Obtenha o id do atributo data-id do elemento da modal
+        var id = $("#excluirModal").data("id");
+
+        // Realize uma chamada AJAX para excluir o registro
+        $.ajax({
+            method: "POST",
+            url: 'http://localhost:8181/TCC/QUERYS/delete_produto.php',
+            data: { id: id },
+            success: function (retorno) {
+                try {
+                    var response = JSON.parse(retorno);
+                    if (response.status === 'success') {
+                        // Produto excluído com sucesso, faça algo aqui (por exemplo, recarregar a tabela)
+                        $("#excluirModal").modal("hide"); // Fechar a modal de confirmação
+                        // Atualizar a página após a exclusão bem-sucedida
+                        location.reload();
+                    } else {
+                        // Trate o erro de exclusão aqui (por exemplo, exibir uma mensagem de erro)
+                        console.error(response.message);
+                    }
+                } catch (e) {
+                    console.error('Erro ao analisar resposta JSON:', e);
+                    // Tratar o erro de análise JSON aqui (por exemplo, exibir uma mensagem de erro)
+                }
+            },
+            error: function (error) {
+                console.error(error);
+                // Tratar o erro aqui (por exemplo, mostrar uma mensagem de erro)
+            }
+        });
+    }
+</script>
+
+    <script>
+        $(document).ready(function () {
+            $('#tb_produtos').DataTable({
+                paging: true, // Habilita a paginação
+                language: {
+                    url: '//cdn.datatables.net/plug-ins/1.10.25/i18n/Portuguese-Brasil.json' // Configuração do idioma em Português (Brasil)
+                }
+            });
+        });
+    </script>
     
     <script>
         // Função para abrir a modal de edição e preencher os campos
