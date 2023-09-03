@@ -16,7 +16,7 @@
 
 </head>
 
-<body>
+<body style="flex-direction: column">
 
     <div class="navigation">
         <ul>
@@ -33,7 +33,7 @@
                 </a>
             </li>
             <li class="list active">
-                <a href="/TCC/PAGES/cadastro_prod.html">
+                <a href="/TCC/PAGES/cadastro_prod.php">
                     <span class="icon"><ion-icon name="pricetag-outline"></ion-icon></span>
                     <span class="title">Cadastro</span>
                 </a>
@@ -55,7 +55,7 @@
         </ul>
     </div>
 
-    <div class="card-cadastro">
+    <div class="card-cadastro" style="margin-top: 0px">
         <div class="left">
             <form id="form_cadastro_prod" name="form_cadastro_prod" method="POST">
                 <div>
@@ -115,6 +115,8 @@
             <th>Nome do Produto</th>
             <th>Valor de Produção</th>
             <th>Preço</th>
+            <th>Excluir</th>
+            <th>Editar</th>
         </tr>
     </thead>
     <tbody id="tabela-produtos">
@@ -133,16 +135,19 @@
                 echo "<td>" . $row["nome"] . "</td>";
                 echo "<td>R$" . $row["valor_fabrica"] . "</td>";
                 echo "<td>R$" . $row["valor_venda"] . "</td>";
+                echo '<td><ion-icon name="trash-outline" style="cursor: pointer;" onclick="excluirProd(' . $row["id"] . ')"></ion-icon></td>'; // Ícone de exclusão do Ionicons
+                echo '<td><ion-icon name="pencil-outline" style="cursor: pointer;" onclick="editarProd(' . $row["id"] . ')"></ion-icon></td>'; // Ícone de edição do Ionicons
                 echo "</tr>";
             }
         } else {
-            echo "<tr><td colspan='5'>Nenhum registro encontrado.</td></tr>";
+            echo "<tr><td colspan='7'>Nenhum registro encontrado.</td></tr>";
         }
 
         mysqli_close($conexao);
         ?>
     </tbody>
 </table>
+
 
     <script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
     <script nomodule src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
