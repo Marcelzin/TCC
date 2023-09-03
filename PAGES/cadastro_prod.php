@@ -136,7 +136,7 @@
                 echo "<td>R$" . $row["valor_fabrica"] . "</td>";
                 echo "<td>R$" . $row["valor_venda"] . "</td>";
                 echo '<td><ion-icon name="trash-outline" style="cursor: pointer;" onclick="excluirProd(' . $row["id"] . ')"></ion-icon></td>'; // Ícone de exclusão do Ionicons
-                echo '<td><ion-icon name="pencil-outline" style="cursor: pointer;" onclick="editarProd(' . $row["id"] . ')"></ion-icon></td>'; // Ícone de edição do Ionicons
+                echo '<td><button class="btn btn-info btn-sm" onclick="abrirModalEdicao(' . $row["id"] . ')">Editar</button></td>';
                 echo "</tr>";
             }
         } else {
@@ -147,6 +147,45 @@
         ?>
     </tbody>
 </table>
+<!-- Modal de Edição -->
+<div class="modal fade" id="editarModal" tabindex="-1" role="dialog" aria-labelledby="editarModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="editarModalLabel">Editar Produto</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Fechar">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form id="form_edicao_prod">
+                    <input type="hidden" id="produto_id">
+                    <div class="form-group">
+                        <label for="edit_descricao">Descrição do produto</label>
+                        <input type="text" class="form-control" id="edit_descricao">
+                    </div>
+                    <div class="form-group">
+                        <label for="edit_nome">Nome do produto</label>
+                        <input type="text" class="form-control" id="edit_nome">
+                    </div>
+                    <div class="form-group">
+                        <label for="edit_valor_fabrica">Valor de produção</label>
+                        <input type="text" class="form-control" id="edit_valor_fabrica">
+                    </div>
+                    <div class="form-group">
+                        <label for="edit_valor_venda">Preço</label>
+                        <input type="text" class="form-control" id="edit_valor_venda">
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Fechar</button>
+                <button type="button" class="btn btn-primary" onclick="salvarEdicao()">Salvar</button>
+            </div>
+        </div>
+    </div>
+</div>
+
 
 
     <script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
@@ -154,6 +193,77 @@
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.mask/1.14.16/jquery.mask.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.0.18/dist/sweetalert2.min.js"></script>
+    
+    <script>
+        // Função para abrir a modal de edição e preencher os campos
+function abrirModalEdicao(id) {
+    // Fazer uma chamada AJAX para buscar os dados do produto pelo ID
+    $.ajax({
+        method: "GET",
+        url: 'http://localhost:8181/TCC/QUERYS/get_produto.php?id=' + id,
+        success: function (retorno) {
+            var produto = JSON.parse(retorno);
+            if (produto) {
+                // Preencher os campos da modal com os valores do produto
+                $("#produto_id").val(produto.id);
+                $("#edit_descricao").val(produto.descricao);
+                $("#edit_nome").val(produto.nome);
+                $("#edit_valor_fabrica").val(produto.valor_fabrica);
+                $("#edit_valor_venda").val(produto.valor_venda);
+                // Abrir a modal de edição
+                $("#editarModal").modal("show");
+            }
+        },
+        error: function (error) {
+            console.error(error);
+            // Tratar o erro aqui (por exemplo, mostrar uma mensagem de erro)
+        }
+    });
+}
+
+// Função para salvar as alterações na modal de edição
+function salvarEdicao() {
+    // Obter os valores dos campos da modal de edição
+    var id = $("#produto_id").val();
+    var descricao = $("#edit_descricao").val();
+    var nome = $("#edit_nome").val();
+    var valorFabrica = $("#edit_valor_fabrica").val();
+    var valorVenda = $("#edit_valor_venda").val();
+
+    // Criar um objeto com os dados a serem enviados
+    var dados = {
+        id: id,
+        descricao: descricao,
+        nome: nome,
+        valor_fabrica: valorFabrica,
+        valor_venda: valorVenda
+    };
+
+    // Realizar uma chamada AJAX para atualizar os dados do produto
+    $.ajax({
+        method: "POST",
+        url: 'http://localhost:8181/TCC/QUERYS/update_produto.php',
+        data: dados,
+        success: function (retorno) {
+            var response = JSON.parse(retorno);
+            if (response.status === 'success') {
+                // Produto atualizado com sucesso, faça algo aqui (por exemplo, recarregar a tabela)
+                $("#editarModal").modal("hide"); // Fechar a modal
+                // Atualizar a tabela com os dados atualizados
+                // (você pode usar uma nova chamada AJAX para buscar os dados atualizados e preencher a tabela)
+            } else {
+                // Tratar o erro de atualização aqui (por exemplo, exibir uma mensagem de erro)
+                console.error(response.message);
+            }
+        },
+        error: function (error) {
+            console.error(error);
+            // Tratar o erro aqui (por exemplo, mostrar uma mensagem de erro)
+        }
+    });
+}
+
+    </script>
 
     <script>
         $(document).ready(function () {
