@@ -10,6 +10,8 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11.0.18/dist/sweetalert2.min.css">
+
 </head>
 
 <body>
@@ -51,73 +53,189 @@
         </ul>
     </div>
 
-
-        <div class="card-cadastro">
-            <div class="left">
-                <form>
-                    <div>
-                        <label for="descricion">Descrição do produto</label>
-                        <input type="text" placeholder="Digite a descrição do produto aqui..." id="descricion">
-                    </div>
-                    <div>
-                        <label for="type">Tipo de produto</label>
-                        <input id="color" list="tipos" placeholder="Digite o tipo de produto aqui..." class="lista">
-                        <datalist class="lista-tipos-de-produto" id="tipos">
-                            <option>Chocolate</option>
-                            <option>Creme</option>
-                            <option>M&M</option>
-                        </datalist>
-                    </div>
-
-                    <div class="valor-type">
-
-                        <div class="valor">
-
-                            <label for="valorfab">Valor de produção</label>
-                            <input type="text" placeholder="Valor de fabrica" id="valorfab">
-
-                        </div>
-                        <div class="valor">
-
-                            <label for="price">Preço</label>
-                            <input type="text" placeholder="Digite o preço aqui..." id="price" class="price">
-                        </div>
-
-                    </div>
-                    <div class="buttons-submit">
-                        <button type="reset" class="reset"><ion-icon name="trash-outline" class="icon"></ion-icon>Limpar
-                        </button>
-
-                        <button type="submit" class="btn-submit">Pronto</button>
-                    </div>
-                
-
-
-
-            </div>
-
-            <div class="right">
-
-                <h1>Adicionar produtos</h1>
-                <div class="image">
-
+    <div class="card-cadastro">
+        <div class="left">
+            <form id="form_cadastro_prod" name="form_cadastro_prod" method="POST">
+                <div>
+                    <label for="descricion">Descrição do produto</label>
+                    <input type="text" placeholder="Digite a descrição do produto aqui..." id="descricion">
+                </div>
+                <div>
+                    <label for="type">Tipo de produto</label>
+                    <input id="color" list="tipos" placeholder="Digite o tipo de produto aqui..." class="lista">
+                    <datalist class="lista-tipos-de-produto" id="tipos">
+                        <option>Chocolate</option>
+                        <option>Creme</option>
+                        <option>M&M</option>
+                    </datalist>
                 </div>
 
-                <section class="right-input">
-                    <form action="">
-                        <label for="name">Nome do produto</label>
-                        <input type="text" placeholder="Digite o nome do produto aqui..." id="name">
-                    </form>
-                </section>
+                <div class="valor-type">
 
-            </div>
-        </form>
+                    <div class="valor">
+
+                        <label for="valorfab">Valor de produção</label>
+                        <input type="text" placeholder="Valor de fabrica" id="valorfab">
+
+                    </div>
+                    <div class="valor">
+
+                        <label for="price">Preço</label>
+                        <input type="text" placeholder="Digite o preço aqui..." id="price" class="price">
+                    </div>
+
+                </div>
+                <div class="buttons-submit">
+                    <button type="reset" class="reset"><ion-icon name="trash-outline" class="icon"></ion-icon>Limpar
+                    </button>
+
+                    <button class="btn-submit" onclick="cadastra_prod()">Pronto</button>
+                </div>
+
         </div>
 
-        <script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
-        <script nomodule src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
+        <div class="right">
 
+            <h1>Adicionar produtos</h1>
+            <div class="image">
+
+            </div>
+
+            <section class="right-input">
+                <form action="">
+                    <label for="name">Nome do produto</label>
+                    <input type="text" placeholder="Digite o nome do produto aqui..." id="name">
+                </form>
+            </section>
+
+        </div>
+    </form>
+    </div>
 </div>
-</body>
 
+    <script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
+    <script nomodule src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.mask/1.14.16/jquery.mask.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.0.18/dist/sweetalert2.min.js"></script>
+
+    <script>
+        $(document).ready(function () {
+            // Máscara para o campo "Valor de produção"
+            $('#valorfab').mask('999999999.99', { reverse: true });
+    
+            // Máscara para o campo "Preço"
+            $('#price').mask('999999999.99', { reverse: true });
+    
+            // Função para validar e enviar o formulário
+            function validarEEnviar() {
+                var nomeProduto = $('#name').val();
+                var valorFabricacao = $('#valorfab').val();
+                var preco = $('#price').val();
+    
+                // Validar se os campos obrigatórios estão preenchidos
+                if (nomeProduto === '' || valorFabricacao === '' || preco === '') {
+                    // Bordas vermelhas nos campos vazios
+                    if (nomeProduto === '') {
+                        $('#name').css('border', '1px solid red');
+                    } else {
+                        $('#name').css('border', '1px solid #ccc');
+                    }
+    
+                    if (valorFabricacao === '') {
+                        $('#valorfab').css('border', '1px solid red');
+                    } else {
+                        $('#valorfab').css('border', '1px solid #ccc');
+                    }
+    
+                    if (preco === '') {
+                        $('#price').css('border', '1px solid red');
+                    } else {
+                        $('#price').css('border', '1px solid #ccc');
+                    }
+    
+                    // Alerta usando SweetAlert
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Campos em vermelho!',
+                        text: 'Preencha os campos em vermelho.',
+                        confirmButtonColor: '#d33',
+                        confirmButtonText: 'Entendi'
+                    });
+                } else {
+                    // Se os campos estão preenchidos, envie o formulário
+                    cadastra_prod();
+                }
+            }
+    
+            // Associar a função de validação e envio ao clique do botão "Pronto"
+            $('.btn-submit').on('click', function (e) {
+                e.preventDefault(); // Impede o envio padrão do formulário
+                validarEEnviar();
+            });
+    
+            // Função para cadastrar o produto
+            function cadastra_prod() {
+                // Obtenha os valores dos campos do formulário de produto
+                var nome = $("#name").val();
+                var valorFabrica = $("#valorfab").val();
+                var valorVenda = $("#price").val();
+                var descricao = $("#descricion").val();
+                
+                // Crie um objeto com os dados a serem enviados
+                var dados = {
+                    nome: nome,
+                    valor_fabrica: valorFabrica,
+                    valor_venda: valorVenda,
+                    descricao: descricao
+                };
+        
+                // Realize uma chamada AJAX para o arquivo cadastro_prod.php
+                $.ajax({
+                    method: "POST",
+                    url: 'http://localhost:8181/TCC/QUERYS/cadastro_prod.php',
+                    data: dados,
+                    success: function (retorno) {
+                        var response = JSON.parse(retorno);
+                        if (response.status === 'success') {
+                            // Produto cadastrado com sucesso, faça algo aqui (por exemplo, redirecionar ou exibir uma mensagem de sucesso)
+                            Swal.fire({
+                                icon: 'success',
+                                title: 'Produto cadastrado com sucesso!',
+                                text: response.message,
+                                timer: 2000, // Redirecionar após 2 segundos
+                                timerProgressBar: true,
+                                didOpen: (toast) => {
+                                    toast.addEventListener('mouseenter', Swal.stopTimer);
+                                    toast.addEventListener('mouseleave', Swal.resumeTimer);
+                                }
+                            }).then(function() {
+                                // Atualizar a página após o Swal ser fechado
+                                location.reload();
+                            });
+
+                        } else {
+                            // Trate o erro de cadastro aqui (por exemplo, exibir uma mensagem de erro)
+                            Swal.fire({
+                                icon: 'error',
+                                title: 'Erro ao cadastrar o produto!',
+                                text: response.message
+                            });
+                        }
+                    },
+                    error: function (error) {
+                        // Ação a ser tomada em caso de erro na requisição AJAX
+                        console.error(error); // Exiba o erro no console para fins de depuração
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Erro na requisição AJAX',
+                            text: 'Ocorreu um erro ao enviar a solicitação. Verifique a conexão ou tente novamente mais tarde.'
+                        });
+                    }
+                });
+            }
+        });
+    </script>
+    
+</body>
 </html>
