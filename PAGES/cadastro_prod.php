@@ -11,6 +11,8 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11.0.18/dist/sweetalert2.min.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-4bw+/aepP/YC94hEpVNVgiZdgIC5+VKNBQNGCHeKRQN+PtmoHDEXuppvnDJzQIu9" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-HwwvtgBNo3bZJJLYd8oVXjrBZt8cqVSpeBNS5n7C8IVInixGAoxmnlMuBnhbgrkm" crossorigin="anonymous"></script>
 
 </head>
 
@@ -102,7 +104,45 @@
         </div>
     </form>
     </div>
+    
 </div>
+
+<table class="table table-striped">
+    <thead class="thead-dark">
+        <tr>
+            <th>ID</th>
+            <th>Descrição do Produto</th>
+            <th>Nome do Produto</th>
+            <th>Valor de Produção</th>
+            <th>Preço</th>
+        </tr>
+    </thead>
+    <tbody id="tabela-produtos">
+        <?php
+        include_once('config.php');
+
+        // Consulta SQL para selecionar todos os dados da tabela "produto"
+        $sql = "SELECT * FROM produto";
+        $result = mysqli_query($conexao, $sql);
+
+        if (mysqli_num_rows($result) > 0) {
+            while ($row = mysqli_fetch_assoc($result)) {
+                echo "<tr>";
+                echo "<td>" . $row["id"] . "</td>";
+                echo "<td>" . $row["descricao"] . "</td>";
+                echo "<td>" . $row["nome"] . "</td>";
+                echo "<td>R$" . $row["valor_fabrica"] . "</td>";
+                echo "<td>R$" . $row["valor_venda"] . "</td>";
+                echo "</tr>";
+            }
+        } else {
+            echo "<tr><td colspan='5'>Nenhum registro encontrado.</td></tr>";
+        }
+
+        mysqli_close($conexao);
+        ?>
+    </tbody>
+</table>
 
     <script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
     <script nomodule src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
