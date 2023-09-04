@@ -64,7 +64,7 @@
         
             $.ajax({
                 method: "POST",
-                url: 'http://localhost:8181/TCC/QUERYS/login_func.php',
+                url: '/TCC/QUERYS/login_func.php',
                 data: formData,
                 success: function (retorno) {
                     var response = JSON.parse(retorno);

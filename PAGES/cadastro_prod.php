@@ -13,6 +13,7 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11.0.18/dist/sweetalert2.min.css">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-4bw+/aepP/YC94hEpVNVgiZdgIC5+VKNBQNGCHeKRQN+PtmoHDEXuppvnDJzQIu9" crossorigin="anonymous">    <link href="//cdn.datatables.net/1.13.6/css/jquery.dataTables.min.css" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-HwwvtgBNo3bZJJLYd8oVXjrBZt8cqVSpeBNS5n7C8IVInixGAoxmnlMuBnhbgrkm" crossorigin="anonymous"></script>    <style>
+    <style>
         .dataTables_length {
             width: auto;
             position: absolute;
@@ -232,7 +233,7 @@
         // Realize uma chamada AJAX para excluir o registro
         $.ajax({
             method: "POST",
-            url: 'http://localhost:8181/TCC/QUERYS/delete_produto.php',
+            url: '/TCC/QUERYS/delete_produto.php',
             data: { id: id },
             success: function (retorno) {
                 try {
@@ -276,7 +277,7 @@
             // Fazer uma chamada AJAX para buscar os dados do produto pelo ID
             $.ajax({
                 method: "GET",
-                url: 'http://localhost:8181/TCC/QUERYS/get_produto.php?id=' + id,
+                url: '/TCC/QUERYS/get_produto.php?id=' + id,
                 success: function (retorno) {
                     var produto = JSON.parse(retorno);
                     if (produto) {
@@ -318,7 +319,7 @@
             // Realizar uma chamada AJAX para atualizar os dados do produto
             $.ajax({
                 method: "POST",
-                url: 'http://localhost:8181/TCC/QUERYS/update_produto.php',
+                url: '/TCC/QUERYS/update_produto.php',
                 data: dados,
                 success: function (retorno) {
                     var response = JSON.parse(retorno);
@@ -414,7 +415,7 @@
                 // Realize uma chamada AJAX para o arquivo cadastro_prod.php
                 $.ajax({
                     method: "POST",
-                    url: 'http://localhost:8181/TCC/QUERYS/cadastro_prod.php',
+                    url: '/TCC/QUERYS/cadastro_prod.php',
                     data: dados,
                     success: function (retorno) {
                         var response = JSON.parse(retorno);
