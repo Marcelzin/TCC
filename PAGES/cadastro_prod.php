@@ -12,7 +12,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11.0.18/dist/sweetalert2.min.css">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-4bw+/aepP/YC94hEpVNVgiZdgIC5+VKNBQNGCHeKRQN+PtmoHDEXuppvnDJzQIu9" crossorigin="anonymous">    <link href="//cdn.datatables.net/1.13.6/css/jquery.dataTables.min.css" rel="stylesheet">
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-HwwvtgBNo3bZJJLYd8oVXjrBZt8cqVSpeBNS5n7C8IVInixGAoxmnlMuBnhbgrkm" crossorigin="anonymous"></script>    <style>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-HwwvtgBNo3bZJJLYd8oVXjrBZt8cqVSpeBNS5n7C8IVInixGAoxmnlMuBnhbgrkm" crossorigin="anonymous"></script>
     <style>
         .dataTables_length {
             width: auto;
@@ -110,39 +110,8 @@
                 </label>
             </div>
 
-
-            <script>
-    function exibirPreviewImagem(input) {
-    var imagemPreview = document.getElementById('imagem-preview');
-    var label = document.getElementById('image-label');
-    var textoSelecionar = label.querySelector('span');
-
-    if (input.files && input.files[0]) {
-        var reader = new FileReader();
-        reader.onload = function(e) {
-            imagemPreview.src = e.target.result;
-            imagemPreview.style.display = 'block';
-            textoSelecionar.style.display = 'none'; // Oculta o texto
-            label.style.border = 'none';
-            label.style.background = 'none';
-        };
-        reader.readAsDataURL(input.files[0]);
-    } else {
-        imagemPreview.src = '';
-        imagemPreview.style.display = 'none';
-        textoSelecionar.style.display = 'block'; // Exibe o texto
-        label.style.border = '2px dashed #ccc';
-        label.style.background = 'white';
-    }
-}
-
-
-</script>
-
-
-
-            <section class="right-input">
-            </section>
+    <section class="right-input">
+    </section>
 
         </div>
     </form>
@@ -250,6 +219,32 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.mask/1.14.16/jquery.mask.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.0.18/dist/sweetalert2.min.js"></script>
     <script src="//cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
+
+<script>
+    function exibirPreviewImagem(input) {
+    var imagemPreview = document.getElementById('imagem-preview');
+    var label = document.getElementById('image-label');
+    var textoSelecionar = label.querySelector('span');
+
+    if (input.files && input.files[0]) {
+        var reader = new FileReader();
+        reader.onload = function(e) {
+            imagemPreview.src = e.target.result;
+            imagemPreview.style.display = 'block';
+            textoSelecionar.style.display = 'none'; // Oculta o texto
+            label.style.border = 'none';
+            label.style.background = 'none';
+        };
+        reader.readAsDataURL(input.files[0]);
+    } else {
+        imagemPreview.src = '';
+        imagemPreview.style.display = 'none';
+        textoSelecionar.style.display = 'block'; // Exibe o texto
+        label.style.border = '2px dashed #ccc';
+        label.style.background = 'white';
+    }
+}
+</script>
     
     <!-- Modifique a função exibirModalExclusao para definir o atributo data-id -->
 <script>
@@ -295,204 +290,204 @@
     }
 </script>
 
-    <script>
-        $(document).ready(function () {
-            $('#tb_produtos').DataTable({
-                paging: true, // Habilita a paginação
-                language: {
-                    url: '//cdn.datatables.net/plug-ins/1.10.25/i18n/Portuguese-Brasil.json' // Configuração do idioma em Português (Brasil)
-                }
-            });
+<script>
+    $(document).ready(function () {
+        $('#tb_produtos').DataTable({
+            paging: true, // Habilita a paginação
+            language: {
+                url: '//cdn.datatables.net/plug-ins/1.10.25/i18n/Portuguese-Brasil.json' // Configuração do idioma em Português (Brasil)
+            }
         });
-    </script>
+    });
+</script>
     
-    <script>
-        // Função para abrir a modal de edição e preencher os campos
-        function abrirModalEdicao(id) {
-            // Fazer uma chamada AJAX para buscar os dados do produto pelo ID
-            $.ajax({
-                method: "GET",
-                url: '/TCC/QUERYS/get_produto.php?id=' + id,
-                success: function (retorno) {
-                    var produto = JSON.parse(retorno);
-                    if (produto) {
-                        // Preencher os campos da modal com os valores do produto
-                        $("#produto_id").val(produto.id);
-                        $("#edit_descricao").val(produto.descricao);
-                        $("#edit_nome").val(produto.nome);
-                        $("#edit_valor_fabrica").val(produto.valor_fabrica);
-                        $("#edit_valor_venda").val(produto.valor_venda);
-                        // Abrir a modal de edição
-                        $("#editarModal").modal("show");
-                    }
-                },
-                error: function (error) {
-                    console.error(error);
-                    // Tratar o erro aqui (por exemplo, mostrar uma mensagem de erro)
+<script>
+    // Função para abrir a modal de edição e preencher os campos
+    function abrirModalEdicao(id) {
+        // Fazer uma chamada AJAX para buscar os dados do produto pelo ID
+        $.ajax({
+            method: "GET",
+            url: '/TCC/QUERYS/get_produto.php?id=' + id,
+            success: function (retorno) {
+                var produto = JSON.parse(retorno);
+                if (produto) {
+                    // Preencher os campos da modal com os valores do produto
+                    $("#produto_id").val(produto.id);
+                    $("#edit_descricao").val(produto.descricao);
+                    $("#edit_nome").val(produto.nome);
+                    $("#edit_valor_fabrica").val(produto.valor_fabrica);
+                    $("#edit_valor_venda").val(produto.valor_venda);
+                    // Abrir a modal de edição
+                    $("#editarModal").modal("show");
                 }
-            });
+            },
+            error: function (error) {
+                console.error(error);
+                // Tratar o erro aqui (por exemplo, mostrar uma mensagem de erro)
+            }
+        });
+    }
+
+    // Função para salvar as alterações na modal de edição
+    function salvarEdicao() {
+        // Obter os valores dos campos da modal de edição
+        var id = $("#produto_id").val();
+        var descricao = $("#edit_descricao").val();
+        var nome = $("#edit_nome").val();
+        var valorFabrica = $("#edit_valor_fabrica").val();
+        var valorVenda = $("#edit_valor_venda").val();
+
+        // Criar um objeto com os dados a serem enviados
+        var dados = {
+            id: id,
+            descricao: descricao,
+            nome: nome,
+            valor_fabrica: valorFabrica,
+            valor_venda: valorVenda
+        };
+
+        // Realizar uma chamada AJAX para atualizar os dados do produto
+        $.ajax({
+            method: "POST",
+            url: '/TCC/QUERYS/update_produto.php',
+            data: dados,
+            success: function (retorno) {
+                var response = JSON.parse(retorno);
+                if (response.status === 'success') {
+                    // Produto atualizado com sucesso, faça algo aqui (por exemplo, recarregar a tabela)
+                    $("#editarModal").modal("hide"); // Fechar a modal
+                    // Atualizar a página após a atualização bem-sucedida
+                    location.reload();
+                } else {
+                    // Tratar o erro de atualização aqui (por exemplo, exibir uma mensagem de erro)
+                    console.error(response.message);
+                }
+            },
+            error: function (error) {
+                console.error(error);
+                // Tratar o erro aqui (por exemplo, mostrar uma mensagem de erro)
+            }
+        });
+    }
+</script>
+
+<script>
+    $(document).ready(function () {
+        // Máscara para o campo "Valor de produção"
+        $('#valorfab').mask('999999999.99', { reverse: true });
+
+        // Máscara para o campo "Preço"
+        $('#price').mask('999999999.99', { reverse: true });
+
+        // Função para validar e enviar o formulário
+        function validarEEnviar() {
+            var nomeProduto = $('#name').val();
+            var valorFabricacao = $('#valorfab').val();
+            var preco = $('#price').val();
+
+            // Validar se os campos obrigatórios estão preenchidos
+            if (nomeProduto === '' || valorFabricacao === '' || preco === '') {
+                // Bordas vermelhas nos campos vazios
+                if (nomeProduto === '') {
+                    $('#name').css('border', '1px solid red');
+                } else {
+                    $('#name').css('border', '1px solid #ccc');
+                }
+
+                if (valorFabricacao === '') {
+                    $('#valorfab').css('border', '1px solid red');
+                } else {
+                    $('#valorfab').css('border', '1px solid #ccc');
+                }
+
+                if (preco === '') {
+                    $('#price').css('border', '1px solid red');
+                } else {
+                    $('#price').css('border', '1px solid #ccc');
+                }
+
+                // Alerta usando SweetAlert
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Campos em vermelho!',
+                    text: 'Preencha os campos em vermelho.',
+                    confirmButtonColor: '#d33',
+                    confirmButtonText: 'Entendi'
+                });
+            } else {
+                // Se os campos estão preenchidos, envie o formulário
+                cadastra_prod();
+            }
         }
 
-        // Função para salvar as alterações na modal de edição
-        function salvarEdicao() {
-            // Obter os valores dos campos da modal de edição
-            var id = $("#produto_id").val();
-            var descricao = $("#edit_descricao").val();
-            var nome = $("#edit_nome").val();
-            var valorFabrica = $("#edit_valor_fabrica").val();
-            var valorVenda = $("#edit_valor_venda").val();
+        // Associar a função de validação e envio ao clique do botão "Pronto"
+        $('.btn-submit').on('click', function (e) {
+            e.preventDefault(); // Impede o envio padrão do formulário
+            validarEEnviar();
+        });
 
-            // Criar um objeto com os dados a serem enviados
+        // Função para cadastrar o produto
+        function cadastra_prod() {
+            // Obtenha os valores dos campos do formulário de produto
+            var nome = $("#name").val();
+            var valorFabrica = $("#valorfab").val();
+            var valorVenda = $("#price").val();
+            var descricao = $("#descricion").val();
+            
+            // Crie um objeto com os dados a serem enviados
             var dados = {
-                id: id,
-                descricao: descricao,
                 nome: nome,
                 valor_fabrica: valorFabrica,
-                valor_venda: valorVenda
+                valor_venda: valorVenda,
+                descricao: descricao
             };
-
-            // Realizar uma chamada AJAX para atualizar os dados do produto
+    
+            // Realize uma chamada AJAX para o arquivo cadastro_prod.php
             $.ajax({
                 method: "POST",
-                url: '/TCC/QUERYS/update_produto.php',
+                url: '/TCC/QUERYS/cadastro_prod.php',
                 data: dados,
                 success: function (retorno) {
                     var response = JSON.parse(retorno);
                     if (response.status === 'success') {
-                        // Produto atualizado com sucesso, faça algo aqui (por exemplo, recarregar a tabela)
-                        $("#editarModal").modal("hide"); // Fechar a modal
-                        // Atualizar a página após a atualização bem-sucedida
-                        location.reload();
+                        // Produto cadastrado com sucesso, faça algo aqui (por exemplo, redirecionar ou exibir uma mensagem de sucesso)
+                        Swal.fire({
+                            icon: 'success',
+                            title: 'Produto cadastrado com sucesso!',
+                            text: response.message,
+                            timer: 2000, // Redirecionar após 2 segundos
+                            timerProgressBar: true,
+                            didOpen: (toast) => {
+                                toast.addEventListener('mouseenter', Swal.stopTimer);
+                                toast.addEventListener('mouseleave', Swal.resumeTimer);
+                            }
+                        }).then(function() {
+                            // Atualizar a página após o Swal ser fechado
+                            location.reload();
+                        });
+
                     } else {
-                        // Tratar o erro de atualização aqui (por exemplo, exibir uma mensagem de erro)
-                        console.error(response.message);
+                        // Trate o erro de cadastro aqui (por exemplo, exibir uma mensagem de erro)
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Erro ao cadastrar o produto!',
+                            text: response.message
+                        });
                     }
                 },
                 error: function (error) {
-                    console.error(error);
-                    // Tratar o erro aqui (por exemplo, mostrar uma mensagem de erro)
+                    // Ação a ser tomada em caso de erro na requisição AJAX
+                    console.error(error); // Exiba o erro no console para fins de depuração
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Erro na requisição AJAX',
+                        text: 'Ocorreu um erro ao enviar a solicitação. Verifique a conexão ou tente novamente mais tarde.'
+                    });
                 }
             });
         }
+    });
 </script>
-
-    <script>
-        $(document).ready(function () {
-            // Máscara para o campo "Valor de produção"
-            $('#valorfab').mask('999999999.99', { reverse: true });
-    
-            // Máscara para o campo "Preço"
-            $('#price').mask('999999999.99', { reverse: true });
-    
-            // Função para validar e enviar o formulário
-            function validarEEnviar() {
-                var nomeProduto = $('#name').val();
-                var valorFabricacao = $('#valorfab').val();
-                var preco = $('#price').val();
-    
-                // Validar se os campos obrigatórios estão preenchidos
-                if (nomeProduto === '' || valorFabricacao === '' || preco === '') {
-                    // Bordas vermelhas nos campos vazios
-                    if (nomeProduto === '') {
-                        $('#name').css('border', '1px solid red');
-                    } else {
-                        $('#name').css('border', '1px solid #ccc');
-                    }
-    
-                    if (valorFabricacao === '') {
-                        $('#valorfab').css('border', '1px solid red');
-                    } else {
-                        $('#valorfab').css('border', '1px solid #ccc');
-                    }
-    
-                    if (preco === '') {
-                        $('#price').css('border', '1px solid red');
-                    } else {
-                        $('#price').css('border', '1px solid #ccc');
-                    }
-    
-                    // Alerta usando SweetAlert
-                    Swal.fire({
-                        icon: 'error',
-                        title: 'Campos em vermelho!',
-                        text: 'Preencha os campos em vermelho.',
-                        confirmButtonColor: '#d33',
-                        confirmButtonText: 'Entendi'
-                    });
-                } else {
-                    // Se os campos estão preenchidos, envie o formulário
-                    cadastra_prod();
-                }
-            }
-    
-            // Associar a função de validação e envio ao clique do botão "Pronto"
-            $('.btn-submit').on('click', function (e) {
-                e.preventDefault(); // Impede o envio padrão do formulário
-                validarEEnviar();
-            });
-    
-            // Função para cadastrar o produto
-            function cadastra_prod() {
-                // Obtenha os valores dos campos do formulário de produto
-                var nome = $("#name").val();
-                var valorFabrica = $("#valorfab").val();
-                var valorVenda = $("#price").val();
-                var descricao = $("#descricion").val();
-                
-                // Crie um objeto com os dados a serem enviados
-                var dados = {
-                    nome: nome,
-                    valor_fabrica: valorFabrica,
-                    valor_venda: valorVenda,
-                    descricao: descricao
-                };
-        
-                // Realize uma chamada AJAX para o arquivo cadastro_prod.php
-                $.ajax({
-                    method: "POST",
-                    url: '/TCC/QUERYS/cadastro_prod.php',
-                    data: dados,
-                    success: function (retorno) {
-                        var response = JSON.parse(retorno);
-                        if (response.status === 'success') {
-                            // Produto cadastrado com sucesso, faça algo aqui (por exemplo, redirecionar ou exibir uma mensagem de sucesso)
-                            Swal.fire({
-                                icon: 'success',
-                                title: 'Produto cadastrado com sucesso!',
-                                text: response.message,
-                                timer: 2000, // Redirecionar após 2 segundos
-                                timerProgressBar: true,
-                                didOpen: (toast) => {
-                                    toast.addEventListener('mouseenter', Swal.stopTimer);
-                                    toast.addEventListener('mouseleave', Swal.resumeTimer);
-                                }
-                            }).then(function() {
-                                // Atualizar a página após o Swal ser fechado
-                                location.reload();
-                            });
-
-                        } else {
-                            // Trate o erro de cadastro aqui (por exemplo, exibir uma mensagem de erro)
-                            Swal.fire({
-                                icon: 'error',
-                                title: 'Erro ao cadastrar o produto!',
-                                text: response.message
-                            });
-                        }
-                    },
-                    error: function (error) {
-                        // Ação a ser tomada em caso de erro na requisição AJAX
-                        console.error(error); // Exiba o erro no console para fins de depuração
-                        Swal.fire({
-                            icon: 'error',
-                            title: 'Erro na requisição AJAX',
-                            text: 'Ocorreu um erro ao enviar a solicitação. Verifique a conexão ou tente novamente mais tarde.'
-                        });
-                    }
-                });
-            }
-        });
-    </script>
     
 </body>
 </html>
