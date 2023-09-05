@@ -63,7 +63,7 @@
         </ul>
     </div>
 
-    <div class="card-cadastro" style="margin-top: 0px">
+    <div class="card-cadastro">
         <div class="left">
             <form id="form_cadastro_prod" name="form_cadastro_prod" method="POST">
                 <div>
@@ -102,9 +102,44 @@
         <div class="right">
 
             <h1>Adicionar produtos</h1>
-            <div class="image">
-
+            <div class="custom-file-upload">
+                <input type="file" id="image" name="image" accept="image/*" onchange="exibirPreviewImagem(this);">
+                <label for="image" id="image-label">
+                    <img id="imagem-preview" src="#" alt="Pré-visualização da imagem">
+                    <span>Selecione uma imagem</span>
+                </label>
             </div>
+
+
+            <script>
+    function exibirPreviewImagem(input) {
+    var imagemPreview = document.getElementById('imagem-preview');
+    var label = document.getElementById('image-label');
+    var textoSelecionar = label.querySelector('span');
+
+    if (input.files && input.files[0]) {
+        var reader = new FileReader();
+        reader.onload = function(e) {
+            imagemPreview.src = e.target.result;
+            imagemPreview.style.display = 'block';
+            textoSelecionar.style.display = 'none'; // Oculta o texto
+            label.style.border = 'none';
+            label.style.background = 'none';
+        };
+        reader.readAsDataURL(input.files[0]);
+    } else {
+        imagemPreview.src = '';
+        imagemPreview.style.display = 'none';
+        textoSelecionar.style.display = 'block'; // Exibe o texto
+        label.style.border = '2px dashed #ccc';
+        label.style.background = 'white';
+    }
+}
+
+
+</script>
+
+
 
             <section class="right-input">
             </section>

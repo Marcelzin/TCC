@@ -2,7 +2,7 @@
 
     $dbHost= 'Localhost';
     $dbUsername = 'root';
-    $dbPassword = '';
+    $dbPassword = 'viniciusgg2006';
     $dbName = 'PDV';
 
     // Estabelecer conexão
