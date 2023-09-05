@@ -97,6 +97,7 @@
                     <button class="btn-submit" onclick="cadastra_prod()">Pronto</button>
                 </div>
 
+
         </div>
 
         <div class="right">
@@ -108,6 +109,8 @@
                     <img id="imagem-preview" src="#" alt="Pré-visualização da imagem">
                     <span>Selecione uma imagem</span>
                 </label>
+
+
             </div>
 
 
@@ -145,10 +148,22 @@
             </section>
 
         </div>
+
+
     </form>
     </div>
     
 </div>
+
+    <!--Botão de filtragem-->
+
+    <div id="filter" name="filter">
+        <h4 class="filter-button" id="filter-button" name="filter-button" style="width: 30%; heigth: 10px; margin-left: 80px; cursor: pointer">Filtrar <svg id="filter-icon" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24"
+                        fill="none" stroke="black" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"
+                        class="feather feather-filter">
+                        <polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"></polygon>
+                    </svg></h4>
+    </div>
 
 <table id="tb_produtos" name="tb_produtos">
     <thead style="background-color: #0a2654; color: #FFF">
