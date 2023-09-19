@@ -1,22 +1,25 @@
 <?php
-    session_start(); // Iniciar a sessão
+session_start(); // Iniciar a sessão
 
-    include_once('config.php');
+include_once('config.php');
 
-    $response = array(); // Array para armazenar a resposta
+$response = array(); // Array para armazenar a resposta
 
-    if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-        $email = $_POST['email'];
-        $senha = $_POST['senha'];
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    $email = $_POST['email'];
+    $senha = $_POST['senha'];
 
-        // Consulta no banco de dados para verificar se o usuário existe e tem o nível de acesso adequado e a senha está correta
-        $query = "SELECT * FROM usuario WHERE email = '$email' AND nivel_acesso = 'Funcionario' AND senha = '$senha'";
-        $result = mysqli_query($conexao, $query);
+    // Consulta no banco de dados para verificar se o usuário existe e tem o nível de acesso adequado
+    $query = "SELECT * FROM usuario WHERE email = '$email' AND nivel_acesso = 'Funcionario'";
+    $result = mysqli_query($conexao, $query);
 
-        if (mysqli_num_rows($result) == 1) {
-            // Usuário encontrado, senha correta
-            $row = mysqli_fetch_assoc($result);
+    if (mysqli_num_rows($result) == 1) {
+        // Usuário encontrado com o nível de acesso adequado
+        $row = mysqli_fetch_assoc($result);
 
+        // Verificar se a senha fornecida corresponde à senha armazenada no banco de dados
+        if (password_verify($senha, $row['senha'])) {
+            // Senha correta
             // Armazenar os dados do usuário na sessão
             $_SESSION['usuario_id'] = $row['id'];
             $_SESSION['usuario_email'] = $row['email'];
@@ -25,16 +28,21 @@
             $response['status'] = 'success';
             $response['message'] = 'Login bem-sucedido! Redirecionando...';
         } else {
-            // Usuário não encontrado ou senha incorreta
+            // Senha incorreta
             $response['status'] = 'error';
-            $response['message'] = 'Email não cadastrado como funcionário ou senha incorreta.';
+            $response['message'] = 'Senha incorreta.';
         }
     } else {
-        // Método de requisição inválido (não é POST)
+        // Usuário não encontrado com o nível de acesso adequado
         $response['status'] = 'error';
-        $response['message'] = 'Método de requisição inválido.';
+        $response['message'] = 'Email não cadastrado como funcionário.';
     }
+} else {
+    // Método de requisição inválido (não é POST)
+    $response['status'] = 'error';
+    $response['message'] = 'Método de requisição inválido.';
+}
 
-    // Retorna a resposta em formato JSON
-    echo json_encode($response);
+// Retorna a resposta em formato JSON
+echo json_encode($response);
 ?>
