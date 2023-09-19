@@ -1,3 +1,11 @@
+<?php
+session_start();
+
+// Resto do seu código PHP
+include_once('config.php');
+// ...
+
+?>
 <!DOCTYPE html>
 <html lang="pt-br">
 
@@ -82,36 +90,49 @@
                 </div>
 
                 <div class="valor-type">
+
                     <div class="valor">
+
                         <label for="valorfab">Valor de produção</label>
                         <input type="text" placeholder="Valor de fabrica" id="valorfab">
+
                     </div>
                     <div class="valor">
+
                         <label for="price">Preço</label>
                         <input type="text" placeholder="Digite o preço aqui..." id="price" class="price">
                     </div>
-                </div>
 
+                </div>
                 <div class="buttons-submit">
-                    <button type="reset" onclick="limparInputFile()" class="reset"><ion-icon name="trash-outline" class="icon"></ion-icon>Limpar
-                </button>
+                    <button type="reset" class="reset"><ion-icon name="trash-outline" class="icon"></ion-icon>Limpar
+                    </button>
+
                     <button class="btn-submit" onclick="cadastra_prod()">Pronto</button>
                 </div>
+
+
         </div>
 
         <div class="right">
-            <h1>Adicionar produtos</h1>
-                <div class="custom-file-upload">
-                    <input type="file" id="image" name="image" accept="image/*" onchange="exibirPreviewImagem(this);">
-                    <label for="image" id="image-label">
-                        <img id="imagem-preview" src="#" alt="Pré-visualização da imagem">
-                        <span>Selecione uma imagem</span>
-                    </label>
-                </div>
 
-            <section class="right-input"></section>
+            <h1>Adicionar produtos</h1>
+            <div class="custom-file-upload">
+                <input type="file" id="image" name="image" accept="image/*" onchange="exibirPreviewImagem(this);">
+                <label for="image" id="image-label">
+                    <img id="imagem-preview" src="#" alt="Pré-visualização da imagem">
+                    <span>Selecione uma imagem</span>
+                </label>
+
 
             </div>
+
+            <section class="right-input">
+            </section>
+
+        </div>
+
+
         </form>
     </div>
 
@@ -120,30 +141,35 @@
     <!--Botão de filtragem-->
 
     <div id="filter" name="filter">
-        <h4 class="filter-button" id="filter-button" name="filter-button" style="width: 30%; heigth: 10px; margin-left: 80px; cursor: pointer">Filtrar
-            <svg id="filter-icon" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="black" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="feather feather-filter">
+        <h4 class="filter-button" id="filter-button" name="filter-button"
+            style="width: 30%; heigth: 10px; margin-left: 80px; cursor: pointer">Filtrar <svg id="filter-icon"
+                xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="black"
+                stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="feather feather-filter">
                 <polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"></polygon>
-            </svg>
-        </h4>
+            </svg></h4>
     </div>
 
     <table id="tb_produtos" name="tb_produtos">
-        <thead style="background-color: #0a2654; color: #FFF">
-            <tr>
-                <th>ID</th>
-                <th>Descrição do Produto</th>
-                <th>Nome do Produto</th>
-                <th>Valor de Produção</th>
-                <th>Preço</th>
-                <th>Excluir</th>
-                <th>Editar</th>
-            </tr>
-        </thead>
-        <tbody>
-            <?php
-            include_once('config.php');
+    <thead style="background-color: #0a2654; color: #FFF">
+        <tr>
+            <th>ID</th>
+            <th>Descrição do Produto</th>
+            <th>Nome do Produto</th>
+            <th>Valor de Produção</th>
+            <th>Preço</th>
+            <th>Imagem do Produto</th> <!-- Cabeçalho da coluna de imagem -->
+            <th>Excluir</th>
+            <th>Editar</th>
+        </tr>
+    </thead>
+    <tbody>
+        <?php
+        // Verifique se a variável de sessão comercio_id está definida antes de usar
+        if (isset($_SESSION['comercio_id'])) {
+            $comercio_id = $_SESSION['comercio_id'];
 
-            $sql = "SELECT * FROM produto";
+            // Consulta SQL para selecionar todos os dados da tabela "produto" para o comercio_id atual
+            $sql = "SELECT * FROM produto WHERE comercio_id = '$comercio_id'";
             $result = mysqli_query($conexao, $sql);
 
             if (mysqli_num_rows($result) > 0) {
@@ -154,18 +180,26 @@
                     echo "<td>" . $row["nome"] . "</td>";
                     echo "<td>R$" . $row["valor_fabrica"] . "</td>";
                     echo "<td>R$" . $row["valor_venda"] . "</td>";
+                    
+                    // Célula da imagem do produto
+                    echo '<td><img src="' . $row["imagem"] . '" alt="Imagem do Produto" width="5%"></td>';
+                    
                     echo '<td><ion-icon name="trash-outline" style="cursor: pointer;" onclick="exibirModalExclusao(' . $row["id"] . ')"></ion-icon></td>';
                     echo '<td><ion-icon name="pencil-outline" style="cursor: pointer;" onclick="abrirModalEdicao(' . $row["id"] . ')"></ion-icon></td>';
                     echo "</tr>";
                 }
             } else {
-                echo "<tr><td colspan='7'>Nenhum registro encontrado.</td></tr>";
+                echo "<tr><td colspan='8'>Nenhum registro encontrado.</td></tr>";
             }
 
             mysqli_close($conexao);
-            ?>
-        </tbody>
-    </table>
+        } else {
+            echo "A variável de sessão comercio_id não está definida.";
+        }
+        ?>
+    </tbody>
+</table>
+
     <div class="modal" id="editarModal" tabindex="-1" role="dialog" aria-labelledby="editarModalLabel"
         aria-hidden="true">
         <div class="modal-dialog" role="document">
@@ -231,13 +265,6 @@
     <script src="//cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
 
     <script>
-        function limparInputFile() {
-            const inputImage = document.getElementById('image');
-            inputImage.value = '';
-        }
-    </script>
-
-    <script>
         function exibirPreviewImagem(input) {
             var imagemPreview = document.getElementById('imagem-preview');
             var label = document.getElementById('image-label');
@@ -248,14 +275,15 @@
                 reader.onload = function (e) {
                     imagemPreview.src = e.target.result;
                     imagemPreview.style.display = 'block';
-                    textoSelecionar.style.display = 'none'; 
+                    textoSelecionar.style.display = 'none'; // Oculta o texto
+                    label.style.border = 'none';
                     label.style.background = 'none';
                 };
                 reader.readAsDataURL(input.files[0]);
             } else {
                 imagemPreview.src = '';
                 imagemPreview.style.display = 'none';
-                textoSelecionar.style.display = 'block';
+                textoSelecionar.style.display = 'block'; // Exibe o texto
                 label.style.border = '2px dashed #ccc';
                 label.style.background = 'white';
             }
@@ -297,10 +325,9 @@
 
     <script>
         $(document).ready(function () {
-            $('#tb_produtos').DataTable({
-                paging: true,
-                language: {
-                    url: '//cdn.datatables.net/plug-ins/1.10.25/i18n/Portuguese-Brasil.json' 
+            $('#tb_produto').DataTable({
+                "language": {
+                    "url": "//cdn.datatables.net/plug-ins/1.10.24/i18n/Portuguese.json"
                 }
             });
         });
@@ -411,22 +438,35 @@
             });
 
             function cadastra_prod() {
-
                 var nome = $("#name").val();
                 var valorFabrica = $("#valorfab").val();
                 var valorVenda = $("#price").val();
                 var descricao = $("#descricion").val();
+                var imagem = document.getElementById("image").files[0]; // Obtenha o arquivo de imagem
 
-                var dados = {
-                    nome: nome,
-                    valor_fabrica: valorFabrica,
-                    valor_venda: valorVenda,
-                    descricao: descricao
-                };
+                // Valide se uma imagem foi selecionada
+                if (!imagem) {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Erro ao cadastrar o produto!',
+                        text: 'Selecione uma imagem para o produto.'
+                    });
+                    return;
+                }
+
+                var dados = new FormData();
+                dados.append("nome", nome);
+                dados.append("valor_fabrica", valorFabrica);
+                dados.append("valor_venda", valorVenda);
+                dados.append("descricao", descricao);
+                dados.append("imagem", imagem);
+
                 $.ajax({
                     method: "POST",
                     url: '/TCC/QUERYS/cadastro_prod.php',
                     data: dados,
+                    contentType: false, // Não defina o tipo de conteúdo, deixe o jQuery cuidar disso
+                    processData: false, // Não processe os dados, deixe o jQuery cuidar disso
                     success: function (retorno) {
                         var response = JSON.parse(retorno);
                         if (response.status === 'success') {
@@ -462,6 +502,7 @@
                     }
                 });
             }
+
         });
     </script>
 
