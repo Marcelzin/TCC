@@ -60,8 +60,27 @@ include_once('config.php');
             </ul>
         </div>
 
+
+
+        <script>
+            const list = document.querySelectorAll('.list');
+            function activelink() {
+                list.forEach((item) =>
+                    item.classList.remove('active'));
+                this.classList.add('active');
+            }
+            list.forEach((item) =>
+                item.addEventListener('click', activeLink));
+        </script>
+
         <script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
         <script nomodule src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
+
+
+        <!-- <main class="main"> -->
+
+
+
 
         <div class="item-menu">
             <section class="search-bar">
@@ -84,7 +103,6 @@ include_once('config.php');
 
                     // Verifique se a consulta retornou resultados
                     if (mysqli_num_rows($result) > 0) {
-                        echo '<ul class="card-itens">'; // Abra uma lista não ordenada para os produtos
                         while ($row = mysqli_fetch_assoc($result)) {
                             echo '<li class="item">';
                             echo '<section id="left-side">';
@@ -98,19 +116,23 @@ include_once('config.php');
                             echo '</section>';
                             echo '<section id="right-side">';
                             echo '<div class="right-side-top">';
-                            echo '<div class="product-image" id="product-image" style="width: 90%; height: 80px; background-color: rgb(190, 190, 190); border-radius: 5px; justify-content: center; display: flex;">';
+                            echo '<div class="product-image" id="product-image" style="width: 90%;
+                            height: 80px;
+                            background-color: rgb(190, 190, 190);
+                            border-radius: 5px;
+                            justify-content: center;
+                            display: flex;">';
                             echo '<img src="' . $row["imagem"] . '" alt="Imagem do Produto" style="height: 80px; width: auto">';
                             echo '</div>';
                             echo '</div>';
                             echo '<div class="button-qnt">';
-                            echo '<span class="minus" data-produto-id="' . $row['id'] . '">-</span>';
-                            echo '<span class="num" data-quantidade="0" data-produto-id="' . $row['id'] . '">0</span>';
-                            echo '<span class="plus" data-produto-id="' . $row['id'] . '">+</span>';
+                            echo '<span class="minus">-</span>';
+                            echo '<span class="num">00</span>';
+                            echo '<span class="plus">+</span>';
                             echo '</div>';
                             echo '</section>';
                             echo '</li>';
                         }
-                        echo '</ul>'; // Feche a lista não ordenada
                     } else {
                         echo 'Nenhum produto encontrado para este comércio.';
                     }
@@ -119,8 +141,35 @@ include_once('config.php');
                     mysqli_close($conexao);
                 }
                 ?>
+
             </ul>
         </div>
+        <script>
+
+            const plus = document.querySelector(".plus"),
+                minus = document.querySelector(".minus"),
+                num = document.querySelector(".num");
+
+            let a = 0;
+
+            plus.addEventListener("click", () => {
+                a++;
+                a = (a < 10) ? "0" + a : a;
+                num.innerText = a;
+                console.log("a");
+            });
+
+            minus.addEventListener("click", () => {
+                if (a > 0) {
+                    a--;
+                    a = (a < 10) ? "0" + a : a;
+                    num.innerText = a;
+                }
+
+            });
+
+        </script>
+
 
         <div class="item-list">
             <span class="lista">Lista</span>
@@ -136,6 +185,10 @@ include_once('config.php');
                     <span class="final-price">R$30,00</span>
                 </div>
             </div>
+            <!-- <div class="item-list-final">
+                <span class="total-price">Total</span>
+                <span class="total-price">R$30,00</span>
+            </div> -->
             <div class="sale-summary">
                 <div id="total">
                     <h5>Total</h5>
@@ -188,35 +241,10 @@ include_once('config.php');
                         </svg>Finalizar</button>
                 </div>
             </div>
+
         </div>
     </div>
     </div>
-
-    <script>
-        // Função para aumentar a quantidade quando o botão "+" é clicado
-        document.querySelectorAll('.plus').forEach(function (button) {
-            button.addEventListener('click', function () {
-                var produtoId = this.getAttribute('data-produto-id');
-                var numElement = document.querySelector('.num[data-produto-id="' + produtoId + '"]');
-                var quantidadeAtual = parseInt(numElement.textContent);
-                numElement.textContent = quantidadeAtual + 1;
-            });
-        });
-
-        // Função para diminuir a quantidade quando o botão "-" é clicado
-        document.querySelectorAll('.minus').forEach(function (button) {
-            button.addEventListener('click', function () {
-                var produtoId = this.getAttribute('data-produto-id');
-                var numElement = document.querySelector('.num[data-produto-id="' + produtoId + '"]');
-                var quantidadeAtual = parseInt(numElement.textContent);
-
-                // Certifique-se de que a quantidade não seja menor que zero
-                if (quantidadeAtual > 0) {
-                    numElement.textContent = quantidadeAtual - 1;
-                }
-            });
-        });
-    </script>
 
 
 </body>
