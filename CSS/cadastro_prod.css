@@ -1,283 +1,277 @@
 * {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-    font-family: roboto, sans-serif;
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: roboto, sans-serif;
 }
 
 body {
-    display: flex;
-    min-height: 100vh;
-    background: #F2F2F2;
+  display: flex;
+  min-height: 100vh;
+  background: #f2f2f2;
 }
 
 .main {
-    width: 100vw;
-    height: 100vh;
-    display: flex;
-    justify-content: flex-start;
-    background-color: #F2F2F2;
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  justify-content: flex-start;
+  background-color: #f2f2f2;
 }
 
 .foto {
-    display: flex;
-    flex-direction: column;
-    width: 290px;
-    position: relative;
-    justify-content: flex-start;
-    align-items: center;
-    left: 40%;
-    margin: 0;
-    top: 15px;
-    font-size: 15px;
+  display: flex;
+  flex-direction: column;
+  width: 290px;
+  position: relative;
+  justify-content: flex-start;
+  align-items: center;
+  left: 40%;
+  margin: 0;
+  top: 15px;
+  font-size: 15px;
 }
-
 
 /*-------------------------------------------------------*/
 
 .card-cadastro {
-    width: 40rem;
-    height: 24rem;
-    position: relative;
-    margin-top: 10px;
-    left: 24%;
-    display: flex;
-    flex-direction: row-reverse;
-    justify-content: flex-start;
-    background-color: white;
-    border-radius: 20px;
-    border: 2px solid #c1bfbf;
-    border-radius: 10px;    
+  width: 40rem;
+  height: 24rem;
+  position: relative;
+  margin-top: 10px;
+  left: 24%;
+  display: flex;
+  flex-direction: row-reverse;
+  justify-content: flex-start;
+  background-color: white;
+  border-radius: 20px;
+  border: 2px solid #c1bfbf;
+  border-radius: 10px;
 }
 
 .left {
-    width: 50%;
+  width: 50%;
 }
 
 .left input {
-    width: 90%;
-    height: 50px;
-    border-style: solid;
-    border-width: 1.5px;
-    border-radius: 7px;
-    padding: 5px;
-    font-size: 12pt;
-    box-shadow: 0px 1px 1px #00000056;
-    outline: none;
-    box-sizing: border-box;
-    margin-bottom: 20px;
-    font-weight: bold;
+  width: 90%;
+  height: 50px;
+  border-style: solid;
+  border-width: 1.5px;
+  border-radius: 7px;
+  padding: 5px;
+  font-size: 12pt;
+  box-shadow: 0px 1px 1px #00000056;
+  outline: none;
+  box-sizing: border-box;
+  margin-bottom: 20px;
+  font-weight: bold;
 }
 
 .left input::placeholder {
-    font-size: 13px;
+  font-size: 13px;
 }
 
 .right {
-    display: flex;
+  display: flex;
 }
 
 .right input {
-    width: 80%;
-    height: 50px;
-    border-style: solid;
-    border-width: 1.5px;
-    border-radius: 7px;
-    padding: 5px;
-    font-size: 12pt;
-    box-shadow: 0px 1px 1px #00000056;
-    outline: none;
-    box-sizing: border-box;
-    margin-bottom: 20px;
-    font-weight: bold;
+  width: 80%;
+  height: 50px;
+  border-style: solid;
+  border-width: 1.5px;
+  border-radius: 7px;
+  padding: 5px;
+  font-size: 12pt;
+  box-shadow: 0px 1px 1px #00000056;
+  outline: none;
+  box-sizing: border-box;
+  margin-bottom: 20px;
+  font-weight: bold;
 }
 
 .right label {
-    margin-bottom: 3px;
-    font-size: 15px;
-    font-weight: bold;
-    height: 17px;
-    width: 100%;
+  margin-bottom: 3px;
+  font-size: 15px;
+  font-weight: bold;
+  height: 17px;
+  width: 100%;
 }
 
-
 .right-input {
-    display: flex;
-    margin-top: 0.5rem;
-    width: 75%;
-    align-items: flex-start;
-    flex-direction: column;
-    box-sizing: border-box;
+  display: flex;
+  margin-top: 0.5rem;
+  width: 75%;
+  align-items: flex-start;
+  flex-direction: column;
+  box-sizing: border-box;
 }
 
 .right-input input {
-    width: 100%;
-    padding: 5px;
+  width: 100%;
+  padding: 5px;
 }
 
 .right-input input::placeholder {
-    font-size: 13px;
+  font-size: 13px;
 }
 
 form {
-    margin-top: 2rem;
+  margin-top: 2rem;
 }
 
 .valor-type {
-    width: 100%;
-    height: 100%;
-    display: flex;
+  width: 100%;
+  height: 100%;
+  display: flex;
 }
 
 .valor {
-    display: flex;
-    flex-direction: column;
-    width: 100%;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
 }
 
 .valor-type input {
-    height: 50px;
-    border-style: solid;
-    border-width: 1.5px;
-    border-radius: 7px;
-    font-size: 12pt;
-    box-shadow: 0px 1px 1px #00000056;
-    outline: none;
-    box-sizing: border-box;
-    margin-bottom: 20px;
-    font-weight: bold;
+  height: 50px;
+  border-style: solid;
+  border-width: 1.5px;
+  border-radius: 7px;
+  font-size: 12pt;
+  box-shadow: 0px 1px 1px #00000056;
+  outline: none;
+  box-sizing: border-box;
+  margin-bottom: 20px;
+  font-weight: bold;
 }
 
 .left label {
-    margin-bottom: 3px;
-    font-size: 15px;
-    font-weight: bold;
-    height: 17px;
+  margin-bottom: 3px;
+  font-size: 15px;
+  font-weight: bold;
+  height: 17px;
 }
 
 .right {
-    width: 50%;
-    display: flex;
-    flex-direction: column;
-    justify-content: flex-start;
-    align-items: center;
+  width: 50%;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
 }
 
 .right h1 {
-    font-size: 18px;
-    margin-top: 10px;
+  font-size: 18px;
+  margin-top: 10px;
 }
 
 .btn-submit {
-    width: 40%;
-    height: 50px;
-    border-style: solid;
-    border-width: 1.5px;
-    border-radius: 15px;
-    font-size: 12pt;
-    box-shadow: 0px 3px 3px #00000056;
-    outline: none;
-    box-sizing: border-box;
-    background-color: #0a2654;
-    font-weight: 600;
-    color: #fff;
-    cursor: pointer;
+  width: 40%;
+  height: 50px;
+  border-style: solid;
+  border-width: 1.5px;
+  border-radius: 15px;
+  font-size: 12pt;
+  box-shadow: 0px 3px 3px #00000056;
+  outline: none;
+  box-sizing: border-box;
+  background-color: #0a2654;
+  font-weight: 600;
+  color: #fff;
+  cursor: pointer;
 }
 
 .reset {
-    width: 40%;
-    height: 50px;
-    border: none;
-    border-radius: 7px;
-    margin-right: 30px;
-    font-size: 12pt;
-    font-weight: 600;
-    background-color: white;
-    color: black;
-    outline: none;
-    box-sizing: border-box;
-    cursor: pointer;
-    align-items: center;
-    justify-content: center;
-    display: flex;
+  width: 40%;
+  height: 50px;
+  border: none;
+  border-radius: 7px;
+  margin-right: 30px;
+  font-size: 12pt;
+  font-weight: 600;
+  background-color: white;
+  color: black;
+  outline: none;
+  box-sizing: border-box;
+  cursor: pointer;
+  align-items: center;
+  justify-content: center;
+  display: flex;
 }
 
-.buttons-submit{
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    
+.buttons-submit {
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .icon {
-    height: 28px;
-    width: 28px;
-    margin-right: 15px;
-
+  height: 28px;
+  width: 28px;
+  margin-right: 15px;
 }
 
 .custom-file-upload {
-    position: relative;
-    overflow: hidden;
-    display: inline-block;
+  position: relative;
+  overflow: hidden;
+  display: inline-block;
 }
 
 .custom-file-upload input[type="file"] {
-    opacity: 0;
-    position: absolute;
-    top: 0;
-    right: 0;
-    bottom: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    cursor: pointer;
-    z-index: 2;
+  opacity: 0;
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  cursor: pointer;
+  z-index: 2;
 }
 
 .custom-file-upload label {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    width: 300px;
-    height: 300px;
-    border-radius: 10px;
-    border: 2px dashed #ccc;
-    cursor: pointer;
-    position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 300px;
+  height: 300px;
+  border-radius: 10px;
+  border: 2px dashed #ccc;
+  cursor: pointer;
+  position: relative;
 }
 
 .custom-file-upload label img {
-    max-width: 100%;
-    max-height: 100%;
-    display: none;
+  max-width: 100%;
+  max-height: 100%;
+  display: none;
 }
 
 .custom-file-upload label span {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    font-size: 16px;
-    color: #333;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 16px;
+  color: #333;
 }
 
 .custom-file-upload label:hover {
-    background-color: #f0f0f0;
+  background-color: #f0f0f0;
 }
 
 .custom-file-upload label:hover img {
-    display: block;
+  display: block;
 }
-
 
 #image {
-    width: 100%;
-    height: 100%;    
-
+  width: 100%;
+  height: 100%;
 }
 
-.dataTables_wrapper{
-    margin-left: 80px;
+.dataTables_wrapper {
+  margin-left: 80px;
 }

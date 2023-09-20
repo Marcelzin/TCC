@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="pt-br">
+
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -11,44 +12,47 @@
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11.0.18/dist/sweetalert2.min.css">
 </head>
+
 <body>
-<form id="form_login" name="form_login" method="POST">
-    <div class="main">
-        <div class="left">
-            <div class="card">
-                <div class="textfield">
-                
-                    <h1>Entre na sua <span>conta</span> <br> como <span>funcionario</span>!</h1>
-                    
+    <form id="form_login" name="form_login" method="POST">
+        <div class="main">
+            <div class="left">
+                <div class="card">
                     <div class="textfield">
-                        <label for="email">Email</label>
-                        <input type="text" placeholder="Digite seu Email..." id="email" name="email">
-                    </div>
 
-                    <div class="textfield">
-                        <label for="senha">Senha</label>
-                        <input type="password" placeholder="Digite sua senha..." id="senha" name="senha">
-                    </div>
+                        <h1>Entre na sua <span>conta</span> <br> como <span>funcionario</span>!</h1>
 
-                    <button type="button" class="btn" name="btn_login" id="btn_cadastrar" onclick="cadastraDoc()">Entrar</button>
-                    <a href="/TCC/index.html" class="link"><i class="fas fa-arrow-left"></i> Voltar</a>
+                        <div class="textfield">
+                            <label for="email">Email</label>
+                            <input type="text" placeholder="Digite seu Email..." id="email" name="email">
+                        </div>
+
+                        <div class="textfield">
+                            <label for="senha">Senha</label>
+                            <input type="password" placeholder="Digite sua senha..." id="senha" name="senha">
+                        </div>
+
+                        <button type="button" class="btn" name="btn_login" id="btn_cadastrar"
+                            onclick="cadastraDoc()">Entrar</button>
+                        <a href="/TCC/index.html" class="link"><i class="fas fa-arrow-left"></i> Voltar</a>
+                    </div>
                 </div>
             </div>
-        </div>
     </form>
-    <div class="right"> 
+    <div class="right">
         <img src="" class="img">
     </div>
     </div>
 
-    <script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"
+        integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.0.18/dist/sweetalert2.min.js"></script>
     <script>
         function cadastraDoc() {
             // Obtenha os valores dos campos de email e senha
             var email = $("#email").val();
             var senha = $("#senha").val();
-        
+
             // Verifique se os campos estão preenchidos
             if (email === "" || senha === "") {
                 Swal.fire({
@@ -58,10 +62,10 @@
                 });
                 return; // Impede o envio da requisição se os campos estiverem vazios
             }
-        
+
             // Se os campos estiverem preenchidos, prossiga com a requisição AJAX
             var formData = $("form[name='form_login']").serialize();
-        
+
             $.ajax({
                 method: "POST",
                 url: '/TCC/QUERYS/login_func.php',
@@ -102,6 +106,7 @@
                 }
             });
         }
-    </script>    
+    </script>
 </body>
+
 </html>
