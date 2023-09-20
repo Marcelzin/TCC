@@ -97,7 +97,7 @@ include_once('config.php');
                 </form>
 
             </div>
-            <h2>Tabela de Usuários</h2>
+            <h2 style="margin-top: 50px">Tabela de Usuários</h2>
             <table class="table" id="tabela_users">
                 <thead>
                     <tr>

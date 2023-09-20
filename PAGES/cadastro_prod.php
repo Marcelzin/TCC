@@ -77,7 +77,7 @@ include_once('config.php');
         </ul>
     </div>
 
-    <div class="card-cadastro">
+    <div class="card-cadastro" style="margin-bottom: 50px">
         <div class="left">
             <form id="form_cadastro_prod" name="form_cadastro_prod" method="POST">
                 <div>
