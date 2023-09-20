@@ -25,6 +25,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $_SESSION['usuario_email'] = $row['email'];
             $_SESSION['usuario_nivel_acesso'] = $row['nivel_acesso'];
 
+            // Armazenar o comercio_id na sessão
+            $_SESSION['comercio_id'] = $row['comercio_id'];
+
             $response['status'] = 'success';
             $response['message'] = 'Login bem-sucedido! Redirecionando...';
         } else {
