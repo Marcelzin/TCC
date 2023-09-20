@@ -49,7 +49,7 @@ include_once('config.php');
                 </a>
             </li>
             <li class="list">
-                <a href="/TCC/PAGES/vendas.html">
+                <a href="/TCC/PAGES/vendas.php">
                     <span class="icon"><ion-icon name="grid-outline"></ion-icon></span>
                     <span class="title">Menu</span>
                 </a>
@@ -61,7 +61,7 @@ include_once('config.php');
                 </a>
             </li>
             <li class="list">
-                <a href="/TCC/PAGES/funcionarios.html">
+                <a href="/TCC/PAGES/funcionarios.php">
                     <span class="icon"><ion-icon name="person-outline"></ion-icon></span>
                     <span class="title">funcionário</span>
                 </a>
@@ -140,65 +140,52 @@ include_once('config.php');
 
     <!--Botão de filtragem-->
 
-    <div id="filter" name="filter">
-        <h4 class="filter-button" id="filter-button" name="filter-button"
-            style="width: 30%; heigth: 10px; margin-left: 80px; cursor: pointer">Filtrar <svg id="filter-icon"
-                xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="black"
-                stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="feather feather-filter">
-                <polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"></polygon>
-            </svg></h4>
-    </div>
+    <table id="tb_produtos" name="tb_produtos" class="table table-striped table-bordered">
+        <thead class="bg-primary text-white">
+            <tr>
+                <th>Imagem do Produto</th>
+                <th>Nome do Produto</th>
+                <th>Descrição do Produto</th>
+                <th>Valor de Produção</th>
+                <th>Preço</th>
+                <th>Excluir</th>
+                <th>Editar</th>
+            </tr>
+        </thead>
+        <tbody>
+            <?php
+            // Verifique se a variável de sessão comercio_id está definida antes de usar
+            if (isset($_SESSION['comercio_id'])) {
+                $comercio_id = $_SESSION['comercio_id'];
 
-    <table id="tb_produtos" name="tb_produtos">
-    <thead style="background-color: #0a2654; color: #FFF">
-        <tr>
-            <th>ID</th>
-            <th>Descrição do Produto</th>
-            <th>Nome do Produto</th>
-            <th>Valor de Produção</th>
-            <th>Preço</th>
-            <th>Imagem do Produto</th> <!-- Cabeçalho da coluna de imagem -->
-            <th>Excluir</th>
-            <th>Editar</th>
-        </tr>
-    </thead>
-    <tbody>
-        <?php
-        // Verifique se a variável de sessão comercio_id está definida antes de usar
-        if (isset($_SESSION['comercio_id'])) {
-            $comercio_id = $_SESSION['comercio_id'];
+                // Consulta SQL para selecionar todos os dados da tabela "produto" para o comercio_id atual
+                $sql = "SELECT * FROM produto WHERE comercio_id = '$comercio_id'";
+                $result = mysqli_query($conexao, $sql);
 
-            // Consulta SQL para selecionar todos os dados da tabela "produto" para o comercio_id atual
-            $sql = "SELECT * FROM produto WHERE comercio_id = '$comercio_id'";
-            $result = mysqli_query($conexao, $sql);
-
-            if (mysqli_num_rows($result) > 0) {
-                while ($row = mysqli_fetch_assoc($result)) {
-                    echo "<tr>";
-                    echo "<td>" . $row["id"] . "</td>";
-                    echo "<td>" . $row["descricao"] . "</td>";
-                    echo "<td>" . $row["nome"] . "</td>";
-                    echo "<td>R$" . $row["valor_fabrica"] . "</td>";
-                    echo "<td>R$" . $row["valor_venda"] . "</td>";
-                    
-                    // Célula da imagem do produto
-                    echo '<td><img src="' . $row["imagem"] . '" alt="Imagem do Produto" width="5%"></td>';
-                    
-                    echo '<td><ion-icon name="trash-outline" style="cursor: pointer;" onclick="exibirModalExclusao(' . $row["id"] . ')"></ion-icon></td>';
-                    echo '<td><ion-icon name="pencil-outline" style="cursor: pointer;" onclick="abrirModalEdicao(' . $row["id"] . ')"></ion-icon></td>';
-                    echo "</tr>";
+                if (mysqli_num_rows($result) > 0) {
+                    while ($row = mysqli_fetch_assoc($result)) {
+                        echo "<tr>";
+                        /* echo "<td>" . $row["id"] . "</td>"; */
+                        echo '<td><img src="' . $row["imagem"] . '" alt="Imagem do Produto" width="5%"></td>';
+                        echo "<td>" . $row["nome"] . "</td>";
+                        echo "<td>" . $row["descricao"] . "</td>";
+                        echo "<td>R$" . $row["valor_fabrica"] . "</td>";
+                        echo "<td>R$" . $row["valor_venda"] . "</td>";
+                        echo '<td><ion-icon name="trash-outline" style="cursor: pointer;" onclick="exibirModalExclusao(' . $row["id"] . ')"></ion-icon></td>';
+                        echo '<td><ion-icon name="pencil-outline" style="cursor: pointer;" onclick="abrirModalEdicao(' . $row["id"] . ')"></ion-icon></td>';
+                        echo "</tr>";
+                    }
+                } else {
+                    echo "<tr><td colspan='8'>Nenhum registro encontrado.</td></tr>";
                 }
-            } else {
-                echo "<tr><td colspan='8'>Nenhum registro encontrado.</td></tr>";
-            }
 
-            mysqli_close($conexao);
-        } else {
-            echo "A variável de sessão comercio_id não está definida.";
-        }
-        ?>
-    </tbody>
-</table>
+                mysqli_close($conexao);
+            } else {
+                echo "A variável de sessão comercio_id não está definida.";
+            }
+            ?>
+        </tbody>
+    </table>
 
     <div class="modal" id="editarModal" tabindex="-1" role="dialog" aria-labelledby="editarModalLabel"
         aria-hidden="true">
@@ -325,7 +312,7 @@ include_once('config.php');
 
     <script>
         $(document).ready(function () {
-            $('#tb_produto').DataTable({
+            $('#tb_produtos').DataTable({
                 "language": {
                     "url": "//cdn.datatables.net/plug-ins/1.10.24/i18n/Portuguese.json"
                 }

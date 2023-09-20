@@ -1,3 +1,11 @@
+<?php
+session_start();
+
+// Resto do seu código PHP
+include_once('config.php');
+// ...
+
+?>
 <!DOCTYPE html>
 <html lang="pt-br">
 
@@ -36,7 +44,7 @@
                     </a>
                 </li>
                 <li class="list">
-                    <a href="/TCC/PAGES/funcionarios.html">
+                    <a href="/TCC/PAGES/funcionarios.php">
                         <span class="icon"><ion-icon name="person-outline"></ion-icon></span>
                         <span class="title">funcionário</span>
                     </a>
@@ -84,144 +92,56 @@
                 </svg>
             </section>
             <ul class="card-itens">
-                <li class="item">
-                    <section id="left-side">
-                        <div class="top">
-                            <h1>Nome do produto</h1>
-                            <h2>descrição do produto</h2>
-                        </div>
-                        <div class="product-price-bottom">
-                            <span id="product-price">R$7,50</span>
-                        </div>
-                    </section>
-                    <section id="right-side">
-                        <div class="right-side-top">
-                            <div class="product-image" id="product-image">
+                <?php
+                // Verifique se a variável de sessão comercio_id está definida antes de usar
+                if (isset($_SESSION['comercio_id'])) {
+                    $comercio_id = $_SESSION['comercio_id'];
 
-                            </div>
-                        </div>
-                        <div class="button-qnt">
-                            <span class="minus">-</span>
-                            <span class="num">00</span>
-                            <span class="plus">+</span>
-                        </div>
-                    </section>
-                </li>
-                <li class="item">
-                    <section id="left-side">
-                        <div class="top">
-                            <h1>Nome do produto</h1>
-                            <h2>descrição do produto</h2>
-                        </div>
-                        <div class="product-price-bottom">
-                            <span id="product-price">R$7,50</span>
-                        </div>
-                    </section>
-                    <section id="right-side">
-                        <div class="right-side-top">
-                            <div class="product-image" id="product-image">
+                    // Consulta SQL para selecionar todos os dados da tabela "produto" para o comercio_id atual
+                    $sql = "SELECT * FROM produto WHERE comercio_id = '$comercio_id'";
+                    $result = mysqli_query($conexao, $sql);
 
-                            </div>
-                        </div>
-                        <div class="button-qnt">
-                            <span class="minus">-</span>
-                            <span class="num">00</span>
-                            <span class="plus">+</span>
-                        </div>
-                    </section>
-                </li>
-                <li class="item">
-                    <section id="left-side">
-                        <div class="top">
-                            <h1>Nome do produto</h1>
-                            <h2>descrição do produto</h2>
-                        </div>
-                        <div class="product-price-bottom">
-                            <span id="product-price">R$7,50</span>
-                        </div>
-                    </section>
-                    <section id="right-side">
-                        <div class="right-side-top">
-                            <div class="product-image" id="product-image">
+                    // Verifique se a consulta retornou resultados
+                    if (mysqli_num_rows($result) > 0) {
+                        while ($row = mysqli_fetch_assoc($result)) {
+                            echo '<li class="item">';
+                            echo '<section id="left-side">';
+                            echo '<div class="top">';
+                            echo '<h1>' . $row['nome'] . '</h1>'; // Exemplo: exibe o nome do produto
+                            echo '<h2>' . $row['descricao'] . '</h2>'; // Exemplo: exibe a descrição do produto
+                            echo '</div>';
+                            echo '<div class="product-price-bottom">';
+                            echo '<span id="product-price">R$' . $row['valor_venda'] . '</span>'; // Exemplo: exibe o preço do produto
+                            echo '</div>';
+                            echo '</section>';
+                            echo '<section id="right-side">';
+                            echo '<div class="right-side-top">';
+                            echo '<div class="product-image" id="product-image" style="width: 90%;
+                            height: 80px;
+                            background-color: rgb(190, 190, 190);
+                            border-radius: 5px;
+                            justify-content: center;
+                            display: flex;">';
+                            echo '<img src="' . $row["imagem"] . '" alt="Imagem do Produto" style="height: 80px; width: auto">';
+                            echo '</div>';
+                            echo '</div>';
+                            echo '<div class="button-qnt">';
+                            echo '<span class="minus">-</span>';
+                            echo '<span class="num">00</span>';
+                            echo '<span class="plus">+</span>';
+                            echo '</div>';
+                            echo '</section>';
+                            echo '</li>';
+                        }
+                    } else {
+                        echo 'Nenhum produto encontrado para este comércio.';
+                    }
 
-                            </div>
-                        </div>
-                        <div class="button-qnt">
-                            <span class="minus">-</span>
-                            <span class="num">00</span>
-                            <span class="plus">+</span>
-                        </div>
-                    </section>
-                </li>
-                <li class="item">
-                    <section id="left-side">
-                        <div class="top">
-                            <h1>Nome do produto</h1>
-                            <h2>descrição do produto</h2>
-                        </div>
-                        <div class="product-price-bottom">
-                            <span id="product-price">R$7,50</span>
-                        </div>
-                    </section>
-                    <section id="right-side">
-                        <div class="right-side-top">
-                            <div class="product-image" id="product-image">
+                    // Lembre-se de fechar a conexão com o banco de dados quando terminar
+                    mysqli_close($conexao);
+                }
+                ?>
 
-                            </div>
-                        </div>
-                        <div class="button-qnt">
-                            <span class="minus">-</span>
-                            <span class="num">00</span>
-                            <span class="plus">+</span>
-                        </div>
-                    </section>
-                </li>
-                <li class="item">
-                    <section id="left-side">
-                        <div class="top">
-                            <h1>Nome do produto</h1>
-                            <h2>descrição do produto</h2>
-                        </div>
-                        <div class="product-price-bottom">
-                            <span id="product-price">R$7,50</span>
-                        </div>
-                    </section>
-                    <section id="right-side">
-                        <div class="right-side-top">
-                            <div class="product-image" id="product-image">
-
-                            </div>
-                        </div>
-                        <div class="button-qnt">
-                            <span class="minus">-</span>
-                            <span class="num">00</span>
-                            <span class="plus">+</span>
-                        </div>
-                    </section>
-                </li>
-                <li class="item">
-                    <section id="left-side">
-                        <div class="top">
-                            <h1>Nome do produto</h1>
-                            <h2>descrição do produto</h2>
-                        </div>
-                        <div class="product-price-bottom">
-                            <span id="product-price">R$7,50</span>
-                        </div>
-                    </section>
-                    <section id="right-side">
-                        <div class="right-side-top">
-                            <div class="product-image" id="product-image">
-
-                            </div>
-                        </div>
-                        <div class="button-qnt">
-                            <span class="minus">-</span>
-                            <span class="num">00</span>
-                            <span class="plus">+</span>
-                        </div>
-                    </section>
-                </li>
             </ul>
         </div>
         <script>
