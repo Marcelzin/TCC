@@ -220,8 +220,8 @@ body {
 }
 
 .item-list-final-image {
-  width: 23%;
-  height: 80%;
+  width: 80px;
+  height: 70px;
   background-color: #2e3559;
   border-radius: 15px;
 }
