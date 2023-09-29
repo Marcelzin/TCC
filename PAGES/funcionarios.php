@@ -67,33 +67,33 @@ include_once('config.php');
 
 
 
-        <div class="container">
+        <div class="container" style="margin-left:90px; height: 100vh">
 
-            <div class="container mt-5">
+            <div class="container mt-5"  style="display: flex; flex-direction: column;">
                 <h2>Cadastro de Usuário</h2>
-                <form id="cadastroUsuarioForm">
+                <form id="cadastroUsuarioForm" style="display: flex; flex-direction: column">
                     <div class="row mb-3">
                         <div class="col-md-3">
-                            <label for="nome" class="form-label">Nome</label>
-                            <input type="text" class="form-control" id="nome" name="nome" required>
+                            <label for="nome" class="form-label" style="font-weight: bold;">Nome</label>
+                            <input type="text" class="form-control" id="nome" name="nome" required style="height: 40px; border: solid 1.5px;">
                         </div>
                         <div class="col-md-3">
-                            <label for="email" class="form-label">Email</label>
-                            <input type="email" class="form-control" id="email" name="email" required>
+                            <label for="email" class="form-label" style="font-weight: bold;">Email</label>
+                            <input type="email" class="form-control" id="email" name="email" required style="height: 40px; border: solid 1.5px;">
                         </div>
                         <div class="col-md-3">
-                            <label for="senha" class="form-label">Senha</label>
-                            <input type="password" class="form-control" id="senha" name="senha" required>
+                            <label for="senha" class="form-label" style="font-weight: bold;">Senha</label>
+                            <input type="password" class="form-control" id="senha" name="senha" required style="height: 40px; border: solid 1.5px;">
                         </div>
                         <div class="col-md-3">
-                            <label for="nivelAcesso" class="form-label">Nível de Acesso</label>
-                            <select class="form-select" id="nivelAcesso" name="nivel_acesso" required>
+                            <label for="nivelAcesso" class="form-label" style="font-weight: bold;">Nível de Acesso</label>
+                            <select class="form-select" id="nivelAcesso" name="nivel_acesso" required style="height: 40px; border: solid 1.5px;">
                                 <option value="Funcionário">Funcionário</option>
                                 <option value="Proprietário">Proprietário</option>
                             </select>
                         </div>
                     </div>
-                    <button class="btn btn-primary btn-submit">Cadastrar</button>
+                    <button class="btn btn-primary btn-submit" style="width: 130px; height: 45px; border: solid; border-radius: 25px; background-color: #2e3559;">Cadastrar</button>
                 </form>
 
             </div>

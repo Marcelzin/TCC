@@ -140,7 +140,7 @@ include_once('config.php');
 
     <!--Botão de filtragem-->
 
-    <table id="tb_produtos" name="tb_produtos" class="table table-striped table-bordered">
+    <table id="tb_produtos" name="tb_produtos" class="table table-striped table-bordered" style="margin-left: 80px; width: 93vw">
         <thead class="bg-primary text-white">
             <tr>
                 <th>Imagem do Produto</th>
