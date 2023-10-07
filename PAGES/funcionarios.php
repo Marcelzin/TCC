@@ -14,8 +14,6 @@ include_once('config.php');
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>funcionarios</title>
-    <link rel="stylesheet" href="/TCC/CSS/funcionarios.css">
-    <link rel="stylesheet" href="/TCC/CSS/menu.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700&display=swap" rel="stylesheet">
@@ -28,80 +26,67 @@ include_once('config.php');
 
 <body>
     <main>
-        <div class="navigation">
-            <ul>
-                <li class="list">
-                    <a href="/TCC/PAGES/home.html">
-                        <span class="icon"><ion-icon name="home-outline"></ion-icon></span>
-                        <span class="title">Início</span>
-                    </a>
-                </li>
-                <li class="list">
-                    <a href="/TCC/PAGES/vendas.php">
-                        <span class="icon"><ion-icon name="grid-outline"></ion-icon></span>
-                        <span class="title">Menu</span>
-                    </a>
-                </li>
-                <li class="list">
-                    <a href="/TCC/PAGES/cadastro_prod.php">
-                        <span class="icon"><ion-icon name="pricetag-outline"></ion-icon></span>
-                        <span class="title">Cadastro</span>
-                    </a>
-                </li>
-                <li class="list active">
-                    <a href="/TCC/PAGES/funcionarios.php">
-                        <span class="icon"><ion-icon name="person-outline"></ion-icon></span>
-                        <span class="title">funcionário</span>
-                    </a>
-                </li>
-                <div class="out">
-                    <li class="list-out">
-                        <a href="/TCC/index.html">
-                            <span class="icon"><ion-icon name="log-out-outline"></ion-icon></span>
-                            <span class="title">sair</span>
-                        </a>
-                    </li>
+        <nav class="navbar navbar-expand-lg navbar-light" style="background-color: #2e3559 !important;">
+            <div class="container-fluid">
+                <a class="navbar-brand" href="/TCC/PAGES/home.html">
+                    <img src="/TCC/STATIC/PDV-HERMES.png" alt="Logo" width="60" height="auto">
+                </a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarNav">
+                    <ul class="navbar-nav">
+                        <li class="nav-item">
+                            <a class="nav-link" style="color: #fff !important;" href="/TCC/PAGES/vendas.php">Menu</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" style="color: #fff !important;" href="/TCC/PAGES/cadastro_prod.php">Cadastro</a>
+                        </li>
+                        <li class="nav-item active">
+                            <a class="nav-link" style="color: #fff !important;" href="/TCC/PAGES/funcionarios.php">Funcionário</a>
+                        </li>
+                    </ul>
                 </div>
-            </ul>
+            <div>
+                <a class="nav-link" style="color: #fff !important;" href="/TCC/index.html">Sair</a>
+            </div>
         </div>
+    </nav>
 
 
-
-        <div class="container" style="margin-left:90px; height: 100vh">
-
-            <div class="container mt-5"  style="display: flex; flex-direction: column;">
+        <div class="container" style="margin-left: 90px; height: 100vh">
+            <div class="container mt-5">
                 <h2>Cadastro de Usuário</h2>
-                <form id="cadastroUsuarioForm" style="display: flex; flex-direction: column">
+                <form id="cadastroUsuarioForm">
                     <div class="row mb-3">
                         <div class="col-md-3">
-                            <label for="nome" class="form-label" style="font-weight: bold;">Nome</label>
-                            <input type="text" class="form-control" id="nome" name="nome" required style="height: 40px; border: solid 1.5px;">
+                            <label for="nome" class="form-label font-weight-bold">Nome</label>
+                            <input type="text" class="form-control" id="nome" name="nome" required>
                         </div>
                         <div class="col-md-3">
-                            <label for="email" class="form-label" style="font-weight: bold;">Email</label>
-                            <input type="email" class="form-control" id="email" name="email" required style="height: 40px; border: solid 1.5px;">
+                            <label for="email" class="form-label font-weight-bold">Email</label>
+                            <input type="email" class="form-control" id="email" name="email" required>
                         </div>
                         <div class="col-md-3">
-                            <label for="senha" class="form-label" style="font-weight: bold;">Senha</label>
-                            <input type="password" class="form-control" id="senha" name="senha" required style="height: 40px; border: solid 1.5px;">
+                            <label for="senha" class="form-label font-weight-bold">Senha</label>
+                            <input type="password" class="form-control" id="senha" name="senha" required>
                         </div>
                         <div class="col-md-3">
-                            <label for="nivelAcesso" class="form-label" style="font-weight: bold;">Nível de Acesso</label>
-                            <select class="form-select" id="nivelAcesso" name="nivel_acesso" required style="height: 40px; border: solid 1.5px;">
+                            <label for="nivelAcesso" class="form-label font-weight-bold">Nível de Acesso</label>
+                            <select class="form-select" id="nivelAcesso" name="nivel_acesso" required>
                                 <option value="Funcionário">Funcionário</option>
                                 <option value="Proprietário">Proprietário</option>
                             </select>
                         </div>
                     </div>
-                    <button class="btn btn-primary btn-submit" style="width: 130px; height: 45px; border: solid; border-radius: 25px; background-color: #2e3559;">Cadastrar</button>
+                    <button class="btn btn-primary btn-submit" style="width: 130px; height: 45px; border-radius: 25px; background-color: #2e3559;">Cadastrar</button>
                 </form>
-
             </div>
+            
             <h2 style="margin-top: 50px">Tabela de Usuários</h2>
             <table class="table" id="tabela_users">
                 <thead>
                     <tr>
-                        <!-- <th>ID</th> -->
                         <th>Nome</th>
                         <th>Email</th>
                         <th>Nível de Acesso</th>
@@ -142,11 +127,12 @@ include_once('config.php');
                 </tbody>
             </table>
         </div>
+    </main>
 
-        <div class="modal" id="excluirModal" tabindex="-1" role="dialog" aria-labelledby="excluirModalLabel"
-            aria-hidden="true">
-            <div class="modal-dialog" role="document">
-                <div class="modal-content">
+    <!-- Modal para Excluir -->
+    <div class="modal" id="excluirModal" tabindex="-1" role="dialog" aria-labelledby="excluirModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
                     <div class="modal-header">
                         <h5 class="modal-title" id="excluirModalLabel">Confirmar Exclusão</h5>
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Fechar"></button>
@@ -162,8 +148,7 @@ include_once('config.php');
             </div>
         </div>
 
-        <div class="modal" id="editarModal" tabindex="-1" role="dialog" aria-labelledby="editarModalLabel"
-            aria-hidden="true">
+        <div class="modal" id="editarModal" tabindex="-1" role="dialog" aria-labelledby="editarModalLabel" aria-hidden="true">
             <div class="modal-dialog" role="document">
                 <div class="modal-content">
                     <div class="modal-header">

@@ -26,56 +26,37 @@ include_once('config.php');
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-HwwvtgBNo3bZJJLYd8oVXjrBZt8cqVSpeBNS5n7C8IVInixGAoxmnlMuBnhbgrkm"
         crossorigin="anonymous"></script>
-    <style>
-        .dataTables_length {
-            width: auto;
-            position: absolute;
-        }
-
-        #tb_produtos_filter {
-            float: right;
-        }
-    </style>
+    
 </head>
 
 <body style="flex-direction: column">
 
-    <div class="navigation">
-        <ul>
-            <li class="list">
-                <a href="/TCC/PAGES/home.html">
-                    <span class="icon"><ion-icon name="home-outline"></ion-icon></span>
-                    <span class="title">Início</span>
+<nav class="navbar navbar-expand-lg navbar-light" style="background-color: #2e3559 !important;">
+            <div class="container-fluid">
+                <a class="navbar-brand" href="/TCC/PAGES/home.html">
+                    <img src="/TCC/STATIC/PDV-HERMES.png" alt="Logo" width="60" height="auto">
                 </a>
-            </li>
-            <li class="list">
-                <a href="/TCC/PAGES/vendas.php">
-                    <span class="icon"><ion-icon name="grid-outline"></ion-icon></span>
-                    <span class="title">Menu</span>
-                </a>
-            </li>
-            <li class="list active">
-                <a href="/TCC/PAGES/cadastro_prod.php">
-                    <span class="icon"><ion-icon name="pricetag-outline"></ion-icon></span>
-                    <span class="title">Cadastro</span>
-                </a>
-            </li>
-            <li class="list">
-                <a href="/TCC/PAGES/funcionarios.php">
-                    <span class="icon"><ion-icon name="person-outline"></ion-icon></span>
-                    <span class="title">funcionário</span>
-                </a>
-            </li>
-            <div class="out">
-                <li class="list-out">
-                    <a href="/TCC/index.html">
-                        <span class="icon"><ion-icon name="log-out-outline"></ion-icon></span>
-                        <span class="title">sair</span>
-                    </a>
-                </li>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarNav">
+                    <ul class="navbar-nav">
+                        <li class="nav-item">
+                            <a class="nav-link" style="color: #fff !important;" href="/TCC/PAGES/vendas.php">Menu</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" style="color: #fff !important;" href="/TCC/PAGES/cadastro_prod.php">Cadastro</a>
+                        </li>
+                        <li class="nav-item active">
+                            <a class="nav-link" style="color: #fff !important;" href="/TCC/PAGES/funcionarios.php">Funcionário</a>
+                        </li>
+                    </ul>
+                </div>
+            <div>
+                <a class="nav-link" style="color: #fff !important;" href="/TCC/index.html">Sair</a>
             </div>
-        </ul>
-    </div>
+        </div>
+    </nav>
 
     <div class="card-cadastro" style="margin-bottom: 50px">
         <div class="left">
@@ -140,7 +121,7 @@ include_once('config.php');
 
     <!--Botão de filtragem-->
 
-    <table id="tb_produtos" name="tb_produtos" class="table table-striped table-bordered" style="margin-left: 80px; width: 93vw">
+    <table id="tb_produtos" name="tb_produtos" class="table table-striped table-bordered">
         <thead class="bg-primary text-white">
             <tr>
                 <th>Imagem do Produto</th>
