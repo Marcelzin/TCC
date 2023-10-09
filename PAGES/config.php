@@ -3,7 +3,7 @@
 $dbHost = 'Localhost';
 $dbUsername = 'root';
 $dbPassword = '';
-$dbName = 'PDV';
+$dbName = 'pdvher45_PDV';
 
 // Estabelecer conexão
 

@@ -1,0 +1,107 @@
+.navigation {
+  position: fixed;
+  display: flex;
+  justify-content: flex-start;
+  height: 100vh;
+  background: #0a2654;
+  width: 70px;
+  box-shadow: 10px 0 0 #011029;
+  border-left: 10px solid #0a2654;
+  overflow-x: hidden;
+  transition: 0.5s;
+  z-index: 1;
+}
+
+.navigation:hover {
+  width: 185px;
+}
+
+.navigation ul {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  padding-left: 3px;
+  padding-top: 40px;
+}
+
+.navigation ul li {
+  position: relative;
+  list-style: none;
+  width: 100%;
+  border-top-left-radius: 20px;
+  border-bottom-left-radius: 20px;
+}
+
+.navigation ul li a {
+  position: relative;
+  display: flex;
+  width: 100%;
+  text-decoration: none;
+  color: #fff;
+}
+
+.navigation ul li a .icon {
+  position: relative;
+  display: block;
+  min-width: 60px;
+  height: 60px;
+  text-align: center;
+  line-height: 70px;
+}
+
+.navigation ul li a .icon ion-icon {
+  position: relative;
+  font-size: 1.5rem;
+  z-index: 1;
+}
+
+.navigation ul li a .title {
+  position: relative;
+  display: block;
+  padding-left: 10px;
+  height: 60px;
+  line-height: 60px;
+  white-space: unset;
+  z-index: 1;
+}
+
+.navigation ul li.active {
+  background: #011029;
+}
+
+.navigation ul li.active a::before {
+  content: "";
+  position: absolute;
+  top: -30px;
+  right: 0;
+  width: 30px;
+  height: 30px;
+  background: #0a2654;
+  border-radius: 50%;
+  box-shadow: 15px 15px 0 #011029;
+}
+
+.navigation ul li.active a::after {
+  content: "";
+  position: absolute;
+  bottom: -30px;
+  right: 0;
+  width: 30px;
+  height: 30px;
+  background: #0a2654;
+  border-radius: 50%;
+  box-shadow: 15px -15px 0 #011029;
+}
+
+.out {
+  position: absolute;
+  bottom: 2rem;
+}
+
+@media screen and (min-width: 1920px) {
+  .navigation:hover {
+    width: 200px;
+  }
+}
