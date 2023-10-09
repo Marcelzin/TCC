@@ -40,8 +40,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
 
     // Modificar a consulta SQL para incluir o comercio_id e o caminho da imagem
-    $query = "INSERT INTO produto (comercio_id, nome, valor_fabrica, valor_venda, descricao, imagem) 
-              VALUES ('$comercio_id', '$nome', '$valorFabrica', '$valorVenda', '$descricao', '$imagemPath')";
+    $query = "INSERT INTO produto (comercio_id, nome, valor_fabrica, valor_venda, descricao, imagem, status) 
+              VALUES ('$comercio_id', '$nome', '$valorFabrica', '$valorVenda', '$descricao', '$imagemPath', 'Ativo')";
 
     if (mysqli_query($conexao, $query)) {
         // Cadastro bem-sucedido

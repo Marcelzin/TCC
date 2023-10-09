@@ -32,7 +32,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
 
     // Inserção segura usando declaração preparada
-    $stmt = mysqli_prepare($conexao, "INSERT INTO usuario (nome, email, senha, nivel_acesso, comercio_id) VALUES (?, ?, ?, ?, ?)");
+    $stmt = mysqli_prepare($conexao, "INSERT INTO usuario (nome, email, senha, nivel_acesso, comercio_id, status) VALUES (?, ?, ?, ?, ?, 'Ativo')");
     mysqli_stmt_bind_param($stmt, "ssssi", $nome, $email, $senha_hash, $nivel_acesso, $comercio_id);
 
     if (mysqli_stmt_execute($stmt)) {

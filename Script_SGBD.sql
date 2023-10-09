@@ -36,6 +36,7 @@ CREATE TABLE
         senha VARCHAR(100),
         nivel_acesso VARCHAR(50),
         comercio_id INT,
+        status VARCHAR(255),
         FOREIGN KEY (comercio_id) REFERENCES comercio (id)
     );
 
@@ -54,6 +55,7 @@ CREATE TABLE
         descricao VARCHAR(150),
         imagem VARCHAR(255),
         comercio_id INT,
+        status VARCHAR(255),
         FOREIGN KEY (comercio_id) REFERENCES comercio (id)
     );
 
@@ -83,104 +85,7 @@ CREATE TABLE
         FOREIGN KEY (comercio_id) REFERENCES comercio (id)
     );
 
--- Inserções na tabela 'comercio'
-INSERT INTO
-    comercio (nome, cpf_cnpj)
-VALUES
-    ('Minha Loja 1', '123.456.789-00'),
-    ('Loja do Bairro', '987.654.321-00'),
-    ('Comércio de Roupas', '456.789.123-00');
-
--- Inserções na tabela 'usuario' com diferentes níveis de acesso
-INSERT INTO
-    usuario (nome, email, senha, nivel_acesso, comercio_id)
-VALUES
-    (
-        'Proprietário 1',
-        'proprietario1@email.com',
-        'senha123',
-        'Proprietário',
-        1
-    ),
-    (
-        'Funcionário 1',
-        'funcionario1@email.com',
-        'senha456',
-        'Funcionário',
-        1
-    ),
-    (
-        'Funcionário 2',
-        'funcionario2@email.com',
-        'senha789',
-        'Funcionário',
-        2
-    );
-
--- Inserções na tabela 'forma_pagamento'
-INSERT INTO
-    forma_pagamento (tipo)
-VALUES
-    ('Cartão de Crédito'),
-    ('Dinheiro'),
-    ('Débito');
-
--- Inserções na tabela 'produto'
-INSERT INTO
-    produto (
-        nome,
-        valor_fabrica,
-        valor_venda,
-        descricao,
-        comercio_id
-    )
-VALUES
-    (
-        'Camiseta Branca',
-        10.00,
-        20.00,
-        'Camiseta de algodão branca',
-        1
-    ),
-    (
-        'Calça Jeans',
-        25.00,
-        50.00,
-        'Calça jeans azul',
-        1
-    ),
-    (
-        'Tênis Esportivo',
-        30.00,
-        70.00,
-        'Tênis esportivo preto',
-        2
-    );
-
--- Inserções na tabela 'pedido'
-INSERT INTO
-    pedido (
-        data_pedido,
-        valor_total,
-        lucro_obtido,
-        responsavel_id,
-        pagamento_id,
-        comercio_id
-    )
-VALUES
-    ('2023-09-05 10:00:00', 100.00, 30.00, 1, 1, 1),
-    ('2023-09-06 15:30:00', 75.00, 20.00, 2, 2, 1),
-    ('2023-09-07 09:45:00', 120.00, 40.00, 1, 3, 2);
-
--- Inserções na tabela 'itens_pedido'
-INSERT INTO
-    itens_pedido (produto_id, quantidade, pedido_id, comercio_id)
-VALUES
-    (1, 2, 1, 1),
-    (2, 1, 1, 1),
-    (3, 3, 2, 1);
-
 SELECT
     *
 FROM
-    pdvher45_PDV.usuario;
+    pdvher45_PDV.comercio;

@@ -9,9 +9,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $nome = $_POST['nome'];
     $email = $_POST['email'];
     $nivelAcesso = $_POST['nivel_acesso'];
+    $status = $_POST['status'];
 
     // Consulta SQL para atualizar os dados do funcionário
-    $sql = "UPDATE usuario SET nome = '$nome', email = '$email', nivel_acesso = '$nivelAcesso' WHERE id = $id";
+    $sql = "UPDATE usuario SET nome = '$nome', email = '$email', nivel_acesso = '$nivelAcesso', status = '$status' WHERE id = $id";
 
     if (mysqli_query($conexao, $sql)) {
         // A atualização foi bem-sucedida

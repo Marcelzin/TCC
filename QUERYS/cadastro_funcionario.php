@@ -17,7 +17,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $senha_hash = password_hash($senha, PASSWORD_DEFAULT);
 
     // Usando declarações preparadas para evitar injeção de SQL
-    $query = "INSERT INTO usuario (nome, email, senha, nivel_acesso, comercio_id) VALUES (?, ?, ?, ?, ?)";
+    $query = "INSERT INTO usuario (nome, email, senha, nivel_acesso, comercio_id, status) VALUES (?, ?, ?, ?, ?, 'Ativo')";
     $stmt = mysqli_prepare($conexao, $query);
 
     if ($stmt) {

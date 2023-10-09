@@ -10,9 +10,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $nome = $_POST['nome'];
     $valorFabrica = $_POST['valor_fabrica'];
     $valorVenda = $_POST['valor_venda'];
+    $status = $_POST['status'];
 
     // Consulta SQL para atualizar os dados do produto
-    $sql = "UPDATE produto SET descricao = '$descricao', nome = '$nome', valor_fabrica = '$valorFabrica', valor_venda = '$valorVenda' WHERE id = $id";
+    $sql = "UPDATE produto SET descricao = '$descricao', nome = '$nome', valor_fabrica = '$valorFabrica', valor_venda = '$valorVenda', status = '$status' WHERE id = $id";
 
     if (mysqli_query($conexao, $sql)) {
         // A atualização foi bem-sucedida

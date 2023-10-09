@@ -105,7 +105,8 @@ include_once('config.php');
                         <th>Nome</th>
                         <th>Email</th>
                         <th>Nível de Acesso</th>
-                        <th>Excluir</th>
+                        <th>Status</th>
+                        <th>Inativar</th>
                         <th>Editar</th>
                     </tr>
                 </thead>
@@ -114,24 +115,25 @@ include_once('config.php');
                     // Verifique se a variável de sessão comercio_id está definida antes de usar
                     if (isset($_SESSION['comercio_id'])) {
                         $comercio_id = $_SESSION['comercio_id'];
+                        $usuario_id = $_SESSION['usuario_id']; // Adicione esta linha para obter o ID do usuário da sessão
 
-                        // Consulta SQL para selecionar todos os dados da tabela "produto" para o comercio_id atual
-                        $sql = "SELECT * FROM usuario WHERE comercio_id = '$comercio_id'";
+                        // Consulta SQL para selecionar todos os dados da tabela "usuario" para o comercio_id atual
+                        $sql = "SELECT * FROM usuario WHERE comercio_id = '$comercio_id' AND id <> '$usuario_id'"; // Use o ID do usuário da sessão
                         $result = mysqli_query($conexao, $sql);
 
                         if (mysqli_num_rows($result) > 0) {
                             while ($row = mysqli_fetch_assoc($result)) {
                                 echo "<tr>";
-                                /* echo "<td>" . $row["id"] . "</td>"; */
                                 echo "<td>" . $row["nome"] . "</td>";
                                 echo "<td>" . $row["email"] . "</td>";
                                 echo "<td>" . $row["nivel_acesso"] . "</td>";
-                                echo '<td><ion-icon name="trash-outline" style="cursor: pointer;" onclick="exibirModalExclusao(' . $row["id"] . ')"></ion-icon></td>';
+                                echo "<td>" . $row["status"] . "</td>";
+                                echo '<td><ion-icon name="ban-outline" style="cursor: pointer;" onclick="exibirModalExclusao(' . $row["id"] . ')"></ion-icon></td>';
                                 echo '<td><ion-icon name="pencil-outline" style="cursor: pointer;" onclick="abrirModalEdicao(' . $row["id"] . ')"></ion-icon></td>';
                                 echo "</tr>";
                             }
                         } else {
-                            echo "<tr><td colspan='8'>Nenhum registro encontrado.</td></tr>";
+                            echo "<tr><td colspan='6'>Nenhum registro encontrado.</td></tr>";
                         }
 
                         mysqli_close($conexao);
@@ -140,6 +142,7 @@ include_once('config.php');
                     }
                     ?>
                 </tbody>
+
             </table>
         </div>
 
@@ -148,15 +151,15 @@ include_once('config.php');
             <div class="modal-dialog" role="document">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h5 class="modal-title" id="excluirModalLabel">Confirmar Exclusão</h5>
+                        <h5 class="modal-title" id="excluirModalLabel">Confirmar Inativação</h5>
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Fechar"></button>
                     </div>
                     <div class="modal-body">
-                        Tem certeza de que deseja excluir este registro?
+                        Tem certeza de que deseja inativar este registro?
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-                        <button type="button" class="btn btn-danger" onclick="excluirRegistro()">Excluir</button>
+                        <button type="button" class="btn btn-danger" onclick="excluirRegistro()">Inativar</button>
                     </div>
                 </div>
             </div>
@@ -186,6 +189,13 @@ include_once('config.php');
                                 <select class="form-select" id="edit_nivel_acesso">
                                     <option value="Funcionário">Funcionário</option>
                                     <option value="Proprietário">Proprietário</option>
+                                </select>
+                            </div>
+                            <div class="mb-3">
+                                <label for="edit_status" class="form-label">Status</label>
+                                <select class="form-select" id="edit_status">
+                                    <option value="Ativo">Ativo</option>
+                                    <option value="Inativo">Inativo</option>
                                 </select>
                             </div>
                         </form>
@@ -253,6 +263,7 @@ include_once('config.php');
                             $("#edit_nome").val(funcionario.nome);
                             $("#edit_email").val(funcionario.email);
                             $("#edit_nivel_acesso").val(funcionario.nivel_acesso);
+                            $("#edit_status").val(funcionario.status);
                             $("#editarModal").modal("show");
                         }
                     },
@@ -267,12 +278,14 @@ include_once('config.php');
                 var nome = $("#edit_nome").val();
                 var email = $("#edit_email").val();
                 var nivelAcesso = $("#edit_nivel_acesso").val();
+                var status = $("#edit_status").val();
 
                 var dados = {
                     id: id,
                     nome: nome,
                     email: email,
-                    nivel_acesso: nivelAcesso
+                    nivel_acesso: nivelAcesso,
+                    status: status
                 };
 
                 $.ajax({

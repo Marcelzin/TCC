@@ -7,7 +7,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $senha = $_POST['senha'];
     $nivel_acesso = 'Funcionario';
 
-    $query = "INSERT INTO usuario (nome, email, senha, nivel_acesso) VALUES ('$nome', '$email', '$senha', '$nivel_acesso')";
+    $query = "INSERT INTO usuario (nome, email, senha, nivel_acesso, status) VALUES ('$nome', '$email', '$senha', '$nivel_acesso', 'Ativo')";
     $result = mysqli_query($conexao, $query);
 
     if ($result) {

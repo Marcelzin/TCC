@@ -20,7 +20,8 @@ if (isset($_GET['id'])) {
                 'id' => $row['id'],
                 'nome' => $row['nome'],
                 'email' => $row['email'],
-                'nivel_acesso' => $row['nivel_acesso']
+                'nivel_acesso' => $row['nivel_acesso'],
+                'status' => $row['status']
             );
 
             // Converta o array em formato JSON e retorne como resposta

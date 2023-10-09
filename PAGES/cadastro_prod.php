@@ -143,12 +143,12 @@ include_once('config.php');
     <table id="tb_produtos" name="tb_produtos" class="table table-striped table-bordered" style="margin-left: 80px; width: 93vw">
         <thead class="bg-primary text-white">
             <tr>
-                <th>Imagem do Produto</th>
                 <th>Nome do Produto</th>
                 <th>Descrição do Produto</th>
                 <th>Valor de Produção</th>
                 <th>Preço</th>
-                <th>Excluir</th>
+                <th>Status</th>
+                <th>Inativar</th>
                 <th>Editar</th>
             </tr>
         </thead>
@@ -159,19 +159,19 @@ include_once('config.php');
                 $comercio_id = $_SESSION['comercio_id'];
 
                 // Consulta SQL para selecionar todos os dados da tabela "produto" para o comercio_id atual
-                $sql = "SELECT * FROM produto WHERE comercio_id = '$comercio_id'";
+                $sql = "SELECT * FROM pdvher45_PDV.produto WHERE comercio_id = '$comercio_id' ORDER BY status ASC";
                 $result = mysqli_query($conexao, $sql);
 
                 if (mysqli_num_rows($result) > 0) {
                     while ($row = mysqli_fetch_assoc($result)) {
                         echo "<tr>";
                         /* echo "<td>" . $row["id"] . "</td>"; */
-                        echo '<td><img src="' . $row["imagem"] . '" alt="Imagem do Produto" width="5%"></td>';
                         echo "<td>" . $row["nome"] . "</td>";
                         echo "<td>" . $row["descricao"] . "</td>";
                         echo "<td>R$" . $row["valor_fabrica"] . "</td>";
                         echo "<td>R$" . $row["valor_venda"] . "</td>";
-                        echo '<td><ion-icon name="trash-outline" style="cursor: pointer;" onclick="exibirModalExclusao(' . $row["id"] . ')"></ion-icon></td>';
+                        echo "<td>" . $row["status"] . "</td>";
+                        echo '<td><ion-icon name="ban-outline" style="cursor: pointer;" onclick="exibirModalExclusao(' . $row["id"] . ')"></ion-icon></td>';
                         echo '<td><ion-icon name="pencil-outline" style="cursor: pointer;" onclick="abrirModalEdicao(' . $row["id"] . ')"></ion-icon></td>';
                         echo "</tr>";
                     }
@@ -214,6 +214,14 @@ include_once('config.php');
                             <label for="edit_valor_venda" class="form-label">Preço</label>
                             <input type="text" class="form-control" id="edit_valor_venda">
                         </div>
+                        <div class="mb-3">
+                            <label for="edit_status" class="form-label">Status</label>
+                            <select class="form-control" id="edit_status">
+                                <option value="Ativo">Ativo</option>
+                                <option value="Inativo">Inativo</option>
+                            </select>
+                        </div>
+
                     </form>
                 </div>
                 <div class="modal-footer">
@@ -230,15 +238,15 @@ include_once('config.php');
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="excluirModalLabel">Confirmar Exclusão</h5>
+                    <h5 class="modal-title" id="excluirModalLabel">Confirmar Inativação</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Fechar"></button>
                 </div>
                 <div class="modal-body">
-                    Tem certeza de que deseja excluir este registro?
+                    Tem certeza de que deseja inativar este registro?
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-                    <button type="button" class="btn btn-danger" onclick="excluirRegistro()">Excluir</button>
+                    <button type="button" class="btn btn-danger" onclick="excluirRegistro()">Inativar</button>
                 </div>
             </div>
         </div>
@@ -333,6 +341,7 @@ include_once('config.php');
                         $("#edit_nome").val(produto.nome);
                         $("#edit_valor_fabrica").val(produto.valor_fabrica);
                         $("#edit_valor_venda").val(produto.valor_venda);
+                        $("#edit_status").val(produto.status);
                         $("#editarModal").modal("show");
                     }
                 },
@@ -348,13 +357,15 @@ include_once('config.php');
             var nome = $("#edit_nome").val();
             var valorFabrica = $("#edit_valor_fabrica").val();
             var valorVenda = $("#edit_valor_venda").val();
+            var status = $("#edit_status").val();
 
             var dados = {
                 id: id,
                 descricao: descricao,
                 nome: nome,
                 valor_fabrica: valorFabrica,
-                valor_venda: valorVenda
+                valor_venda: valorVenda,
+                status: status
             };
 
             $.ajax({
