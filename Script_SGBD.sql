@@ -1,13 +1,13 @@
-/* INTEGRANTES - PDV Hermes - INF3GM
+/* INTEGRANTES - pdvher45_PDV Hermes - INF3GM
 Gustavo da Silva Ferreira - 5
 Kauê Hugo Almeida Cavalcanti - 12
 Marcel Pereira dos Santos - 14
 Ricardo Gabriel de Souza Lopes - 22
 Vinicius Santos Rocha - 31
  */
-CREATE DATABASE IF NOT EXISTS PDV;
+CREATE DATABASE IF NOT EXISTS pdvher45_PDV;
 
-USE PDV;
+USE pdvher45_PDV;
 
 DROP TABLE IF EXISTS itens_pedido;
 
@@ -183,4 +183,4 @@ VALUES
 SELECT
     *
 FROM
-    pdv.usuario;
+    pdvher45_PDV.usuario;

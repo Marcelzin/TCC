@@ -1,17 +1,17 @@
 <?php
 
 $dbHost = 'Localhost';
-$dbUsername = 'root';
-$dbPassword = '';
-$dbName = 'PDV';
+$dbUsername = 'pdvher45_adm';
+$dbPassword = '_GdUl%iVv%+Y';
+$dbName = 'pdvher45_PDV';
 
-// Estabelecer conexão
+// Estabelecer conex達o
 $conexao = new mysqli($dbHost, $dbUsername, $dbPassword, $dbName);
 
-/* // Verificar conexão
+/* // Verificar conex達o
 if($conexao->connect_errno) {
     echo "Erro";
 }   else    {
-    echo "Conexão efetuada com sucesso!";
+    echo "Conex達o efetuada com sucesso!";
 } */
 ?>
