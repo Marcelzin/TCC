@@ -30,6 +30,9 @@ include_once('config.php');
         .dataTables_wrapper {
             margin-left: 0px !important;
         }
+        ::-webkit-scrollbar {
+            width: 0px;
+        }
     </style>
 </head>
 
