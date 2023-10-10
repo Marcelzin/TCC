@@ -1,11 +1,31 @@
 <?php
 session_start();
 
-// Resto do seu código PHP
-include_once('config.php');
-// ...
+if (isset($_SESSION['comercio_id']) && isset($_SESSION['usuario_id'])) {
+    include_once('config.php');
 
+    // Consulta SQL para buscar o nível de acesso do usuário com base no 'usuario_id'
+    $usuario_id = $_SESSION['usuario_id'];
+    $sql = "SELECT nivel_acesso FROM usuario WHERE ID = '$usuario_id'";
+    $result = mysqli_query($conexao, $sql);
+
+    if ($result) {
+        $row = mysqli_fetch_assoc($result);
+        $nivel_acesso = $row['nivel_acesso'];
+    } else {
+        // Se houver um erro na consulta, você pode lidar com ele aqui
+        echo "Erro na consulta: " . mysqli_error($conexao);
+        exit();
+    }
+} else {
+    echo '<script type="text/javascript">
+            alert("Acesso Negado. Você precisa efetuar login novamente.");
+            window.location.href = "../index.html"; // Redirecione imediatamente
+          </script>';
+    exit();
+}
 ?>
+
 <!DOCTYPE html>
 <html lang="pt-br">
 
@@ -34,40 +54,41 @@ include_once('config.php');
 
 <body>
     <main>
-    <nav class="navbar navbar-expand-lg navbar-light" style="background-color: #2e3559 !important;">
-        <div class="container-fluid">
-            <a class="navbar-brand" href="/TCC/PAGES/home.html">
-                <img src="/TCC/STATIC/PDV-HERMES4.png" alt="Logo" width="60" height="auto">
-            </a>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
-                aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="collapse navbar-collapse" id="navbarNav">
-                <ul class="navbar-nav">
-                    <li class="nav-item">
-                        <a class="nav-link" style="color: #fff !important;"
-                            href="/TCC/PAGES/home.html">HOME</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" style="color: #fff !important;" href="/TCC/PAGES/vendas.php">VENDAS</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" style="color: #fff !important;"
-                            href="/TCC/PAGES/cadastro_prod.php">PRODUTOS</a>
-                    </li>
-                    <li class="nav-item active">
-                        <a class="nav-link" style="color: #fff !important; font-weight: 600;"
-                            href="/TCC/PAGES/funcionarios.php">USUÁRIOS</a>
-                    </li>
-                </ul>
+        <nav class="navbar navbar-expand-lg navbar-light" style="background-color: #2e3559 !important;">
+            <div class="container-fluid">
+                <a class="navbar-brand" href="/TCC/PAGES/home.php">
+                    <img src="/TCC/STATIC/PDV-HERMES4.png" alt="Logo" width="60" height="auto">
+                </a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+                    aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarNav">
+                    <ul class="navbar-nav">
+                        <li class="nav-item">
+                            <a class="nav-link" style="color: #fff !important;" href="/TCC/PAGES/home.php">HOME</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" style="color: #fff !important;" href="/TCC/PAGES/vendas.php">VENDAS</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" style="color: #fff !important; font-weight: 600;"
+                                href="/TCC/PAGES/cadastro_prod.php">PRODUTOS</a>
+                        </li>
+                        <?php if ($nivel_acesso === 'Proprietário') { ?>
+                            <li class="nav-item active">
+                                <a class="nav-link" style="color: #fff !important;"
+                                    href="/TCC/PAGES/funcionarios.php">USUÁRIOS</a>
+                            </li>
+                        <?php } ?>
+                    </ul>
+                </div>
+                <div>
+                    <a class="nav-link" style="color: #fff !important; cursor: pointer" onclick="logoff()"><ion-icon
+                            name="exit-outline"></ion-icon></a>
+                </div>
             </div>
-            <div>
-                <a class="nav-link" style="color: #fff !important;" onclick="logoff()"><ion-icon
-                        name="exit-outline"></ion-icon></a>
-            </div>
-        </div>
-    </nav>
+        </nav>
 
         <div class="container">
 
@@ -514,7 +535,33 @@ include_once('config.php');
             }
         </script>
 
+        <script>
+            // Função para realizar o logoff
+            function logoff() {
+                $.ajax({
+                    method: "POST",
+                    url: '/TCC/QUERYS/logout.php',
+                    success: function (response) {
+                        // Exibir um alerta SweetAlert2 quando o logoff for bem-sucedido
+                        Swal.fire({
+                            icon: 'success', // Ícone de sucesso
+                            title: 'Usuário deslogado com sucesso',
+                            showConfirmButton: false, // Oculta o botão de confirmação
+                            timer: 1500 // Fecha automaticamente após 1,5 segundos
+                        });
 
+                        // Redirecionar o usuário para a página de login ou fazer outras ações após o logoff
+                        setTimeout(function () {
+                            window.location.href = '/TCC/index.html'; // Altere para a URL correta da página de login
+                        }, 1500);
+                    },
+                    error: function (error) {
+                        console.error(error);
+                        // Lidar com erros, se necessário
+                    }
+                });
+            }
+        </script>
     </main>
 
 </body>

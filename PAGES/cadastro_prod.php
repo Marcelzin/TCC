@@ -1,11 +1,34 @@
 <?php
 session_start();
 
-// Resto do seu código PHP
-include_once('config.php');
-// ...
+if (isset($_SESSION['comercio_id']) && isset($_SESSION['usuario_id'])) {
+  include_once('config.php');
 
+  // Inicialize a variável $nivel_acesso com um valor padrão
+  $nivel_acesso = '';
+
+  // Consulta SQL para buscar o nível de acesso do usuário com base no 'usuario_id'
+  $usuario_id = $_SESSION['usuario_id'];
+  $sql = "SELECT nivel_acesso FROM usuario WHERE ID = '$usuario_id'";
+  $result = mysqli_query($conexao, $sql);
+
+  if ($result) {
+    $row = mysqli_fetch_assoc($result);
+    $nivel_acesso = $row['nivel_acesso'];
+  } else {
+    // Se houver um erro na consulta, você pode lidar com ele aqui
+    echo "Erro na consulta: " . mysqli_error($conexao);
+    exit();
+  }
+} else {
+  echo '<script type="text/javascript">
+            alert("Acesso Negado. Você precisa efetuar login novamente.");
+            window.location.href = "../index.html"; // Redirecione imediatamente
+          </script>';
+  exit();
+}
 ?>
+
 <!DOCTYPE html>
 <html lang="pt-br">
 
@@ -39,39 +62,40 @@ include_once('config.php');
 
 <body style="flex-direction: column">
 
-    <nav class="navbar navbar-expand-lg navbar-light" style="background-color: #2e3559 !important;">
-        <div class="container-fluid">
-            <a class="navbar-brand" href="/TCC/PAGES/home.html">
-                <img src="/TCC/STATIC/PDV-HERMES4.png" alt="Logo" width="60" height="auto">
-            </a>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
-                aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="collapse navbar-collapse" id="navbarNav">
-                <ul class="navbar-nav">
-                    <li class="nav-item">
-                        <a class="nav-link" style="color: #fff !important;" href="/TCC/PAGES/home.html">HOME</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" style="color: #fff !important;" href="/TCC/PAGES/vendas.php">VENDAS</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" style="color: #fff !important; font-weight: 600;"
-                            href="/TCC/PAGES/cadastro_prod.php">PRODUTOS</a>
-                    </li>
-                    <li class="nav-item active">
-                        <a class="nav-link" style="color: #fff !important;"
-                            href="/TCC/PAGES/funcionarios.php">USUÁRIOS</a>
-                    </li>
-                </ul>
-            </div>
-            <div>
-                <a class="nav-link" style="color: #fff !important;" onclick="logoff()"><ion-icon
-                        name="exit-outline"></ion-icon></a>
-            </div>
-        </div>
-    </nav>
+<nav class="navbar navbar-expand-lg navbar-light" style="background-color: #2e3559 !important;">
+    <div class="container-fluid">
+      <a class="navbar-brand" href="/TCC/PAGES/home.php">
+        <img src="/TCC/STATIC/PDV-HERMES4.png" alt="Logo" width="60" height="auto">
+      </a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+        aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav">
+          <li class="nav-item">
+            <a class="nav-link" style="color: #fff !important;" href="/TCC/PAGES/home.php">HOME</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" style="color: #fff !important;" href="/TCC/PAGES/vendas.php">VENDAS</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" style="color: #fff !important; font-weight: 600;"
+              href="/TCC/PAGES/cadastro_prod.php">PRODUTOS</a>
+          </li>
+          <?php if ($nivel_acesso === 'Proprietário') { ?>
+            <li class="nav-item active">
+              <a class="nav-link" style="color: #fff !important;" href="/TCC/PAGES/funcionarios.php">USUÁRIOS</a>
+            </li>
+          <?php } ?>
+        </ul>
+      </div>
+      <div>
+        <a class="nav-link" style="color: #fff !important; cursor: pointer" onclick="logoff()"><ion-icon
+            name="exit-outline"></ion-icon></a>
+      </div>
+    </div>
+  </nav>
     <div class="card-cadastro" style="margin-bottom: 50px">
         <div class="left">
             <form id="form_cadastro_prod" name="form_cadastro_prod" method="POST">
@@ -131,6 +155,34 @@ include_once('config.php');
         </form>
     </div>
 
+    <div class="container mt-5" style="display: flex; flex-direction: column;">
+        <h5>Filtrar dados</h5>
+        <form id="FiltroUsuarioForm" style="display: flex; flex-direction: column">
+            <div class="row mb-3">
+                <div class="col-md-3">
+                    <label for="nome_filtra" class="form-label" style="font-weight: bold;">Nome</label>
+                    <input type="text" class="form-control" id="nome_filtra" name="nome_filtra"
+                        style="height: 40px; border: solid 1.5px;">
+                </div>
+                <div class="col-md-3">
+                    <label for="descricao_filtra" class="form-label" style="font-weight: bold;">Descrição</label>
+                    <input type="text" class="form-control" id="descricao_filtra" name="descricao_filtra"
+                        style="height: 40px; border: solid 1.5px;">
+                </div>
+                <div class="col-md-3">
+                    <label for="valor_prod_filtra" class="form-label" style="font-weight: bold;">Valor de
+                        produção</label>
+                    <input type="text" class="form-control" id="valor_prod_filtra" name="valor_prod_filtra"
+                        style="height: 40px; border: solid 1.5px;">
+                </div>
+                <div class="col-md-3">
+                    <label for="preco_filtra" class="form-label" style="font-weight: bold;">Preço</label>
+                    <input type="text" class="form-control" id="preco_filtra" name="preco_filtra"
+                        style="height: 40px; border: solid 1.5px;">
+                </div>
+            </div>
+
+        </form>
     </div>
 
     <!--Botão de filtragem-->
@@ -499,6 +551,77 @@ include_once('config.php');
             }
 
         });
+    </script>
+
+    <script>
+        $(document).ready(function () {
+            // Adicione evento oninput para cada campo de entrada do formulário de filtragem
+            $("#nome_filtra, #descricao_filtra, #valor_prod_filtra, #preco_filtra").on('input', function () {
+                filtraProdutos(); // Chama a função de filtro quando o usuário insere qualquer valor
+            });
+
+            $("#FiltroProdutoForm").submit(function (event) {
+                event.preventDefault(); // Impede o envio do formulário padrão
+                filtraProdutos(); // Chama a função de filtro quando o formulário é enviado
+            });
+
+            // Defina a função de filtro para ser chamada no carregamento da página
+            filtraProdutos();
+        });
+
+        function filtraProdutos() {
+            var nome_filtra = $("#nome_filtra").val();
+            var descricao_filtra = $("#descricao_filtra").val();
+            var valor_prod_filtra = $("#valor_prod_filtra").val();
+            var preco_filtra = $("#preco_filtra").val();
+
+            // Dentro da função que aciona o filtro no seu JavaScript
+            $.ajax({
+                method: "POST",
+                url: '/TCC/QUERYS/filtraProdutos.php', // Substitua pelo URL correto do seu arquivo PHP
+                data: {
+                    nome_filtra: nome_filtra,
+                    descricao_filtra: descricao_filtra,
+                    valor_prod_filtra: valor_prod_filtra,
+                    preco_filtra: preco_filtra
+                },
+                success: function (response) {
+                    // Atualize a tabela com os resultados do filtro
+                    $("#tb_produtos tbody").html(response); // Aqui, atualizamos apenas o corpo da tabela
+                },
+                error: function (error) {
+                    console.error(error);
+                }
+            });
+        }
+    </script>
+
+    <script>
+        // Função para realizar o logoff
+        function logoff() {
+            $.ajax({
+                method: "POST",
+                url: '/TCC/QUERYS/logout.php',
+                success: function (response) {
+                    // Exibir um alerta SweetAlert2 quando o logoff for bem-sucedido
+                    Swal.fire({
+                        icon: 'success', // Ícone de sucesso
+                        title: 'Usuário deslogado com sucesso',
+                        showConfirmButton: false, // Oculta o botão de confirmação
+                        timer: 1500 // Fecha automaticamente após 1,5 segundos
+                    });
+
+                    // Redirecionar o usuário para a página de login ou fazer outras ações após o logoff
+                    setTimeout(function () {
+                        window.location.href = '/TCC/index.html'; // Altere para a URL correta da página de login
+                    }, 1500);
+                },
+                error: function (error) {
+                    console.error(error);
+                    // Lidar com erros, se necessário
+                }
+            });
+        }
     </script>
 
 </body>

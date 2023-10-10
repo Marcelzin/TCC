@@ -88,4 +88,4 @@ CREATE TABLE
 SELECT
     *
 FROM
-    pdvher45_PDV.comercio;
+    pdvher45_PDV.usuario;
