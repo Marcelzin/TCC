@@ -30,7 +30,7 @@ include_once('config.php');
     <nav class="navbar navbar-expand-lg navbar-light" style="background-color: #2e3559 !important;">
         <div class="container-fluid">
             <a class="navbar-brand" href="/TCC/PAGES/home.html">
-                <img src="/TCC/STATIC/PDV-HERMES.png" alt="Logo" width="60" height="auto">
+                <img src="/TCC/STATIC/PDV-HERMES4.png" alt="Logo" width="60" height="auto">
             </a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
                 aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
@@ -39,23 +39,25 @@ include_once('config.php');
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav">
                     <li class="nav-item">
-                        <a class="nav-link" style="color: #fff !important;" href="/TCC/PAGES/home.html">Home</a>
+                        <a class="nav-link" style="color: #fff !important;"
+                            href="/TCC/PAGES/home.html">HOME</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" style="color: #fff !important;" href="/TCC/PAGES/vendas.php">Menu</a>
+                        <a class="nav-link" style="color: #fff !important; font-weight: 600;" href="/TCC/PAGES/vendas.php">VENDAS</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" style="color: #fff !important;"
-                            href="/TCC/PAGES/cadastro_prod.php">Cadastro</a>
+                            href="/TCC/PAGES/cadastro_prod.php">PRODUTOS</a>
                     </li>
                     <li class="nav-item active">
                         <a class="nav-link" style="color: #fff !important;"
-                            href="/TCC/PAGES/funcionarios.php">Funcionário</a>
+                            href="/TCC/PAGES/funcionarios.php">USUÁRIOS</a>
                     </li>
                 </ul>
             </div>
             <div>
-                <a class="nav-link" style="color: #fff !important;" href="/TCC/index.html">Sair</a>
+                <a class="nav-link" style="color: #fff !important;" onclick="logoff()"><ion-icon
+                        name="exit-outline"></ion-icon></a>
             </div>
         </div>
     </nav>
