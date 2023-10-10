@@ -14,8 +14,6 @@ include_once('config.php');
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>funcionarios</title>
-    <link rel="stylesheet" href="/TCC/CSS/funcionarios.css">
-    <link rel="stylesheet" href="/TCC/CSS/menu.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700&display=swap" rel="stylesheet">
@@ -23,55 +21,57 @@ include_once('config.php');
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-4bw+/aepP/YC94hEpVNVgiZdgIC5+VKNBQNGCHeKRQN+PtmoHDEXuppvnDJzQIu9" crossorigin="anonymous">
     <link href="//cdn.datatables.net/1.13.6/css/jquery.dataTables.min.css" rel="stylesheet">
+    <style>
+        ::-webkit-scrollbar {
+            width: 0px;
+        }
 
+        .dataTables_wrapper {
+            margin-bottom: 3rem;
+        }
+    </style>
 </head>
 
 <body>
     <main>
-        <div class="navigation">
-            <ul>
-                <li class="list">
-                    <a href="/TCC/PAGES/home.html">
-                        <span class="icon"><ion-icon name="home-outline"></ion-icon></span>
-                        <span class="title">Início</span>
-                    </a>
-                </li>
-                <li class="list">
-                    <a href="/TCC/PAGES/vendas.php">
-                        <span class="icon"><ion-icon name="grid-outline"></ion-icon></span>
-                        <span class="title">Menu</span>
-                    </a>
-                </li>
-                <li class="list">
-                    <a href="/TCC/PAGES/cadastro_prod.php">
-                        <span class="icon"><ion-icon name="pricetag-outline"></ion-icon></span>
-                        <span class="title">Cadastro</span>
-                    </a>
-                </li>
-                <li class="list active">
-                    <a href="/TCC/PAGES/funcionarios.php">
-                        <span class="icon"><ion-icon name="person-outline"></ion-icon></span>
-                        <span class="title">funcionário</span>
-                    </a>
-                </li>
-                <div class="out">
-                    <li class="list-out">
-                        <a href="/TCC/index.html">
-                            <span class="icon"><ion-icon name="log-out-outline"></ion-icon></span>
-                            <span class="title">sair</span>
-                        </a>
-                    </li>
+        <nav class="navbar navbar-expand-lg navbar-light" style="background-color: #2e3559 !important;">
+            <div class="container-fluid">
+                <a class="navbar-brand" href="/TCC/PAGES/home.html">
+                    <img src="/TCC/STATIC/PDV-HERMES.png" alt="Logo" width="60" height="auto">
+                </a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+                    aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarNav">
+                    <ul class="navbar-nav">
+                        <li class="nav-item">
+                            <a class="nav-link" style="color: #fff !important;" href="/TCC/PAGES/home.html">Home</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" style="color: #fff !important;" href="/TCC/PAGES/vendas.php">Menu</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" style="color: #fff !important;"
+                                href="/TCC/PAGES/cadastro_prod.php">Cadastro</a>
+                        </li>
+                        <li class="nav-item active">
+                            <a class="nav-link" style="color: #fff !important;"
+                                href="/TCC/PAGES/funcionarios.php">Funcionário</a>
+                        </li>
+                    </ul>
                 </div>
-            </ul>
-        </div>
+                <div>
+                    <a class="nav-link" style="color: #fff !important;" href="/TCC/index.html">Sair</a>
+                </div>
+            </div>
+        </nav>
 
+        <div class="container">
 
-
-        <div class="container" style="margin-left:90px; height: 100vh">
-
-            <div class="container mt-5" style="display: flex; flex-direction: column;">
-                <h2>Cadastro de Usuário</h2>
-                <form id="cadastroUsuarioForm" style="display: flex; flex-direction: column">
+            <div class="container mt-5">
+                <h5>Cadastrar usuário</h5>
+                <form id="cadastroUsuarioForm">
                     <div class="row mb-3">
                         <div class="col-md-3">
                             <label for="nome" class="form-label" style="font-weight: bold;">Nome</label>
@@ -99,14 +99,18 @@ include_once('config.php');
                             </select>
                         </div>
                     </div>
-                    <button class="btn btn-primary btn-submit"
-                        style="width: 130px; height: 45px; border: solid; border-radius: 25px; background-color: #2e3559;">Cadastrar</button>
+                    <div class="row">
+                        <div class="col-md-3">
+                            <button class="btn btn-primary btn-submit"
+                                style="width: 100%; height: 40px; border: solid 1.5px; background-color: #2e3559;">Cadastrar</button>
+                        </div>
+                    </div>
                 </form>
-
             </div>
 
+
             <div class="container mt-5" style="display: flex; flex-direction: column;">
-                <h2>Filtro de Usuário</h2>
+                <h5>Filtrar dados</h5>
                 <form id="FiltroUsuarioForm" style="display: flex; flex-direction: column">
                     <div class="row mb-3">
                         <div class="col-md-3">
@@ -139,21 +143,20 @@ include_once('config.php');
                             </select>
                         </div>
                     </div>
-                    
+
                 </form>
             </div>
 
-            <h2 style="margin-top: 50px">Tabela de Usuários</h2>
-            <table class="table" id="tabela_users">
+            <h5 style="text-align: center">Tabela de Usuários</h5>
+            <table class="table table-striped" id="tabela_users" style="text-align: center;">
                 <thead>
                     <tr>
-                        <!-- <th>ID</th> -->
-                        <th>Nome</th>
-                        <th>Email</th>
-                        <th>Nível de Acesso</th>
-                        <th>Status</th>
-                        <th>Inativar</th>
-                        <th>Editar</th>
+                        <th style="text-align: center;">Nome</th>
+                        <th style="text-align: center;">Email</th>
+                        <th style="text-align: center;">Nível de Acesso</th>
+                        <th style="text-align: center;">Status</th>
+                        <th style="text-align: center;">Inativar</th>
+                        <th style="text-align: center;">Editar</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -188,8 +191,8 @@ include_once('config.php');
                     }
                     ?>
                 </tbody>
-
             </table>
+
         </div>
 
         <div class="modal" id="excluirModal" tabindex="-1" role="dialog" aria-labelledby="excluirModalLabel"
@@ -463,50 +466,50 @@ include_once('config.php');
             });
         </script>
 
-<script>
-$(document).ready(function () {
-    // Adicione evento oninput para cada campo de entrada do formulário de filtragem
-    $("#nome_filtra, #email_filtra, #status_filtra, #nivelAcesso_filtra").on('input', function () {
-        filtraUsuario(); // Chama a função de filtro quando o usuário insere qualquer valor
-    });
+        <script>
+            $(document).ready(function () {
+                // Adicione evento oninput para cada campo de entrada do formulário de filtragem
+                $("#nome_filtra, #email_filtra, #status_filtra, #nivelAcesso_filtra").on('input', function () {
+                    filtraUsuario(); // Chama a função de filtro quando o usuário insere qualquer valor
+                });
 
-    $("#FiltroUsuarioForm").submit(function (event) {
-        event.preventDefault(); // Impede o envio do formulário padrão
-        filtraUsuario(); // Chama a função de filtro quando o formulário é enviado
-    });
+                $("#FiltroUsuarioForm").submit(function (event) {
+                    event.preventDefault(); // Impede o envio do formulário padrão
+                    filtraUsuario(); // Chama a função de filtro quando o formulário é enviado
+                });
 
-    // Defina a função de filtro para ser chamada no carregamento da página
-    filtraUsuario();
-});
-</script>
+                // Defina a função de filtro para ser chamada no carregamento da página
+                filtraUsuario();
+            });
+        </script>
 
-<script>
-function filtraUsuario() {
-    var nome_filtra = $("#nome_filtra").val();
-    var email_filtra = $("#email_filtra").val();
-    var status_filtra = $("#status_filtra").val();
-    var nivelAcesso_filtra = $("#nivelAcesso_filtra").val();
+        <script>
+            function filtraUsuario() {
+                var nome_filtra = $("#nome_filtra").val();
+                var email_filtra = $("#email_filtra").val();
+                var status_filtra = $("#status_filtra").val();
+                var nivelAcesso_filtra = $("#nivelAcesso_filtra").val();
 
-    // Dentro da função que aciona o filtro no seu JavaScript
-    $.ajax({
-        method: "POST",
-        url: '/TCC/QUERYS/filtraFunc.php',
-        data: {
-            nome_filtra: nome_filtra,
-            email_filtra: email_filtra,
-            status_filtra: status_filtra,
-            nivelAcesso_filtra: nivelAcesso_filtra
-        },
-        success: function (response) {
-            // Atualize a tabela com os resultados do filtro
-            $("#tabela_users tbody").html(response); // Aqui, atualizamos apenas o corpo da tabela
-        },
-        error: function (error) {
-            console.error(error);
-        }
-    });
-}
-</script>
+                // Dentro da função que aciona o filtro no seu JavaScript
+                $.ajax({
+                    method: "POST",
+                    url: '/TCC/QUERYS/filtraFunc.php',
+                    data: {
+                        nome_filtra: nome_filtra,
+                        email_filtra: email_filtra,
+                        status_filtra: status_filtra,
+                        nivelAcesso_filtra: nivelAcesso_filtra
+                    },
+                    success: function (response) {
+                        // Atualize a tabela com os resultados do filtro
+                        $("#tabela_users tbody").html(response); // Aqui, atualizamos apenas o corpo da tabela
+                    },
+                    error: function (error) {
+                        console.error(error);
+                    }
+                });
+            }
+        </script>
 
 
     </main>
