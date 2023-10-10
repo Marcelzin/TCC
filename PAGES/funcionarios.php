@@ -69,34 +69,80 @@ include_once('config.php');
 
         <div class="container" style="margin-left:90px; height: 100vh">
 
-            <div class="container mt-5"  style="display: flex; flex-direction: column;">
+            <div class="container mt-5" style="display: flex; flex-direction: column;">
                 <h2>Cadastro de Usuário</h2>
                 <form id="cadastroUsuarioForm" style="display: flex; flex-direction: column">
                     <div class="row mb-3">
                         <div class="col-md-3">
                             <label for="nome" class="form-label" style="font-weight: bold;">Nome</label>
-                            <input type="text" class="form-control" id="nome" name="nome" required style="height: 40px; border: solid 1.5px;">
+                            <input type="text" class="form-control" id="nome" name="nome" required
+                                style="height: 40px; border: solid 1.5px;">
                         </div>
                         <div class="col-md-3">
                             <label for="email" class="form-label" style="font-weight: bold;">Email</label>
-                            <input type="email" class="form-control" id="email" name="email" required style="height: 40px; border: solid 1.5px;">
+                            <input type="email" class="form-control" id="email" name="email" required
+                                style="height: 40px; border: solid 1.5px;">
                         </div>
                         <div class="col-md-3">
                             <label for="senha" class="form-label" style="font-weight: bold;">Senha</label>
-                            <input type="password" class="form-control" id="senha" name="senha" required style="height: 40px; border: solid 1.5px;">
+                            <input type="password" class="form-control" id="senha" name="senha" required
+                                style="height: 40px; border: solid 1.5px;">
                         </div>
                         <div class="col-md-3">
-                            <label for="nivelAcesso" class="form-label" style="font-weight: bold;">Nível de Acesso</label>
-                            <select class="form-select" id="nivelAcesso" name="nivel_acesso" required style="height: 40px; border: solid 1.5px;">
+                            <label for="nivelAcesso" class="form-label" style="font-weight: bold;">Nível de
+                                Acesso</label>
+                            <select class="form-select" id="nivelAcesso" name="nivel_acesso" required
+                                style="height: 40px; border: solid 1.5px;">
+                                <option value="">Selecione</option>
                                 <option value="Funcionário">Funcionário</option>
                                 <option value="Proprietário">Proprietário</option>
                             </select>
                         </div>
                     </div>
-                    <button class="btn btn-primary btn-submit" style="width: 130px; height: 45px; border: solid; border-radius: 25px; background-color: #2e3559;">Cadastrar</button>
+                    <button class="btn btn-primary btn-submit"
+                        style="width: 130px; height: 45px; border: solid; border-radius: 25px; background-color: #2e3559;">Cadastrar</button>
                 </form>
 
             </div>
+
+            <div class="container mt-5" style="display: flex; flex-direction: column;">
+                <h2>Filtro de Usuário</h2>
+                <form id="FiltroUsuarioForm" style="display: flex; flex-direction: column">
+                    <div class="row mb-3">
+                        <div class="col-md-3">
+                            <label for="nome_filtra" class="form-label" style="font-weight: bold;">Nome</label>
+                            <input type="text" class="form-control" id="nome_filtra" name="nome_filtra"
+                                style="height: 40px; border: solid 1.5px;">
+                        </div>
+                        <div class="col-md-3">
+                            <label for="email_filtra" class="form-label" style="font-weight: bold;">Email</label>
+                            <input type="email" class="form-control" id="email_filtra" name="email_filtra"
+                                style="height: 40px; border: solid 1.5px;">
+                        </div>
+                        <div class="col-md-3">
+                            <label for="status_filtra" class="form-label" style="font-weight: bold;">Status</label>
+                            <select class="form-select" id="status_filtra" name="status_filtra"
+                                style="height: 40px; border: solid 1.5px;">
+                                <option value="">Selecione</option>
+                                <option value="Ativo">Ativo</option>
+                                <option value="Inativo">Inativo</option>
+                            </select>
+                        </div>
+                        <div class="col-md-3">
+                            <label for="nivelAcesso_filtra" class="form-label" style="font-weight: bold;">Nível de
+                                Acesso</label>
+                            <select class="form-select" id="nivelAcesso_filtra" name="nivelAcesso_filtra"
+                                style="height: 40px; border: solid 1.5px;">
+                                <option value="">Selecione</option>
+                                <option value="Funcionário">Funcionário</option>
+                                <option value="Proprietário">Proprietário</option>
+                            </select>
+                        </div>
+                    </div>
+                    
+                </form>
+            </div>
+
             <h2 style="margin-top: 50px">Tabela de Usuários</h2>
             <table class="table" id="tabela_users">
                 <thead>
@@ -116,7 +162,7 @@ include_once('config.php');
                     if (isset($_SESSION['comercio_id'])) {
                         $comercio_id = $_SESSION['comercio_id'];
                         $usuario_id = $_SESSION['usuario_id']; // Adicione esta linha para obter o ID do usuário da sessão
-
+                    
                         // Consulta SQL para selecionar todos os dados da tabela "usuario" para o comercio_id atual
                         $sql = "SELECT * FROM usuario WHERE comercio_id = '$comercio_id' AND id <> '$usuario_id'"; // Use o ID do usuário da sessão
                         $result = mysqli_query($conexao, $sql);
@@ -320,8 +366,8 @@ include_once('config.php');
 
         <script>
             $(document).ready(function () {
-                // Função para validar e enviar o formulário
-                function validarEEnviar() {
+                // Função para validar e enviar o formulário de cadastro
+                function validarEEnviarCadastro() {
                     var nome2 = $('#nome').val();
                     var email2 = $('#email').val();
                     var senha2 = $('#senha').val();
@@ -358,10 +404,10 @@ include_once('config.php');
                     }
                 }
 
-                // Lidar com o clique no botão de envio
-                $('.btn-submit').on('click', function (e) {
+                // Lidar com o clique no botão de envio do formulário de cadastro
+                $('#cadastroUsuarioForm .btn-submit').on('click', function (e) {
                     e.preventDefault();
-                    validarEEnviar();
+                    validarEEnviarCadastro();
                 });
 
                 // Função para cadastrar o funcionário via AJAX
@@ -386,7 +432,7 @@ include_once('config.php');
                             console.log(response);
 
                             if (response.status === 'success') {
-                                // Redirecionar ou exibir uma mensagem de sucesso
+                                // Exibir uma mensagem de sucesso
                                 Swal.fire({
                                     icon: 'success',
                                     title: 'Sucesso!',
@@ -415,8 +461,53 @@ include_once('config.php');
                     });
                 }
             });
-
         </script>
+
+<script>
+$(document).ready(function () {
+    // Adicione evento oninput para cada campo de entrada do formulário de filtragem
+    $("#nome_filtra, #email_filtra, #status_filtra, #nivelAcesso_filtra").on('input', function () {
+        filtraUsuario(); // Chama a função de filtro quando o usuário insere qualquer valor
+    });
+
+    $("#FiltroUsuarioForm").submit(function (event) {
+        event.preventDefault(); // Impede o envio do formulário padrão
+        filtraUsuario(); // Chama a função de filtro quando o formulário é enviado
+    });
+
+    // Defina a função de filtro para ser chamada no carregamento da página
+    filtraUsuario();
+});
+</script>
+
+<script>
+function filtraUsuario() {
+    var nome_filtra = $("#nome_filtra").val();
+    var email_filtra = $("#email_filtra").val();
+    var status_filtra = $("#status_filtra").val();
+    var nivelAcesso_filtra = $("#nivelAcesso_filtra").val();
+
+    // Dentro da função que aciona o filtro no seu JavaScript
+    $.ajax({
+        method: "POST",
+        url: '/TCC/QUERYS/filtraFunc.php',
+        data: {
+            nome_filtra: nome_filtra,
+            email_filtra: email_filtra,
+            status_filtra: status_filtra,
+            nivelAcesso_filtra: nivelAcesso_filtra
+        },
+        success: function (response) {
+            // Atualize a tabela com os resultados do filtro
+            $("#tabela_users tbody").html(response); // Aqui, atualizamos apenas o corpo da tabela
+        },
+        error: function (error) {
+            console.error(error);
+        }
+    });
+}
+</script>
+
 
     </main>
 
