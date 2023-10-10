@@ -30,6 +30,7 @@ include_once('config.php');
         .dataTables_wrapper {
             margin-left: 0px !important;
         }
+
         ::-webkit-scrollbar {
             width: 0px;
         }
@@ -138,13 +139,13 @@ include_once('config.php');
         <table id="tb_produtos" name="tb_produtos" class="table table-striped">
             <thead class="bg-primary text-white">
                 <tr>
-                    <th>Nome do Produto</th>
-                    <th>Descrição do Produto</th>
-                    <th>Valor de Produção</th>
-                    <th>Preço</th>
-                    <th>Status</th>
-                    <th>Inativar</th>
-                    <th>Editar</th>
+                    <th style="text-align: center;">Nome do Produto</th>
+                    <th style="text-align: center;">Descrição do Produto</th>
+                    <th style="text-align: center;">Valor de Produção</th>
+                    <th style="text-align: center;">Preço</th>
+                    <th style="text-align: center;">Status</th>
+                    <th style="text-align: center;">Inativar</th>
+                    <th style="text-align: center;">Editar</th>
                 </tr>
             </thead>
             <tbody>
@@ -160,18 +161,18 @@ include_once('config.php');
                     if (mysqli_num_rows($result) > 0) {
                         while ($row = mysqli_fetch_assoc($result)) {
                             echo "<tr>";
-                            /* echo "<td>" . $row["id"] . "</td>"; */
-                            echo "<td>" . $row["nome"] . "</td>";
-                            echo "<td>" . $row["descricao"] . "</td>";
-                            echo "<td>R$" . $row["valor_fabrica"] . "</td>";
-                            echo "<td>R$" . $row["valor_venda"] . "</td>";
-                            echo "<td>" . $row["status"] . "</td>";
-                            echo '<td><ion-icon name="ban-outline" style="cursor: pointer;" onclick="exibirModalExclusao(' . $row["id"] . ')"></ion-icon></td>';
-                            echo '<td><ion-icon name="pencil-outline" style="cursor: pointer;" onclick="abrirModalEdicao(' . $row["id"] . ')"></ion-icon></td>';
+                            /* echo "<td style='text-align: center;'>" . $row["id"] . "</td>"; */
+                            echo "<td style='text-align: center;'>" . $row["nome"] . "</td>";
+                            echo "<td style='text-align: center;'>" . $row["descricao"] . "</td>";
+                            echo "<td style='text-align: center;'>R$" . $row["valor_fabrica"] . "</td>";
+                            echo "<td style='text-align: center;'>R$" . $row["valor_venda"] . "</td>";
+                            echo "<td style='text-align: center;'>" . $row["status"] . "</td>";
+                            echo '<td style="text-align: center;"><ion-icon name="ban-outline" style="cursor: pointer;" onclick="exibirModalExclusao(' . $row["id"] . ')"></ion-icon></td>';
+                            echo '<td style="text-align: center;"><ion-icon name="pencil-outline" style="cursor: pointer;" onclick="abrirModalEdicao(' . $row["id"] . ')"></ion-icon></td>';
                             echo "</tr>";
                         }
                     } else {
-                        echo "<tr><td colspan='8'>Nenhum registro encontrado.</td></tr>";
+                        echo "<tr><td colspan='8' style='text-align: center;'>Nenhum registro encontrado.</td></tr>";
                     }
 
                     mysqli_close($conexao);
@@ -179,6 +180,7 @@ include_once('config.php');
                     echo "A variável de sessão comercio_id não está definida.";
                 }
                 ?>
+
             </tbody>
         </table>
     </div>

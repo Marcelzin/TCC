@@ -173,17 +173,18 @@ include_once('config.php');
                         if (mysqli_num_rows($result) > 0) {
                             while ($row = mysqli_fetch_assoc($result)) {
                                 echo "<tr>";
-                                echo "<td>" . $row["nome"] . "</td>";
-                                echo "<td>" . $row["email"] . "</td>";
-                                echo "<td>" . $row["nivel_acesso"] . "</td>";
-                                echo "<td>" . $row["status"] . "</td>";
-                                echo '<td><ion-icon name="ban-outline" style="cursor: pointer;" onclick="exibirModalExclusao(' . $row["id"] . ')"></ion-icon></td>';
-                                echo '<td><ion-icon name="pencil-outline" style="cursor: pointer;" onclick="abrirModalEdicao(' . $row["id"] . ')"></ion-icon></td>';
+                                echo "<td style='text-align: center;'>" . $row["nome"] . "</td>";
+                                echo "<td style='text-align: center;'>" . $row["email"] . "</td>";
+                                echo "<td style='text-align: center;'>" . $row["nivel_acesso"] . "</td>";
+                                echo "<td style='text-align: center;'>" . $row["status"] . "</td>";
+                                echo '<td style="text-align: center;"><ion-icon name="ban-outline" style="cursor: pointer;" onclick="exibirModalExclusao(' . $row["id"] . ')"></ion-icon></td>';
+                                echo '<td style="text-align: center;"><ion-icon name="pencil-outline" style="cursor: pointer;" onclick="abrirModalEdicao(' . $row["id"] . ')"></ion-icon></td>';
                                 echo "</tr>";
                             }
                         } else {
-                            echo "<tr><td colspan='6'>Nenhum registro encontrado.</td></tr>";
+                            echo "<tr><td colspan='6' style='text-align: center;'>Nenhum registro encontrado.</td></tr>";
                         }
+
 
                         mysqli_close($conexao);
                     } else {
