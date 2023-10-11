@@ -291,6 +291,7 @@ if (isset($_SESSION['comercio_id']) && isset($_SESSION['usuario_id'])) {
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"
             integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL"
             crossorigin="anonymous"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/inputmask/5.0.6/jquery.inputmask.min.js"></script>
         <script>
             function exibirModalExclusao(id) {
                 $("#excluirModal").attr("data-id", id);
@@ -391,104 +392,115 @@ if (isset($_SESSION['comercio_id']) && isset($_SESSION['usuario_id'])) {
             });
         </script>
 
-        <script>
-            $(document).ready(function () {
-                // Função para validar e enviar o formulário de cadastro
-                function validarEEnviarCadastro() {
-                    var nome2 = $('#nome').val();
-                    var email2 = $('#email').val();
-                    var senha2 = $('#senha').val();
-                    var nivelAcesso2 = $('#nivelAcesso').val();
+<script>
+    $(document).ready(function () {
+        // Função para validar e enviar o formulário de cadastro
+        function validarEEnviarCadastro() {
+            var nome2 = $('#nome').val();
+            var email2 = $('#email').val();
+            var senha2 = $('#senha').val();
+            var nivelAcesso2 = $('#nivelAcesso').val();
 
-                    // Resetar estilos de borda para campos válidos
-                    $('#nome, #email, #senha').css('border', '1px solid #ccc');
+            // Resetar estilos de borda para campos válidos
+            $('#nome, #email, #senha').css('border', '1px solid #ccc');
 
-                    if (nome2 === '' || email2 === '' || senha2 === '') {
-                        // Realçar os campos em vermelho
-                        if (nome2 === '') {
-                            $('#nome').css('border', '1px solid red');
-                        }
+            if (nome2 === '' || email2 === '' || senha2 === '') {
+                // Realçar os campos em vermelho
+                if (nome2 === '') {
+                    $('#nome').css('border', '1px solid red');
+                }
 
-                        if (email2 === '') {
-                            $('#email').css('border', '1px solid red');
-                        }
+                if (email2 === '') {
+                    $('#email').css('border', '1px solid red');
+                }
 
-                        if (senha2 === '') {
-                            $('#senha').css('border', '1px solid red');
-                        }
+                if (senha2 === '') {
+                    $('#senha').css('border', '1px solid red');
+                }
 
-                        // Exibir uma mensagem de erro
+                // Exibir uma mensagem de erro
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Campos em vermelho!',
+                    text: 'Preencha os campos em vermelho.',
+                    confirmButtonColor: '#d33',
+                    confirmButtonText: 'Entendi'
+                });
+            } else if (senha2.length < 8) {
+                // Verificar se a senha tem menos de 8 caracteres
+                $('#senha').css('border', '1px solid red');
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Senha curta!',
+                    text: 'A senha deve conter pelo menos 8 caracteres.',
+                    confirmButtonColor: '#d33',
+                    confirmButtonText: 'Entendi'
+                });
+            } else {
+                // Chamar a função de cadastro
+                cadastraFuncionario();
+            }
+        }
+
+        // Lidar com o clique no botão de envio do formulário de cadastro
+        $('#cadastroUsuarioForm .btn-submit').on('click', function (e) {
+            e.preventDefault();
+            validarEEnviarCadastro();
+        });
+
+        // Função para cadastrar o funcionário via AJAX
+        function cadastraFuncionario() {
+            var nome2 = $("#nome").val();
+            var email2 = $("#email").val();
+            var senha2 = $("#senha").val();
+            var nivelAcesso2 = $("#nivelAcesso").val();
+
+            $.ajax({
+                method: "POST",
+                url: '/TCC/QUERYS/cadastro_funcionario.php', // Certifique-se de fornecer o caminho correto para o seu arquivo PHP
+                data: {
+                    nome2: nome2,
+                    email2: email2,
+                    senha2: senha2,
+                    nivel_acesso2: nivelAcesso2
+                },
+
+                success: function (response) {
+                    // Manipular a resposta do servidor aqui
+                    console.log(response);
+
+                    if (response.status === 'success') {
+                        // Exibir uma mensagem de sucesso
+                        Swal.fire({
+                            icon: 'success',
+                            title: 'Sucesso!',
+                            text: 'Funcionário cadastrado com sucesso.',
+                            confirmButtonColor: '#4caf50',
+                            confirmButtonText: 'OK'
+                        }).then(function () {
+                            // Recarregar a página após a confirmação
+                            location.reload();
+                        });
+                    } else {
+                        // Exibir uma mensagem de erro ao usuário
                         Swal.fire({
                             icon: 'error',
-                            title: 'Campos em vermelho!',
-                            text: 'Preencha os campos em vermelho.',
+                            title: 'Erro!',
+                            text: response.message,
                             confirmButtonColor: '#d33',
                             confirmButtonText: 'Entendi'
                         });
-                    } else {
-                        // Chamar a função de cadastro
-                        cadastraFuncionario();
                     }
-                }
-
-                // Lidar com o clique no botão de envio do formulário de cadastro
-                $('#cadastroUsuarioForm .btn-submit').on('click', function (e) {
-                    e.preventDefault();
-                    validarEEnviarCadastro();
-                });
-
-                // Função para cadastrar o funcionário via AJAX
-                function cadastraFuncionario() {
-                    var nome2 = $("#nome").val();
-                    var email2 = $("#email").val();
-                    var senha2 = $("#senha").val();
-                    var nivelAcesso2 = $("#nivelAcesso").val();
-
-                    $.ajax({
-                        method: "POST",
-                        url: '/TCC/QUERYS/cadastro_funcionario.php', // Certifique-se de fornecer o caminho correto para o seu arquivo PHP
-                        data: {
-                            nome2: nome2,
-                            email2: email2,
-                            senha2: senha2,
-                            nivel_acesso2: nivelAcesso2
-                        },
-
-                        success: function (response) {
-                            // Manipular a resposta do servidor aqui
-                            console.log(response);
-
-                            if (response.status === 'success') {
-                                // Exibir uma mensagem de sucesso
-                                Swal.fire({
-                                    icon: 'success',
-                                    title: 'Sucesso!',
-                                    text: 'Funcionário cadastrado com sucesso.',
-                                    confirmButtonColor: '#4caf50',
-                                    confirmButtonText: 'OK'
-                                }).then(function () {
-                                    // Recarregar a página após a confirmação
-                                    location.reload();
-                                });
-                            } else {
-                                // Exibir uma mensagem de erro ao usuário
-                                Swal.fire({
-                                    icon: 'error',
-                                    title: 'Erro!',
-                                    text: response.message,
-                                    confirmButtonColor: '#d33',
-                                    confirmButtonText: 'Entendi'
-                                });
-                            }
-                        },
-                        error: function (error) {
-                            console.error(error);
-                            // Exibir uma mensagem de erro ao usuário, se necessário
-                        }
-                    });
+                },
+                error: function (error) {
+                    console.error(error);
+                    // Exibir uma mensagem de erro ao usuário, se necessário
                 }
             });
-        </script>
+        }
+    });
+</script>
+
 
         <script>
             $(document).ready(function () {
@@ -561,6 +573,12 @@ if (isset($_SESSION['comercio_id']) && isset($_SESSION['usuario_id'])) {
                     }
                 });
             }
+        </script>
+
+        <script>
+            $(document).ready(function () {
+                $('#nome, #nome_filtra').inputmask({ regex: "[A-Za-z]", placeholder: "" });
+            });
         </script>
     </main>
 

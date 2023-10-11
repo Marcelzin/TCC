@@ -10,7 +10,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     $comercio_id = $_SESSION['comercio_id'];
 
-    $query = "SELECT * FROM produto WHERE comercio_id = ?";
+    $query = "SELECT * FROM produto WHERE comercio_id = ? ORDER BY status ASC";
 
     $types = "i";
     $params = array(&$comercio_id);
@@ -53,13 +53,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
             while ($row = mysqli_fetch_assoc($result)) {
                 echo '<tr>';
-                echo '<td>' . $row['nome'] . '</td>';
-                echo '<td>' . $row['descricao'] . '</td>';
-                echo '<td>R$' . number_format($row['valor_fabrica'], 2, ',', '.') . '</td>';
-                echo '<td>R$' . number_format($row['valor_venda'], 2, ',', '.') . '</td>';
-                echo '<td>' . $row['status'] . '</td>';
-                echo '<td><ion-icon name="ban-outline" style="cursor: pointer;" onclick="exibirModalExclusao(' . $row["id"] . ')"></ion-icon></td>';
-                echo '<td><ion-icon name="pencil-outline" style="cursor: pointer;" onclick="abrirModalEdicao(' . $row["id"] . ')"></ion-icon></td>';
+                echo '<td style="text-align: center;">' . $row['nome'] . '</td>';
+                echo '<td style="text-align: center;">' . $row['descricao'] . '</td>';
+                echo '<td style="text-align: center;">R$' . number_format($row['valor_fabrica'], 2, ',', '.') . '</td>';
+                echo '<td style="text-align: center;">R$' . number_format($row['valor_venda'], 2, ',', '.') . '</td>';
+                echo '<td style="text-align: center;">' . $row['status'] . '</td>';
+                echo '<td style="text-align: center;"><ion-icon name="ban-outline" style="cursor: pointer;" onclick="exibirModalExclusao(' . $row["id"] . ')"></ion-icon></td>';
+                echo '<td style="text-align: center;"><ion-icon name="pencil-outline" style="cursor: pointer;" onclick="abrirModalEdicao(' . $row["id"] . ')"></ion-icon></td>';
                 echo '</tr>';
             }
 

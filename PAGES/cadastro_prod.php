@@ -442,6 +442,10 @@ if (isset($_SESSION['comercio_id']) && isset($_SESSION['usuario_id'])) {
             $('#valorfab').mask('999999999.99', { reverse: true });
 
             $('#price').mask('999999999.99', { reverse: true });
+            
+            $('#edit_valor_venda').mask('999999999.99', { reverse: true });
+
+            $('#edit_valor_fabrica').mask('999999999.99', { reverse: true });
 
             function validarEEnviar() {
                 var nomeProduto = $('#name').val();

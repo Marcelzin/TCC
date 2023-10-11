@@ -1,111 +1,150 @@
 <!DOCTYPE html>
 <html lang="pt-br">
-
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="/TCC/CSS/cadastro_prop.css">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11.0.18/dist/sweetalert2.min.css">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="/TCC/CSS/cadastro_prop.css" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/sweetalert2@11.0.18/dist/sweetalert2.min.css"
+    />
     <title>Cadastro proprietário</title>
-    <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+    <script
+      src="https://kit.fontawesome.com/a076d05399.js"
+      crossorigin="anonymous"
+    ></script>
     <!-- Inclua jQuery -->
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-</head>
+  </head>
 
-<body>
+  <body>
     <div class="main">
-        <div class="left">
-            <form id="cadastroForm">
-                <div class="card">
-                    <div class="textfield">
-                        <h1>Crie sua <span>conta</span> <br> e <span>gerencie</span> sua loja</h1>
+      <div class="left">
+        <form id="cadastroForm">
+          <div class="card">
+            <div class="textfield">
+              <h1>
+                Crie sua <span>conta</span> <br />
+                e <span>gerencie</span> sua loja
+              </h1>
 
-                        <label for="nome">Nome</label>
-                        <input type="text" placeholder="Digite seu nome..." id="nome" name="nome"
-                            onkeypress="return apenasLetras(event)">
+              <label for="nome">Nome</label>
+              <input
+                type="text"
+                placeholder="Digite seu nome..."
+                id="nome"
+                name="nome"
+                onkeypress="return apenasLetras(event)"
+              />
 
-                        <label for="email">Email</label>
-                        <input type="email" placeholder="Digite seu Email..." id="email" name="email">
+              <label for="email">Email</label>
+              <input
+                type="email"
+                placeholder="Digite seu Email..."
+                id="email"
+                name="email"
+              />
 
-                        <label for="senha">Senha</label>
-                        <input type="password" placeholder="Digite sua senha..." id="senha" name="senha">
+              <label for="senha">Senha</label>
+              <input
+                type="password"
+                placeholder="Digite sua senha..."
+                id="senha"
+                name="senha"
+              />
 
-                        <button type="submit" class="btn">Cadastrar</button>
-                    </div>
+              <button type="submit" class="btn">Cadastrar</button>
+            </div>
 
-                    <a href="/TCC/index.html" class="link"><i class="fas fa-arrow-left"></i> Voltar</a>
-                </div>
-            </form>
-        </div>
+            <a href="/TCC/index.html" class="link"
+              ><i class="fas fa-arrow-left"></i> Voltar</a
+            >
+          </div>
+        </form>
+      </div>
 
-        <div class="right">
-            <img src="" class="img">
-        </div>
+      <div class="right">
+        <img src="" class="img" />
+      </div>
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.0.18/dist/sweetalert2.min.js"></script>
     <script>
-        document.addEventListener("DOMContentLoaded", function () {
-            const form = document.getElementById("cadastroForm");
+      // Opinião: É uma boa prática validar o formulário no lado do cliente antes de enviar a solicitação AJAX.
 
-            form.addEventListener("submit", function (event) {
-                event.preventDefault();
+      document.addEventListener("DOMContentLoaded", function () {
+        const form = document.getElementById("cadastroForm");
 
-                const nome = document.getElementById("nome").value.trim();
-                const email = document.getElementById("email").value.trim();
-                const senha = document.getElementById("senha").value.trim();
+        form.addEventListener("submit", function (event) {
+          event.preventDefault();
 
-                // Validações aqui...
+          const nome = document.getElementById("nome").value.trim();
+          const email = document.getElementById("email").value.trim();
+          const senha = document.getElementById("senha").value.trim();
 
-                // Dados do formulário
-                const formData = new FormData();
-                formData.append('nome', nome);
-                formData.append('email', email);
-                formData.append('senha', senha);
+          // Validação de senha com mais de 8 caracteres
+          if (senha.length < 8) {
+            // Opinião: Pode exibir uma mensagem de erro diretamente no formulário.
+            Swal.fire({
+              icon: "error",
+              title: "Erro",
+              text: "A senha deve conter pelo menos 8 caracteres.",
+              timer: 3000,
+            });
+            return; // Impede o envio do formulário.
+          }
 
-                // Requisição AJAX
-                fetch('/TCC/QUERYS/cadastro_prop.php', {
-                    method: 'POST',
-                    body: formData
-                })
-                    .then(response => response.json())
-                    .then(data => {
-                        if (data.status === 'success') {
-                            Swal.fire({
-                                icon: 'success',
-                                title: 'Cadastro realizado com sucesso!',
-                                text: data.message,
-                                timer: 3000
-                            });
+          // Dados do formulário
+          const formData = new FormData();
+          formData.append("nome", nome);
+          formData.append("email", email);
+          formData.append("senha", senha);
 
-                            // Redirecionar para onde você desejar após 3 segundos
-                            setTimeout(function () {
-                                window.location.href = '/TCC/PAGES/login_prop.html';
-                            }, 3000);
-                        } else {
-                            Swal.fire({
-                                icon: 'error',
-                                title: 'Erro',
-                                text: data.message,
-                                timer: 3000
-                            });
-                        }
-                    })
-                    .catch(error => {
-                        console.error(error);
-                        Swal.fire({
-                            icon: 'error',
-                            title: 'Erro na requisição AJAX',
-                            text: 'Ocorreu um erro ao enviar a solicitação. Verifique a conexão ou tente novamente mais tarde.'
-                        });
-                    });
+          // Requisição AJAX
+          fetch("/TCC/QUERYS/cadastro_prop.php", {
+            method: "POST",
+            body: formData,
+          })
+            .then((response) => response.json())
+            .then((data) => {
+              if (data.status === "success") {
+                Swal.fire({
+                  icon: "success",
+                  title: "Cadastro realizado com sucesso!",
+                  text: data.message,
+                  timer: 3000,
+                });
+
+                // Opinião: Redirecionar para a página de login após 3 segundos é uma boa prática.
+                setTimeout(function () {
+                  window.location.href = "/TCC/PAGES/login_prop.html";
+                }, 3000);
+              } else {
+                Swal.fire({
+                  icon: "error",
+                  title: "Erro",
+                  text: data.message,
+                  timer: 3000,
+                });
+              }
+            })
+            .catch((error) => {
+              console.error(error);
+              Swal.fire({
+                icon: "error",
+                title: "Erro na requisição AJAX",
+                text: "Ocorreu um erro ao enviar a solicitação. Verifique a conexão ou tente novamente mais tarde.",
+              });
             });
         });
+      });
     </script>
-</body>
-
+  </body>
 </html>
