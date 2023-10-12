@@ -27,6 +27,54 @@ if (isset($_SESSION['comercio_id']) && isset($_SESSION['usuario_id'])) {
           </script>';
   exit();
 }
+$sqlHoje = "SELECT COUNT(*) AS vendas_realizadas, SUM(valor_total) AS faturamento, SUM(lucro_obtido) AS lucro 
+            FROM pedido 
+            WHERE DATE(data_pedido) = CURDATE();";
+
+$resultHoje = mysqli_query($conexao, $sqlHoje);
+
+if ($resultHoje) {
+    $rowHoje = mysqli_fetch_assoc($resultHoje);
+    $vendasHoje = $rowHoje['vendas_realizadas'];
+    $faturamentoHoje = $rowHoje['faturamento'];
+    $lucroHoje = $rowHoje['lucro'];
+} else {
+    // Trate erros aqui, se necessário
+}
+
+// Consulta para o card "Semana"
+$sqlSemana = "SELECT COUNT(*) AS vendas_realizadas, SUM(valor_total) AS faturamento, SUM(lucro_obtido) AS lucro 
+              FROM pedido 
+              WHERE YEARWEEK(data_pedido, 1) = YEARWEEK(NOW(), 1);";
+
+$resultSemana = mysqli_query($conexao, $sqlSemana);
+
+if ($resultSemana) {
+    $rowSemana = mysqli_fetch_assoc($resultSemana);
+    $vendasSemana = $rowSemana['vendas_realizadas'];
+    $faturamentoSemana = $rowSemana['faturamento'];
+    $lucroSemana = $rowSemana['lucro'];
+} else {
+    // Trate erros aqui, se necessário
+}
+
+// Consulta para o card "Mês"
+$sqlMes = "SELECT COUNT(*) AS vendas_realizadas, SUM(valor_total) AS faturamento, SUM(lucro_obtido) AS lucro 
+           FROM pedido 
+           WHERE YEAR(data_pedido) = YEAR(NOW()) AND MONTH(data_pedido) = MONTH(NOW());";
+
+$resultMes = mysqli_query($conexao, $sqlMes);
+
+if ($resultMes) {
+    $rowMes = mysqli_fetch_assoc($resultMes);
+    $vendasMes = $rowMes['vendas_realizadas'];
+    $faturamentoMes = $rowMes['faturamento'];
+    $lucroMes = $rowMes['lucro'];
+} else {
+    // Trate erros aqui, se necessário
+}
+
+// ...
 ?>
 
 <!DOCTYPE html>
@@ -37,14 +85,14 @@ if (isset($_SESSION['comercio_id']) && isset($_SESSION['usuario_id'])) {
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <link rel="stylesheet" href="/TCC/CSS/cadastro_prod.css">
-    <link rel="stylesheet" href="/TCC/CSS/menu.css">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11.0.18/dist/sweetalert2.min.css">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet"
-        integrity="sha384-4bw+/aepP/YC94hEpVNVgiZdgIC5+VKNBQNGCHeKRQN+PtmoHDEXuppvnDJzQIu9" crossorigin="anonymous">
-    <link href="//cdn.datatables.net/1.13.6/css/jquery.dataTables.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="/TCC/CSS/menu.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11.0.18/dist/sweetalert2.min.css">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet"
+    integrity="sha384-4bw+/aepP/YC94hEpVNVgiZdgIC5+VKNBQNGCHeKRQN+PtmoHDEXuppvnDJzQIu9" crossorigin="anonymous">
+  <link href="//cdn.datatables.net/1.13.6/css/jquery.dataTables.min.css" rel="stylesheet">
   <title>tela home</title>
 </head>
 
@@ -86,84 +134,75 @@ if (isset($_SESSION['comercio_id']) && isset($_SESSION['usuario_id'])) {
 
   <div class="container mt-5">
     <div class="row justify-content-around">
-      <div class="col-md-4 mb-4">
-        <div class="card">
-          <div class="card-body">
-            <h1 class="card-title">Hoje</h1>
-            <h3>Vendas realizadas:</h3>
-            <h3>Faturamento: R$00,00</h3>
-            <h2>Lucro Total: R$00,00</h2>
-          </div>
+        <div class="col-md-4 mb-4">
+            <div class="card">
+                <div class="card-body">
+                    <h1 class="card-title">Hoje</h1>
+                    <h3>Vendas realizadas: <?php echo $vendasHoje; ?></h3>
+                    <h3>Faturamento: R$<?php echo number_format($faturamentoHoje, 2, ',', '.'); ?></h3>
+                    <h2>Lucro Total: R$<?php echo number_format($lucroHoje, 2, ',', '.'); ?></h2>
+                </div>
+            </div>
         </div>
-      </div>
 
-      <div class="col-md-4 mb-4">
-        <div class="card">
-          <div class="card-body">
-            <h1 class="card-title">Semana</h1>
-            <h3>Vendas realizadas:</h3>
-            <h3>Faturamento: R$00,00</h3>
-            <h2>Lucro Total: R$00,00</h2>
-          </div>
+        <div class="col-md-4 mb-4">
+            <div class="card">
+                <div class="card-body">
+                    <h1 class="card-title">Semana</h1>
+                    <h3>Vendas realizadas: <?php echo $vendasSemana; ?></h3>
+                    <h3>Faturamento: R$<?php echo number_format($faturamentoSemana, 2, ',', '.'); ?></h3>
+                    <h2>Lucro Total: R$<?php echo number_format($lucroSemana, 2, ',', '.'); ?></h2>
+                </div>
+            </div>
         </div>
-      </div>
 
-      <div class="col-md-4 mb-4">
-        <div class="card">
-          <div class="card-body">
-            <h1 class="card-title">Mês</h1>
-            <h3>Vendas realizadas:</h3>
-            <h3>Faturamento: R$00,00</h3>
-            <h2>Lucro Total: R$00,00</h2>
-          </div>
+        <div class="col-md-4 mb-4">
+            <div class="card">
+                <div class="card-body">
+                    <h1 class="card-title">Mês</h1>
+                    <h3>Vendas realizadas: <?php echo $vendasMes; ?></h3>
+                    <h3>Faturamento: R$<?php echo number_format($faturamentoMes, 2, ',', '.'); ?></h3>
+                    <h2>Lucro Total: R$<?php echo number_format($lucroMes, 2, ',', '.'); ?></h2>
+                </div>
+            </div>
         </div>
-      </div>
     </div>
-  </div>
+</div>
+
+  <script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
+  <script nomodule src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.mask/1.14.16/jquery.mask.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.0.18/dist/sweetalert2.min.js"></script>
+  <script src="//cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
 
   <script>
-    const list = document.querySelectorAll(".list");
-    function activelink() {
-      list.forEach((item) => item.classList.remove("active"));
-      this.classList.add("active");
-    }
-    list.forEach((item) => item.addEventListener("click", activeLink));
-  </script>
+    // Função para realizar o logoff
+    function logoff() {
+      $.ajax({
+        method: "POST",
+        url: '/TCC/QUERYS/logout.php',
+        success: function (response) {
+          // Exibir um alerta SweetAlert2 quando o logoff for bem-sucedido
+          Swal.fire({
+            icon: 'success', // Ícone de sucesso
+            title: 'Usuário deslogado com sucesso',
+            showConfirmButton: false, // Oculta o botão de confirmação
+            timer: 1500 // Fecha automaticamente após 1,5 segundos
+          });
 
-<script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
-    <script nomodule src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.mask/1.14.16/jquery.mask.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.0.18/dist/sweetalert2.min.js"></script>
-    <script src="//cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
-
-  <script>
-        // Função para realizar o logoff
-        function logoff() {
-            $.ajax({
-                method: "POST",
-                url: '/TCC/QUERYS/logout.php',
-                success: function (response) {
-                    // Exibir um alerta SweetAlert2 quando o logoff for bem-sucedido
-                    Swal.fire({
-                        icon: 'success', // Ícone de sucesso
-                        title: 'Usuário deslogado com sucesso',
-                        showConfirmButton: false, // Oculta o botão de confirmação
-                        timer: 1500 // Fecha automaticamente após 1,5 segundos
-                    });
-
-                    // Redirecionar o usuário para a página de login ou fazer outras ações após o logoff
-                    setTimeout(function () {
-                        window.location.href = '/TCC/index.html'; // Altere para a URL correta da página de login
-                    }, 1500);
-                },
-                error: function (error) {
-                    console.error(error);
-                    // Lidar com erros, se necessário
-                }
-            });
+          // Redirecionar o usuário para a página de login ou fazer outras ações após o logoff
+          setTimeout(function () {
+            window.location.href = '/TCC/index.html'; // Altere para a URL correta da página de login
+          }, 1500);
+        },
+        error: function (error) {
+          console.error(error);
+          // Lidar com erros, se necessário
         }
-    </script>
+      });
+    }
+  </script>
 </body>
 
 </html>
