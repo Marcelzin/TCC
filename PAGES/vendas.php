@@ -66,10 +66,11 @@ if (isset($_SESSION['comercio_id']) && isset($_SESSION['usuario_id'])) {
                         <a class="nav-link" style="color: #fff !important;" href="/TCC/PAGES/home.php">HOME</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" style="color: #fff !important;" href="/TCC/PAGES/vendas.php">VENDAS</a>
+                        <a class="nav-link" style="color: #fff !important; font-weight: 600;"
+                            href="/TCC/PAGES/vendas.php">VENDAS</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" style="color: #fff !important; font-weight: 600;"
+                        <a class="nav-link" style="color: #fff !important;"
                             href="/TCC/PAGES/cadastro_prod.php">PRODUTOS</a>
                     </li>
                     <?php if ($nivel_acesso === 'Proprietário') { ?>
@@ -131,7 +132,8 @@ if (isset($_SESSION['comercio_id']) && isset($_SESSION['usuario_id'])) {
                     ?>
                 </div>
             </div>
-            <div class="col-md-3" style="border-color: #999999; border-radius: 20px; border: solid 1px; margin-top: 3.5%">
+            <div class="col-md-3"
+                style="border-color: #999999; border-radius: 20px; border: solid 1px; margin-top: 3.5%">
                 <div class="sticky-top">
                     <div class="item-list">
                         <div class="header">
@@ -279,8 +281,6 @@ if (isset($_SESSION['comercio_id']) && isset($_SESSION['usuario_id'])) {
         button.addEventListener('click', addToCartClicked);
     });
 </script>
-
-
 
 </body>
 

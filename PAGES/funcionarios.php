@@ -72,12 +72,12 @@ if (isset($_SESSION['comercio_id']) && isset($_SESSION['usuario_id'])) {
                             <a class="nav-link" style="color: #fff !important;" href="/TCC/PAGES/vendas.php">VENDAS</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" style="color: #fff !important; font-weight: 600;"
+                            <a class="nav-link" style="color: #fff !important;"
                                 href="/TCC/PAGES/cadastro_prod.php">PRODUTOS</a>
                         </li>
                         <?php if ($nivel_acesso === 'Proprietário') { ?>
                             <li class="nav-item active">
-                                <a class="nav-link" style="color: #fff !important;"
+                                <a class="nav-link" style="color: #fff !important; font-weight: 600;"
                                     href="/TCC/PAGES/funcionarios.php">USUÁRIOS</a>
                             </li>
                         <?php } ?>
@@ -392,114 +392,114 @@ if (isset($_SESSION['comercio_id']) && isset($_SESSION['usuario_id'])) {
             });
         </script>
 
-<script>
-    $(document).ready(function () {
-        // Função para validar e enviar o formulário de cadastro
-        function validarEEnviarCadastro() {
-            var nome2 = $('#nome').val();
-            var email2 = $('#email').val();
-            var senha2 = $('#senha').val();
-            var nivelAcesso2 = $('#nivelAcesso').val();
+        <script>
+            $(document).ready(function () {
+                // Função para validar e enviar o formulário de cadastro
+                function validarEEnviarCadastro() {
+                    var nome2 = $('#nome').val();
+                    var email2 = $('#email').val();
+                    var senha2 = $('#senha').val();
+                    var nivelAcesso2 = $('#nivelAcesso').val();
 
-            // Resetar estilos de borda para campos válidos
-            $('#nome, #email, #senha').css('border', '1px solid #ccc');
+                    // Resetar estilos de borda para campos válidos
+                    $('#nome, #email, #senha').css('border', '1px solid #ccc');
 
-            if (nome2 === '' || email2 === '' || senha2 === '') {
-                // Realçar os campos em vermelho
-                if (nome2 === '') {
-                    $('#nome').css('border', '1px solid red');
-                }
+                    if (nome2 === '' || email2 === '' || senha2 === '') {
+                        // Realçar os campos em vermelho
+                        if (nome2 === '') {
+                            $('#nome').css('border', '1px solid red');
+                        }
 
-                if (email2 === '') {
-                    $('#email').css('border', '1px solid red');
-                }
+                        if (email2 === '') {
+                            $('#email').css('border', '1px solid red');
+                        }
 
-                if (senha2 === '') {
-                    $('#senha').css('border', '1px solid red');
-                }
+                        if (senha2 === '') {
+                            $('#senha').css('border', '1px solid red');
+                        }
 
-                // Exibir uma mensagem de erro
-                Swal.fire({
-                    icon: 'error',
-                    title: 'Campos em vermelho!',
-                    text: 'Preencha os campos em vermelho.',
-                    confirmButtonColor: '#d33',
-                    confirmButtonText: 'Entendi'
-                });
-            } else if (senha2.length < 8) {
-                // Verificar se a senha tem menos de 8 caracteres
-                $('#senha').css('border', '1px solid red');
-                Swal.fire({
-                    icon: 'error',
-                    title: 'Senha curta!',
-                    text: 'A senha deve conter pelo menos 8 caracteres.',
-                    confirmButtonColor: '#d33',
-                    confirmButtonText: 'Entendi'
-                });
-            } else {
-                // Chamar a função de cadastro
-                cadastraFuncionario();
-            }
-        }
-
-        // Lidar com o clique no botão de envio do formulário de cadastro
-        $('#cadastroUsuarioForm .btn-submit').on('click', function (e) {
-            e.preventDefault();
-            validarEEnviarCadastro();
-        });
-
-        // Função para cadastrar o funcionário via AJAX
-        function cadastraFuncionario() {
-            var nome2 = $("#nome").val();
-            var email2 = $("#email").val();
-            var senha2 = $("#senha").val();
-            var nivelAcesso2 = $("#nivelAcesso").val();
-
-            $.ajax({
-                method: "POST",
-                url: '/TCC/QUERYS/cadastro_funcionario.php', // Certifique-se de fornecer o caminho correto para o seu arquivo PHP
-                data: {
-                    nome2: nome2,
-                    email2: email2,
-                    senha2: senha2,
-                    nivel_acesso2: nivelAcesso2
-                },
-
-                success: function (response) {
-                    // Manipular a resposta do servidor aqui
-                    console.log(response);
-
-                    if (response.status === 'success') {
-                        // Exibir uma mensagem de sucesso
-                        Swal.fire({
-                            icon: 'success',
-                            title: 'Sucesso!',
-                            text: 'Funcionário cadastrado com sucesso.',
-                            confirmButtonColor: '#4caf50',
-                            confirmButtonText: 'OK'
-                        }).then(function () {
-                            // Recarregar a página após a confirmação
-                            location.reload();
-                        });
-                    } else {
-                        // Exibir uma mensagem de erro ao usuário
+                        // Exibir uma mensagem de erro
                         Swal.fire({
                             icon: 'error',
-                            title: 'Erro!',
-                            text: response.message,
+                            title: 'Campos em vermelho!',
+                            text: 'Preencha os campos em vermelho.',
                             confirmButtonColor: '#d33',
                             confirmButtonText: 'Entendi'
                         });
+                    } else if (senha2.length < 8) {
+                        // Verificar se a senha tem menos de 8 caracteres
+                        $('#senha').css('border', '1px solid red');
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Senha curta!',
+                            text: 'A senha deve conter pelo menos 8 caracteres.',
+                            confirmButtonColor: '#d33',
+                            confirmButtonText: 'Entendi'
+                        });
+                    } else {
+                        // Chamar a função de cadastro
+                        cadastraFuncionario();
                     }
-                },
-                error: function (error) {
-                    console.error(error);
-                    // Exibir uma mensagem de erro ao usuário, se necessário
+                }
+
+                // Lidar com o clique no botão de envio do formulário de cadastro
+                $('#cadastroUsuarioForm .btn-submit').on('click', function (e) {
+                    e.preventDefault();
+                    validarEEnviarCadastro();
+                });
+
+                // Função para cadastrar o funcionário via AJAX
+                function cadastraFuncionario() {
+                    var nome2 = $("#nome").val();
+                    var email2 = $("#email").val();
+                    var senha2 = $("#senha").val();
+                    var nivelAcesso2 = $("#nivelAcesso").val();
+
+                    $.ajax({
+                        method: "POST",
+                        url: '/TCC/QUERYS/cadastro_funcionario.php', // Certifique-se de fornecer o caminho correto para o seu arquivo PHP
+                        data: {
+                            nome2: nome2,
+                            email2: email2,
+                            senha2: senha2,
+                            nivel_acesso2: nivelAcesso2
+                        },
+
+                        success: function (response) {
+                            // Manipular a resposta do servidor aqui
+                            console.log(response);
+
+                            if (response.status === 'success') {
+                                // Exibir uma mensagem de sucesso
+                                Swal.fire({
+                                    icon: 'success',
+                                    title: 'Sucesso!',
+                                    text: 'Funcionário cadastrado com sucesso.',
+                                    confirmButtonColor: '#4caf50',
+                                    confirmButtonText: 'OK'
+                                }).then(function () {
+                                    // Recarregar a página após a confirmação
+                                    location.reload();
+                                });
+                            } else {
+                                // Exibir uma mensagem de erro ao usuário
+                                Swal.fire({
+                                    icon: 'error',
+                                    title: 'Erro!',
+                                    text: response.message,
+                                    confirmButtonColor: '#d33',
+                                    confirmButtonText: 'Entendi'
+                                });
+                            }
+                        },
+                        error: function (error) {
+                            console.error(error);
+                            // Exibir uma mensagem de erro ao usuário, se necessário
+                        }
+                    });
                 }
             });
-        }
-    });
-</script>
+        </script>
 
 
         <script>

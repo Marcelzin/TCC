@@ -34,12 +34,12 @@ $sqlHoje = "SELECT COUNT(*) AS vendas_realizadas, SUM(valor_total) AS faturament
 $resultHoje = mysqli_query($conexao, $sqlHoje);
 
 if ($resultHoje) {
-    $rowHoje = mysqli_fetch_assoc($resultHoje);
-    $vendasHoje = $rowHoje['vendas_realizadas'];
-    $faturamentoHoje = $rowHoje['faturamento'];
-    $lucroHoje = $rowHoje['lucro'];
+  $rowHoje = mysqli_fetch_assoc($resultHoje);
+  $vendasHoje = $rowHoje['vendas_realizadas'];
+  $faturamentoHoje = $rowHoje['faturamento'];
+  $lucroHoje = $rowHoje['lucro'];
 } else {
-    // Trate erros aqui, se necessário
+  // Trate erros aqui, se necessário
 }
 
 // Consulta para o card "Semana"
@@ -50,12 +50,12 @@ $sqlSemana = "SELECT COUNT(*) AS vendas_realizadas, SUM(valor_total) AS faturame
 $resultSemana = mysqli_query($conexao, $sqlSemana);
 
 if ($resultSemana) {
-    $rowSemana = mysqli_fetch_assoc($resultSemana);
-    $vendasSemana = $rowSemana['vendas_realizadas'];
-    $faturamentoSemana = $rowSemana['faturamento'];
-    $lucroSemana = $rowSemana['lucro'];
+  $rowSemana = mysqli_fetch_assoc($resultSemana);
+  $vendasSemana = $rowSemana['vendas_realizadas'];
+  $faturamentoSemana = $rowSemana['faturamento'];
+  $lucroSemana = $rowSemana['lucro'];
 } else {
-    // Trate erros aqui, se necessário
+  // Trate erros aqui, se necessário
 }
 
 // Consulta para o card "Mês"
@@ -66,12 +66,12 @@ $sqlMes = "SELECT COUNT(*) AS vendas_realizadas, SUM(valor_total) AS faturamento
 $resultMes = mysqli_query($conexao, $sqlMes);
 
 if ($resultMes) {
-    $rowMes = mysqli_fetch_assoc($resultMes);
-    $vendasMes = $rowMes['vendas_realizadas'];
-    $faturamentoMes = $rowMes['faturamento'];
-    $lucroMes = $rowMes['lucro'];
+  $rowMes = mysqli_fetch_assoc($resultMes);
+  $vendasMes = $rowMes['vendas_realizadas'];
+  $faturamentoMes = $rowMes['faturamento'];
+  $lucroMes = $rowMes['lucro'];
 } else {
-    // Trate erros aqui, se necessário
+  // Trate erros aqui, se necessário
 }
 
 // ...
@@ -94,6 +94,11 @@ if ($resultMes) {
     integrity="sha384-4bw+/aepP/YC94hEpVNVgiZdgIC5+VKNBQNGCHeKRQN+PtmoHDEXuppvnDJzQIu9" crossorigin="anonymous">
   <link href="//cdn.datatables.net/1.13.6/css/jquery.dataTables.min.css" rel="stylesheet">
   <title>tela home</title>
+  <style>
+    .dataTables_wrapper {
+      margin-left: 0px;
+    }
+  </style>
 </head>
 
 <body>
@@ -109,14 +114,13 @@ if ($resultMes) {
       <div class="collapse navbar-collapse" id="navbarNav">
         <ul class="navbar-nav">
           <li class="nav-item">
-            <a class="nav-link" style="color: #fff !important;" href="/TCC/PAGES/home.php">HOME</a>
+            <a class="nav-link" style="color: #fff !important; font-weight: 600;" href="/TCC/PAGES/home.php">HOME</a>
           </li>
           <li class="nav-item">
             <a class="nav-link" style="color: #fff !important;" href="/TCC/PAGES/vendas.php">VENDAS</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" style="color: #fff !important; font-weight: 600;"
-              href="/TCC/PAGES/cadastro_prod.php">PRODUTOS</a>
+            <a class="nav-link" style="color: #fff !important;" href="/TCC/PAGES/cadastro_prod.php">PRODUTOS</a>
           </li>
           <?php if ($nivel_acesso === 'Proprietário') { ?>
             <li class="nav-item active">
@@ -134,47 +138,135 @@ if ($resultMes) {
 
   <div class="container mt-5">
     <div class="row justify-content-around">
-        <div class="col-md-4 mb-4">
-            <div class="card">
-                <div class="card-body">
-                    <h1 class="card-title">Hoje</h1>
-                    <h3>Vendas realizadas: <?php echo $vendasHoje; ?></h3>
-                    <h3>Faturamento: R$<?php echo number_format($faturamentoHoje, 2, ',', '.'); ?></h3>
-                    <h2>Lucro Total: R$<?php echo number_format($lucroHoje, 2, ',', '.'); ?></h2>
-                </div>
-            </div>
+      <div class="col-md-4 mb-4">
+        <div class="card">
+          <div class="card-body">
+            <h1 class="card-title">Hoje</h1>
+            <h3>Vendas realizadas:
+              <?php echo $vendasHoje; ?>
+            </h3>
+            <h3>Faturamento: R$
+              <?php echo number_format($faturamentoHoje, 2, ',', '.'); ?>
+            </h3>
+            <h2>Lucro Total: R$
+              <?php echo number_format($lucroHoje, 2, ',', '.'); ?>
+            </h2>
+          </div>
         </div>
+      </div>
 
-        <div class="col-md-4 mb-4">
-            <div class="card">
-                <div class="card-body">
-                    <h1 class="card-title">Semana</h1>
-                    <h3>Vendas realizadas: <?php echo $vendasSemana; ?></h3>
-                    <h3>Faturamento: R$<?php echo number_format($faturamentoSemana, 2, ',', '.'); ?></h3>
-                    <h2>Lucro Total: R$<?php echo number_format($lucroSemana, 2, ',', '.'); ?></h2>
-                </div>
-            </div>
+      <div class="col-md-4 mb-4">
+        <div class="card">
+          <div class="card-body">
+            <h1 class="card-title">Semana</h1>
+            <h3>Vendas realizadas:
+              <?php echo $vendasSemana; ?>
+            </h3>
+            <h3>Faturamento: R$
+              <?php echo number_format($faturamentoSemana, 2, ',', '.'); ?>
+            </h3>
+            <h2>Lucro Total: R$
+              <?php echo number_format($lucroSemana, 2, ',', '.'); ?>
+            </h2>
+          </div>
         </div>
+      </div>
 
-        <div class="col-md-4 mb-4">
-            <div class="card">
-                <div class="card-body">
-                    <h1 class="card-title">Mês</h1>
-                    <h3>Vendas realizadas: <?php echo $vendasMes; ?></h3>
-                    <h3>Faturamento: R$<?php echo number_format($faturamentoMes, 2, ',', '.'); ?></h3>
-                    <h2>Lucro Total: R$<?php echo number_format($lucroMes, 2, ',', '.'); ?></h2>
-                </div>
-            </div>
+      <div class="col-md-4 mb-4">
+        <div class="card">
+          <div class="card-body">
+            <h1 class="card-title">Mês</h1>
+            <h3>Vendas realizadas:
+              <?php echo $vendasMes; ?>
+            </h3>
+            <h3>Faturamento: R$
+              <?php echo number_format($faturamentoMes, 2, ',', '.'); ?>
+            </h3>
+            <h2>Lucro Total: R$
+              <?php echo number_format($lucroMes, 2, ',', '.'); ?>
+            </h2>
+          </div>
         </div>
+      </div>
     </div>
-</div>
+  </div>
 
+  <div class="container">
+    <h5 style="text-align: center">Tabela de pedidos</h5>
+    <table class="table table-striped" id="tabela_relatorio" style="text-align: center;">
+      <thead>
+        <tr>
+          <th style="text-align: center;">Data do Pedido</th>
+          <th style="text-align: center;">Valor Total</th>
+          <th style="text-align: center;">Lucro Obtido</th>
+          <th style="text-align: center;">Responsável ID</th>
+          <th style="text-align: center;">Pagamento ID</th>
+          <th style="text-align: center;">Comércio ID</th>
+        </tr>
+      </thead>
+      <tbody>
+        <?php
+        // Conecte-se ao banco de dados aqui
+        
+        if (isset($_SESSION['comercio_id'])) {
+          $comercio_id = $_SESSION['comercio_id'];
+
+          // Consulta SQL para selecionar os dados da tabela "pedido" com base no comercio_id
+          $sql = "SELECT
+        usuario.nome AS nome_usuario,
+        forma_pagamento.tipo AS nome_forma_pagamento,
+        comercio.nome AS nome_comercio,
+        pedido.*
+    FROM
+        pdvher45_PDV.pedido
+    INNER JOIN usuario ON pedido.responsavel_id = usuario.id
+    INNER JOIN forma_pagamento ON pedido.pagamento_id = forma_pagamento.id
+    INNER JOIN comercio ON pedido.comercio_id = comercio.id
+    WHERE pedido.comercio_id = '$comercio_id';
+    ";
+          $result = mysqli_query($conexao, $sql);
+
+          if (mysqli_num_rows($result) > 0) {
+            while ($row = mysqli_fetch_assoc($result)) {
+              echo "<tr>";
+              echo "<td style='text-align: center;'>" . $row["data_pedido"] . "</td>";
+              echo "<td style='text-align: center;'>" . $row["valor_total"] . "</td>";
+              echo "<td style='text-align: center;'>" . $row["lucro_obtido"] . "</td>";
+              echo "<td style='text-align: center;'>" . $row["nome_usuario"] . "</td>"; // Nome do usuário
+              echo "<td style='text-align: center;'>" . $row["nome_forma_pagamento"] . "</td>"; // Nome da forma de pagamento
+              echo "<td style='text-align: center;'>" . $row["nome_comercio"] . "</td>"; // Nome do comércio
+              echo "</tr>";
+
+            }
+          } else {
+            echo "<tr><td colspan='7' style='text-align: center;'>Nenhum registro encontrado.</td></tr>";
+          }
+        } else {
+          echo "A variável de sessão comercio_id não está definida.";
+        }
+
+        // Feche a conexão com o banco de dados
+        
+        ?>
+      </tbody>
+    </table>
+  </div>
   <script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
   <script nomodule src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
   <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.mask/1.14.16/jquery.mask.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.0.18/dist/sweetalert2.min.js"></script>
   <script src="//cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
+
+  <script>
+    $(document).ready(function () {
+      $('#tabela_relatorio').DataTable({
+        "language": {
+          "url": "//cdn.datatables.net/plug-ins/1.10.24/i18n/Portuguese.json"
+        }
+      });
+    });
+  </script>
 
   <script>
     // Função para realizar o logoff

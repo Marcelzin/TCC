@@ -2,30 +2,30 @@
 session_start();
 
 if (isset($_SESSION['comercio_id']) && isset($_SESSION['usuario_id'])) {
-  include_once('config.php');
+    include_once('config.php');
 
-  // Inicialize a variável $nivel_acesso com um valor padrão
-  $nivel_acesso = '';
+    // Inicialize a variável $nivel_acesso com um valor padrão
+    $nivel_acesso = '';
 
-  // Consulta SQL para buscar o nível de acesso do usuário com base no 'usuario_id'
-  $usuario_id = $_SESSION['usuario_id'];
-  $sql = "SELECT nivel_acesso FROM usuario WHERE ID = '$usuario_id'";
-  $result = mysqli_query($conexao, $sql);
+    // Consulta SQL para buscar o nível de acesso do usuário com base no 'usuario_id'
+    $usuario_id = $_SESSION['usuario_id'];
+    $sql = "SELECT nivel_acesso FROM usuario WHERE ID = '$usuario_id'";
+    $result = mysqli_query($conexao, $sql);
 
-  if ($result) {
-    $row = mysqli_fetch_assoc($result);
-    $nivel_acesso = $row['nivel_acesso'];
-  } else {
-    // Se houver um erro na consulta, você pode lidar com ele aqui
-    echo "Erro na consulta: " . mysqli_error($conexao);
-    exit();
-  }
+    if ($result) {
+        $row = mysqli_fetch_assoc($result);
+        $nivel_acesso = $row['nivel_acesso'];
+    } else {
+        // Se houver um erro na consulta, você pode lidar com ele aqui
+        echo "Erro na consulta: " . mysqli_error($conexao);
+        exit();
+    }
 } else {
-  echo '<script type="text/javascript">
+    echo '<script type="text/javascript">
             alert("Acesso Negado. Você precisa efetuar login novamente.");
             window.location.href = "../index.html"; // Redirecione imediatamente
           </script>';
-  exit();
+    exit();
 }
 ?>
 
@@ -62,40 +62,41 @@ if (isset($_SESSION['comercio_id']) && isset($_SESSION['usuario_id'])) {
 
 <body style="flex-direction: column">
 
-<nav class="navbar navbar-expand-lg navbar-light" style="background-color: #2e3559 !important;">
-    <div class="container-fluid">
-      <a class="navbar-brand" href="/TCC/PAGES/home.php">
-        <img src="/TCC/STATIC/PDV-HERMES4.png" alt="Logo" width="60" height="auto">
-      </a>
-      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
-        aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon"></span>
-      </button>
-      <div class="collapse navbar-collapse" id="navbarNav">
-        <ul class="navbar-nav">
-          <li class="nav-item">
-            <a class="nav-link" style="color: #fff !important;" href="/TCC/PAGES/home.php">HOME</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" style="color: #fff !important;" href="/TCC/PAGES/vendas.php">VENDAS</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" style="color: #fff !important; font-weight: 600;"
-              href="/TCC/PAGES/cadastro_prod.php">PRODUTOS</a>
-          </li>
-          <?php if ($nivel_acesso === 'Proprietário') { ?>
-            <li class="nav-item active">
-              <a class="nav-link" style="color: #fff !important;" href="/TCC/PAGES/funcionarios.php">USUÁRIOS</a>
-            </li>
-          <?php } ?>
-        </ul>
-      </div>
-      <div>
-        <a class="nav-link" style="color: #fff !important; cursor: pointer" onclick="logoff()"><ion-icon
-            name="exit-outline"></ion-icon></a>
-      </div>
-    </div>
-  </nav>
+    <nav class="navbar navbar-expand-lg navbar-light" style="background-color: #2e3559 !important;">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="/TCC/PAGES/home.php">
+                <img src="/TCC/STATIC/PDV-HERMES4.png" alt="Logo" width="60" height="auto">
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+                aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav">
+                    <li class="nav-item">
+                        <a class="nav-link" style="color: #fff !important;" href="/TCC/PAGES/home.php">HOME</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" style="color: #fff !important;" href="/TCC/PAGES/vendas.php">VENDAS</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" style="color: #fff !important; font-weight: 600;"
+                            href="/TCC/PAGES/cadastro_prod.php">PRODUTOS</a>
+                    </li>
+                    <?php if ($nivel_acesso === 'Proprietário') { ?>
+                        <li class="nav-item active">
+                            <a class="nav-link" style="color: #fff !important;"
+                                href="/TCC/PAGES/funcionarios.php">USUÁRIOS</a>
+                        </li>
+                    <?php } ?>
+                </ul>
+            </div>
+            <div>
+                <a class="nav-link" style="color: #fff !important; cursor: pointer" onclick="logoff()"><ion-icon
+                        name="exit-outline"></ion-icon></a>
+            </div>
+        </div>
+    </nav>
     <div class="card-cadastro" style="margin-bottom: 50px">
         <div class="left">
             <form id="form_cadastro_prod" name="form_cadastro_prod" method="POST">
@@ -442,7 +443,7 @@ if (isset($_SESSION['comercio_id']) && isset($_SESSION['usuario_id'])) {
             $('#valorfab').mask('999999999.99', { reverse: true });
 
             $('#price').mask('999999999.99', { reverse: true });
-            
+
             $('#edit_valor_venda').mask('999999999.99', { reverse: true });
 
             $('#edit_valor_fabrica').mask('999999999.99', { reverse: true });
