@@ -2,30 +2,30 @@
 session_start();
 
 if (isset($_SESSION['comercio_id']) && isset($_SESSION['usuario_id'])) {
-  include_once('config.php');
+    include_once('config.php');
 
-  // Inicialize a variável $nivel_acesso com um valor padrão
-  $nivel_acesso = '';
+    // Inicialize a variável $nivel_acesso com um valor padrão
+    $nivel_acesso = '';
 
-  // Consulta SQL para buscar o nível de acesso do usuário com base no 'usuario_id'
-  $usuario_id = $_SESSION['usuario_id'];
-  $sql = "SELECT nivel_acesso FROM usuario WHERE ID = '$usuario_id'";
-  $result = mysqli_query($conexao, $sql);
+    // Consulta SQL para buscar o nível de acesso do usuário com base no 'usuario_id'
+    $usuario_id = $_SESSION['usuario_id'];
+    $sql = "SELECT nivel_acesso FROM usuario WHERE ID = '$usuario_id'";
+    $result = mysqli_query($conexao, $sql);
 
-  if ($result) {
-    $row = mysqli_fetch_assoc($result);
-    $nivel_acesso = $row['nivel_acesso'];
-  } else {
-    // Se houver um erro na consulta, você pode lidar com ele aqui
-    echo "Erro na consulta: " . mysqli_error($conexao);
-    exit();
-  }
+    if ($result) {
+        $row = mysqli_fetch_assoc($result);
+        $nivel_acesso = $row['nivel_acesso'];
+    } else {
+        // Se houver um erro na consulta, você pode lidar com ele aqui
+        echo "Erro na consulta: " . mysqli_error($conexao);
+        exit();
+    }
 } else {
-  echo '<script type="text/javascript">
+    echo '<script type="text/javascript">
             alert("Acesso Negado. Você precisa efetuar login novamente.");
             window.location.href = "../index.html"; // Redirecione imediatamente
           </script>';
-  exit();
+    exit();
 }
 ?>
 <!DOCTYPE html>
@@ -51,40 +51,41 @@ if (isset($_SESSION['comercio_id']) && isset($_SESSION['usuario_id'])) {
 </head>
 
 <body>
-<nav class="navbar navbar-expand-lg navbar-light" style="background-color: #2e3559 !important;">
-    <div class="container-fluid">
-      <a class="navbar-brand" href="/TCC/PAGES/home.php">
-        <img src="/TCC/STATIC/PDV-HERMES4.png" alt="Logo" width="60" height="auto">
-      </a>
-      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
-        aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon"></span>
-      </button>
-      <div class="collapse navbar-collapse" id="navbarNav">
-        <ul class="navbar-nav">
-          <li class="nav-item">
-            <a class="nav-link" style="color: #fff !important;" href="/TCC/PAGES/home.php">HOME</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" style="color: #fff !important;" href="/TCC/PAGES/vendas.php">VENDAS</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" style="color: #fff !important; font-weight: 600;"
-              href="/TCC/PAGES/cadastro_prod.php">PRODUTOS</a>
-          </li>
-          <?php if ($nivel_acesso === 'Proprietário') { ?>
-            <li class="nav-item active">
-              <a class="nav-link" style="color: #fff !important;" href="/TCC/PAGES/funcionarios.php">USUÁRIOS</a>
-            </li>
-          <?php } ?>
-        </ul>
-      </div>
-      <div>
-        <a class="nav-link" style="color: #fff !important; cursor: pointer" onclick="logoff()"><ion-icon
-            name="exit-outline"></ion-icon></a>
-      </div>
-    </div>
-  </nav>
+    <nav class="navbar navbar-expand-lg navbar-light" style="background-color: #2e3559 !important;">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="/TCC/PAGES/home.php">
+                <img src="/TCC/STATIC/PDV-HERMES4.png" alt="Logo" width="60" height="auto">
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+                aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav">
+                    <li class="nav-item">
+                        <a class="nav-link" style="color: #fff !important;" href="/TCC/PAGES/home.php">HOME</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" style="color: #fff !important;" href="/TCC/PAGES/vendas.php">VENDAS</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" style="color: #fff !important; font-weight: 600;"
+                            href="/TCC/PAGES/cadastro_prod.php">PRODUTOS</a>
+                    </li>
+                    <?php if ($nivel_acesso === 'Proprietário') { ?>
+                        <li class="nav-item active">
+                            <a class="nav-link" style="color: #fff !important;"
+                                href="/TCC/PAGES/funcionarios.php">USUÁRIOS</a>
+                        </li>
+                    <?php } ?>
+                </ul>
+            </div>
+            <div>
+                <a class="nav-link" style="color: #fff !important; cursor: pointer" onclick="logoff()"><ion-icon
+                        name="exit-outline"></ion-icon></a>
+            </div>
+        </div>
+    </nav>
 
     <div class="container-fluid">
         <div class="row">
@@ -130,31 +131,27 @@ if (isset($_SESSION['comercio_id']) && isset($_SESSION['usuario_id'])) {
                     ?>
                 </div>
             </div>
-            <div class="col-md-3">
+            <div class="col-md-3" style="border-color: #999999; border-radius: 20px; border: solid 1px; margin-top: 3.5%">
                 <div class="sticky-top">
                     <div class="item-list">
-                        <div
-                            style="width: 100%; display: flex; justify-content: center; align-items: center; font-size: 1.5rem; padding: 5%; font-weight: bold">
-                            <span class="lista">Resumo do pedido</span>
+                        <div class="header">
+                            <h4 class="text-center">Resumo do Pedido</h4>
                         </div>
                         <ul class="product-list">
-                            <!-- <li class="item-list-card">
-                                <div class="item-list-final-image"></div>
+                            <li class="item-list-card">
                                 <div class="item-list-final-description">
-                                    <section id="name-product">
-                                        <span class="name-product">Nome do produto</span>
-                                    </section>
-                                    <section id="item-qtd">
-                                        <span class="item-qnt">x4</span>
-                                    </section>
-                                    <span class="final-price">R$30,00</span>
+                                    <div class="product-details" id="product-details-container">
+                                        <!-- Conteúdo dos produtos será adicionado aqui dinamicamente -->
+                                    </div>
                                 </div>
-                            </li> -->
+                            </li>
                         </ul>
+                        <div class="subtotal">
+                            <h4 class="text-end">Subtotal: R$120,00</h4>
+                        </div>
                     </div>
                     <div class="d-flex justify-content-between align-items-center mb-2">
                         <!-- Divs da forma de pagamento -->
-
                         <button id="pay-form" class="btn btn-secondary">
                             <ion-icon name="card-outline"></ion-icon>
                             Débito
@@ -168,7 +165,6 @@ if (isset($_SESSION['comercio_id']) && isset($_SESSION['usuario_id'])) {
                             <ion-icon name="card-outline"></ion-icon>
                             Crédito
                         </button>
-
                     </div>
                     <div class="d-flex justify-content-center mb-2" style="justify-content: space-between !important;">
                         <!-- Botões de Finalizar e Limpar alinhados ao centro -->
@@ -199,12 +195,11 @@ if (isset($_SESSION['comercio_id']) && isset($_SESSION['usuario_id'])) {
 </body>
 
 <script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
-    <script nomodule src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.mask/1.14.16/jquery.mask.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.0.18/dist/sweetalert2.min.js"></script>
-    <script src="//cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
-
+<script nomodule src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.mask/1.14.16/jquery.mask.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.0.18/dist/sweetalert2.min.js"></script>
+<script src="//cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
 
 <style>
     .product-list {
@@ -216,98 +211,76 @@ if (isset($_SESSION['comercio_id']) && isset($_SESSION['usuario_id'])) {
 </style>
 
 <script>
-    document.addEventListener('DOMContentLoaded', function () {
-        const addToCartButtons = document.querySelectorAll('.add-to-cart');
-        const productList = document.querySelector('.product-list');
-        const cartItems = [];
+    // Função para realizar o logoff
+    function logoff() {
+        $.ajax({
+            method: "POST",
+            url: '/TCC/QUERYS/logout.php',
+            success: function (response) {
+                // Exibir um alerta SweetAlert2 quando o logoff for bem-sucedido
+                Swal.fire({
+                    icon: 'success', // Ícone de sucesso
+                    title: 'Usuário deslogado com sucesso',
+                    showConfirmButton: false, // Oculta o botão de confirmação
+                    timer: 1500 // Fecha automaticamente após 1,5 segundos
+                });
 
-        addToCartButtons.forEach(button => {
-            button.addEventListener('click', function (event) {
-                event.preventDefault();
-                const productId = button.getAttribute('data-product-id');
-                const productName = button.closest('.card').querySelector('.card-title').textContent;
-                const productPrice = parseFloat(button.closest('.card').querySelector('.card-text').textContent.replace('R$', '').trim());
-
-                // Check if the product is already in the cart
-                const existingCartItem = cartItems.find(item => item.productId === productId);
-
-                if (existingCartItem) {
-                    // If it's already in the cart, increment the quantity
-                    existingCartItem.quantity++;
-                    // Update the quantity in the UI
-                    const quantitySpan = document.querySelector(`.item-qnt[data-product-id="${productId}"]`);
-                    quantitySpan.textContent = `x${existingCartItem.quantity}`;
-                } else {
-                    // If it's not in the cart, create a new cart item
-                    const cartItem = {
-                        productId,
-                        productName,
-                        quantity: 1,
-                        productPrice
-                    };
-
-                    // Add the new cart item to the cartItems array
-                    cartItems.push(cartItem);
-
-                    // Create a new list item for the cart
-                    const listItem = document.createElement('li');
-                    listItem.classList.add('item-list-card');
-
-                    listItem.innerHTML = `
-                        <div class="item-list-final-description">
-                            <section id="name-product">
-                                <span class="name-product">${productName}</span>
-                            </section>
-                            <section id="item-qtd" class="item-qnt" data-product-id="${productId}">
-                                <input type="number" min="1" value="1" class="item-quantity">
-                            </section>
-                            <span class="final-price">R$${(cartItem.quantity * cartItem.productPrice).toFixed(2)}</span>
-                        </div>
-                    `;
-
-                    // Add event listener to update price when quantity changes
-                    const quantityInput = listItem.querySelector('.item-quantity');
-                    quantityInput.addEventListener('input', function () {
-                        const newQuantity = parseInt(quantityInput.value);
-                        cartItem.quantity = newQuantity;
-                        const priceSpan = listItem.querySelector('.final-price');
-                        priceSpan.textContent = `R$${(cartItem.quantity * cartItem.productPrice).toFixed(2)}`;
-                    });
-
-                    productList.appendChild(listItem);
-                }
-            });
+                // Redirecionar o usuário para a página de login ou fazer outras ações após o logoff
+                setTimeout(function () {
+                    window.location.href = '/TCC/index.html'; // Altere para a URL correta da página de login
+                }, 1500);
+            },
+            error: function (error) {
+                console.error(error);
+                // Lidar com erros, se necessário
+            }
         });
-    });
+    }
 </script>
 
 <script>
-        // Função para realizar o logoff
-        function logoff() {
-            $.ajax({
-                method: "POST",
-                url: '/TCC/QUERYS/logout.php',
-                success: function (response) {
-                    // Exibir um alerta SweetAlert2 quando o logoff for bem-sucedido
-                    Swal.fire({
-                        icon: 'success', // Ícone de sucesso
-                        title: 'Usuário deslogado com sucesso',
-                        showConfirmButton: false, // Oculta o botão de confirmação
-                        timer: 1500 // Fecha automaticamente após 1,5 segundos
-                    });
+    // Array para armazenar os IDs dos produtos
+    var productIds = [];
 
-                    // Redirecionar o usuário para a página de login ou fazer outras ações após o logoff
-                    setTimeout(function () {
-                        window.location.href = '/TCC/index.html'; // Altere para a URL correta da página de login
-                    }, 1500);
-                },
-                error: function (error) {
-                    console.error(error);
-                    // Lidar com erros, se necessário
-                }
-            });
-        }
-    </script>
+    // Função para lidar com o clique no botão "Adicionar ao pedido"
+    function addToCartClicked(event) {
+        event.preventDefault(); // Impede que o link redirecione para outra página
+
+        // Obtém o ID do produto a partir do atributo "data-product-id"
+        var productId = event.target.getAttribute('data-product-id');
+
+        // Armazena o ID na array
+        productIds.push(productId);
+
+        // Exibe os IDs armazenados na array no console
+        console.log('IDs dos produtos no carrinho:', productIds);
+
+        // Faz uma requisição AJAX para processar o pedido
+        $.ajax({
+            type: "POST",
+            url: "/TCC/QUERYS/processa_pedido.php",
+            data: { productIds: productIds },
+            success: function (response) {
+                console.log("Resposta do servidor:", response);
+                // Você pode lidar com a resposta do servidor aqui
+
+                // Atualize a div 'product-details-container' com a resposta do servidor
+                $("#product-details-container").html(response);
+            },
+            error: function (xhr, status, error) {
+                console.error("Erro na requisição AJAX:", error);
+            }
+        });
+    }
+
+    // Selecione todos os botões "Adicionar ao pedido" e adicione um evento de clique a cada um deles
+    var addToCartButtons = document.querySelectorAll('.add-to-cart');
+    addToCartButtons.forEach(function (button) {
+        button.addEventListener('click', addToCartClicked);
+    });
+</script>
+
+
 
 </body>
 
