@@ -195,6 +195,7 @@ if (isset($_SESSION['comercio_id']) && isset($_SESSION['usuario_id'])) {
                     <th style="text-align: center;">Descrição do Produto</th>
                     <th style="text-align: center;">Valor de Produção</th>
                     <th style="text-align: center;">Preço</th>
+                    <th style="text-align: center;">Lucro</th> <!-- Nova coluna para exibir o Lucro -->
                     <th style="text-align: center;">Status</th>
                     <th style="text-align: center;">Inativar</th>
                     <th style="text-align: center;">Editar</th>
@@ -213,11 +214,17 @@ if (isset($_SESSION['comercio_id']) && isset($_SESSION['usuario_id'])) {
                     if (mysqli_num_rows($result) > 0) {
                         while ($row = mysqli_fetch_assoc($result)) {
                             echo "<tr>";
-                            /* echo "<td style='text-align: center;'>" . $row["id"] . "</td>"; */
                             echo "<td style='text-align: center;'>" . $row["nome"] . "</td>";
                             echo "<td style='text-align: center;'>" . $row["descricao"] . "</td>";
                             echo "<td style='text-align: center;'>R$" . $row["valor_fabrica"] . "</td>";
                             echo "<td style='text-align: center;'>R$" . $row["valor_venda"] . "</td>";
+
+                            // Calcular e exibir o Lucro (Preço - Valor de Produção)
+                            $valorFabrica = floatval($row["valor_fabrica"]);
+                            $valorVenda = floatval($row["valor_venda"]);
+                            $lucro = $valorVenda - $valorFabrica;
+                            echo "<td style='text-align: center;'>R$" . number_format($lucro, 2) . "</td>";
+
                             echo "<td style='text-align: center;'>" . $row["status"] . "</td>";
                             echo '<td style="text-align: center;"><ion-icon name="ban-outline" style="cursor: pointer;" onclick="exibirModalExclusao(' . $row["id"] . ')"></ion-icon></td>';
                             echo '<td style="text-align: center;"><ion-icon name="pencil-outline" style="cursor: pointer;" onclick="abrirModalEdicao(' . $row["id"] . ')"></ion-icon></td>';
@@ -228,8 +235,6 @@ if (isset($_SESSION['comercio_id']) && isset($_SESSION['usuario_id'])) {
                     }
 
                     mysqli_close($conexao);
-                } else {
-                    echo "A variável de sessão comercio_id não está definida.";
                 }
                 ?>
 

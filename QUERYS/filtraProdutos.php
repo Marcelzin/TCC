@@ -10,7 +10,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     $comercio_id = $_SESSION['comercio_id'];
 
-    $query = "SELECT * FROM produto WHERE comercio_id = ? ORDER BY status ASC";
+    $query = "SELECT * FROM produto WHERE comercio_id = ?";
 
     $types = "i";
     $params = array(&$comercio_id);
@@ -39,11 +39,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $params[] = floatval($preco_filtra);
     }
 
+    $query .= " ORDER BY status ASC"; // Adiciona a cláusula ORDER BY
+
     $stmt = mysqli_prepare($conexao, $query);
 
     if ($stmt) {
         mysqli_stmt_bind_param($stmt, $types, ...$params);
-        mysqli_stmt_execute($stmt);
+        mysqli_stmt_execute($stmt); // Corrigir o typo "stmat" para "stmt"
         $result = mysqli_stmt_get_result($stmt);
 
         if (mysqli_num_rows($result) > 0) {
@@ -57,6 +59,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 echo '<td style="text-align: center;">' . $row['descricao'] . '</td>';
                 echo '<td style="text-align: center;">R$' . number_format($row['valor_fabrica'], 2, ',', '.') . '</td>';
                 echo '<td style="text-align: center;">R$' . number_format($row['valor_venda'], 2, ',', '.') . '</td>';
+                // Calcular e exibir o Lucro (Preço - Valor de Produção)
+                $valorFabrica = floatval($row["valor_fabrica"]);
+                $valorVenda = floatval($row["valor_venda"]);
+                $lucro = $valorVenda - $valorFabrica;
+                echo "<td style='text-align: center;'>R$" . number_format($lucro, 2) . "</td>";
                 echo '<td style="text-align: center;">' . $row['status'] . '</td>';
                 echo '<td style="text-align: center;"><ion-icon name="ban-outline" style="cursor: pointer;" onclick="exibirModalExclusao(' . $row["id"] . ')"></ion-icon></td>';
                 echo '<td style="text-align: center;"><ion-icon name="pencil-outline" style="cursor: pointer;" onclick="abrirModalEdicao(' . $row["id"] . ')"></ion-icon></td>';
