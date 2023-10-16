@@ -10,7 +10,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     $comercio_id = $_SESSION['comercio_id'];
 
-    $query = "SELECT * FROM produto WHERE comercio_id = ?";
+    $query = "SELECT * FROM produto WHERE comercio_id = ? AND status = 'Ativo'";
 
     $types = "i";
     $params = array(&$comercio_id);
@@ -45,32 +45,32 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     if ($stmt) {
         mysqli_stmt_bind_param($stmt, $types, ...$params);
-        mysqli_stmt_execute($stmt); // Corrigir o typo "stmat" para "stmt"
+        mysqli_stmt_execute($stmt);
         $result = mysqli_stmt_get_result($stmt);
 
         if (mysqli_num_rows($result) > 0) {
-            echo '<table class="table" id="tb_produtos">
-                    
-                    <tbody>';
+            // Inicialize um contêiner para os cards de produtos
+            echo '<div class="row" style="padding-top: 5%">';
 
             while ($row = mysqli_fetch_assoc($result)) {
-                echo '<tr>';
-                echo '<td style="text-align: center;">' . $row['nome'] . '</td>';
-                echo '<td style="text-align: center;">' . $row['descricao'] . '</td>';
-                echo '<td style="text-align: center;">R$' . number_format($row['valor_fabrica'], 2, ',', '.') . '</td>';
-                echo '<td style="text-align: center;">R$' . number_format($row['valor_venda'], 2, ',', '.') . '</td>';
-                // Calcular e exibir o Lucro (Preço - Valor de Produção)
-                $valorFabrica = floatval($row["valor_fabrica"]);
-                $valorVenda = floatval($row["valor_venda"]);
-                $lucro = $valorVenda - $valorFabrica;
-                echo "<td style='text-align: center;'>R$" . number_format($lucro, 2) . "</td>";
-                echo '<td style="text-align: center;">' . $row['status'] . '</td>';
-                echo '<td style="text-align: center;"><ion-icon name="ban-outline" style="cursor: pointer;" onclick="exibirModalExclusao(' . $row["id"] . ')"></ion-icon></td>';
-                echo '<td style="text-align: center;"><ion-icon name="pencil-outline" style="cursor: pointer;" onclick="abrirModalEdicao(' . $row["id"] . ')"></ion-icon></td>';
-                echo '</tr>';
+                // Construa um card para cada produto
+                echo '<div class="col-md-4">
+                    <div class="card mb-4 h-100">
+                        <img src="' . $row['imagem'] . '" class="card-img-top"
+                            style="min-height: 200px;max-height: 200px; object-fit: contain;"
+                            alt="Imagem do Produto">
+                        <div class="card-body d-flex flex-column">
+                            <h5 class="card-title">' . $row['nome'] . '</h5>
+                            <p class="card-text">' . $row['descricao'] . '</p>
+                            <p class="card-text">R$' . number_format($row['valor_venda'], 2, ',', '.') . '</p>';
+                echo '<a href="#" data-product-id="' . $row['id'] . '" class="btn btn-primary mt-auto add-to-cart">Adicionar ao pedido</a>
+                        </div>
+                    </div>
+                </div>';
             }
 
-            echo '</tbody></table>';
+            // Feche o contêiner de cards
+            echo '</div>';
         } else {
             echo 'Nenhum registro encontrado.';
         }

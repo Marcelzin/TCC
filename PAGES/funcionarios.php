@@ -380,29 +380,29 @@ if (isset($_SESSION['comercio_id']) && isset($_SESSION['usuario_id'])) {
             }
         </script>
 
-<?php
-  include_once('config.php');
+        <?php
+        include_once('config.php');
 
-  $query = "SELECT * FROM usuario WHERE comercio_id = '$comercio_id' AND id <> '$usuario_id'";
+        $query = "SELECT * FROM usuario WHERE comercio_id = '$comercio_id' AND id <> '$usuario_id'";
 
-  $result = $conexao->query($query);
+        $result = $conexao->query($query);
 
-  if ($result->num_rows > 0) {
-    ?>
-    <script>
-        $(document).ready(function () {
-                $('#tabela_users').DataTable({
-                    "language": {
-                        "url": "//cdn.datatables.net/plug-ins/1.10.24/i18n/Portuguese.json"
-                    }
+        if ($result->num_rows > 0) {
+            ?>
+            <script>
+                $(document).ready(function () {
+                    $('#tabela_users').DataTable({
+                        "language": {
+                            "url": "//cdn.datatables.net/plug-ins/1.10.24/i18n/Portuguese.json"
+                        }
+                    });
                 });
-            });
-    </script>
-    <?php
-  }
+            </script>
+            <?php
+        }
 
-  $conexao->close();
-  ?>
+        $conexao->close();
+        ?>
 
 
         <script>

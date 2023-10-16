@@ -89,49 +89,82 @@ if (isset($_SESSION['comercio_id']) && isset($_SESSION['usuario_id'])) {
     </nav>
 
     <div class="container-fluid">
+        <div class="container mt-5" style="display: flex; flex-direction: column; margin-top: 0px !important;">
+            <h5 style="text-align: center">Filtrar produtos</h5>
+            <form id="FiltroUsuarioForm" style="display: flex; flex-direction: column">
+                <div class="row mb-3" style="margin-bottom: 0px !important">
+                    <div class="col-md-3">
+                        <label for="nome_filtra" class="form-label" style="font-weight: bold;">Nome</label>
+                        <input type="text" class="form-control" id="nome_filtra" name="nome_filtra"
+                            style="height: 40px; border: solid 1.5px;" maxlength="30">
+                    </div>
+                    <div class="col-md-3">
+                        <label for="descricao_filtra" class="form-label" style="font-weight: bold;">Descrição</label>
+                        <input type="text" class="form-control" id="descricao_filtra" name="descricao_filtra"
+                            style="height: 40px; border: solid 1.5px;" maxlength="50">
+                    </div>
+                    <div class="col-md-3">
+                        <label for="valor_prod_filtra" class="form-label" style="font-weight: bold;">Valor de
+                            produção</label>
+                        <input type="text" class="form-control" id="valor_prod_filtra" name="valor_prod_filtra"
+                            style="height: 40px; border: solid 1.5px;" maxlength="15">
+                    </div>
+                    <div class="col-md-3">
+                        <label for="preco_filtra" class="form-label" style="font-weight: bold;">Preço</label>
+                        <input type="text" class="form-control" id="preco_filtra" name="preco_filtra"
+                            style="height: 40px; border: solid 1.5px;" maxlength="15">
+                    </div>
+                </div>
+
+            </form>
+        </div>
         <div class="row">
             <div class="col-md-9">
                 <div class="row" style="padding-top: 5%">
-                    <?php
-                    if (isset($_SESSION['comercio_id'])) {
-                        $comercio_id = $_SESSION['comercio_id'];
+                    <div id="product-cards-container">
+                        <!-- Os cards dos produtos serão exibidos aqui -->
+                        <?php
+                        if (isset($_SESSION['comercio_id'])) {
+                            $comercio_id = $_SESSION['comercio_id'];
 
-                        $sql = "SELECT * FROM produto WHERE comercio_id = '$comercio_id' AND status = 'Ativo'";
-                        $result = mysqli_query($conexao, $sql);
+                            $sql = "SELECT * FROM produto WHERE comercio_id = '$comercio_id' AND status = 'Ativo'";
+                            $result = mysqli_query($conexao, $sql);
 
-                        if (mysqli_num_rows($result) > 0) {
-                            while ($row = mysqli_fetch_assoc($result)) {
-                                ?>
-                                <div class="col-md-4">
-                                    <div class="card mb-4 h-100">
-                                        <img src="<?php echo $row['imagem']; ?>" class="card-img-top"
-                                            style="min-height: 200px;max-height: 200px; object-fit: contain;"
-                                            alt="Imagem do Produto">
-                                        <div class="card-body d-flex flex-column">
-                                            <h5 class="card-title">
-                                                <?php echo $row['nome']; ?>
-                                            </h5>
-                                            <p class="card-text flex-grow-1">
-                                                <?php echo $row['descricao']; ?>
-                                            </p>
-                                            <p class="card-text">R$
-                                                <?php echo $row['valor_venda']; ?>
-                                            </p>
-                                            <a href="#" data-product-id="<?php echo $row['id']; ?>"
-                                                class="btn btn-primary mt-auto add-to-cart">Adicionar ao pedido</a>
+                            if (mysqli_num_rows($result) > 0) {
+                                while ($row = mysqli_fetch_assoc($result)) {
+                                    ?>
+                                    <div class="col-md-4">
+                                        <div class="card mb-4 h-100">
+                                            <img src="<?php echo $row['imagem']; ?>" class="card-img-top"
+                                                style="min-height: 200px;max-height: 200px; object-fit: contain;"
+                                                alt="Imagem do Produto">
+                                            <div class="card-body d-flex flex-column">
+                                                <h5 class="card-title">
+                                                    <?php echo $row['nome']; ?>
+                                                </h5>
+                                                <p class="card-text flex-grow-1">
+                                                    <?php echo $row['descricao']; ?>
+                                                </p>
+                                                <p class="card-text">R$
+                                                    <?php echo $row['valor_venda']; ?>
+                                                </p>
+                                                <a href="#" data-product-id="<?php echo $row['id']; ?>"
+                                                    class="btn btn-primary mt-auto add-to-cart">Adicionar ao pedido</a>
+                                            </div>
                                         </div>
                                     </div>
-                                </div>
-                                <?php
+                                    <?php
+                                }
+                            } else {
+                                echo '<div class="col-md-12">Nenhum produto encontrado para este comércio.</div>';
                             }
-                        } else {
-                            echo '<div class="col-md-12">Nenhum produto encontrado para este comércio.</div>';
+                            mysqli_close($conexao);
                         }
-                        mysqli_close($conexao);
-                    }
-                    ?>
+                        ?>
+                    </div>
                 </div>
             </div>
+
             <div class="col-md-3"
                 style="border-color: #999999; border-radius: 20px; border: solid 1px; margin-top: 3.5%">
                 <div class="sticky-top">
@@ -241,45 +274,46 @@ if (isset($_SESSION['comercio_id']) && isset($_SESSION['usuario_id'])) {
 </script>
 
 <script>
-    // Array para armazenar os IDs dos produtos
-    var productIds = [];
+    $(document).ready(function () {
+        // Adicione evento oninput para cada campo de entrada do formulário de filtragem
+        $("#nome_filtra, #descricao_filtra, #valor_prod_filtra, #preco_filtra").on('input', function () {
+            filtraProdutos(); // Chama a função de filtro quando o usuário insere qualquer valor
+        });
 
-    // Função para lidar com o clique no botão "Adicionar ao pedido"
-    function addToCartClicked(event) {
-        event.preventDefault(); // Impede que o link redirecione para outra página
+        $("#FiltroUsuarioForm").submit(function (event) {
+            event.preventDefault(); // Impede o envio do formulário padrão
+            filtraProdutos(); // Chama a função de filtro quando o formulário é enviado
+        });
 
-        // Obtém o ID do produto a partir do atributo "data-product-id"
-        var productId = event.target.getAttribute('data-product-id');
+        // Defina a função de filtro para ser chamada no carregamento da página
+        filtraProdutos();
+    });
 
-        // Armazena o ID na array
-        productIds.push(productId);
+    function filtraProdutos() {
+        var nome_filtra = $("#nome_filtra").val();
+        var descricao_filtra = $("#descricao_filtra").val();
+        var valor_prod_filtra = $("#valor_prod_filtra").val();
+        var preco_filtra = $("#preco_filtra").val();
 
-        // Exibe os IDs armazenados na array no console
-        console.log('IDs dos produtos no carrinho:', productIds);
-
-        // Faz uma requisição AJAX para processar o pedido
+        // Dentro da função que aciona o filtro no seu JavaScript
         $.ajax({
-            type: "POST",
-            url: "/TCC/QUERYS/processa_pedido.php",
-            data: { productIds: productIds },
-            success: function (response) {
-                console.log("Resposta do servidor:", response);
-                // Você pode lidar com a resposta do servidor aqui
-
-                // Atualize a div 'product-details-container' com a resposta do servidor
-                $("#product-details-container").html(response);
+            method: "POST",
+            url: '/TCC/QUERYS/filtraProdutos2.php', // Substitua pelo URL correto do seu arquivo PHP
+            data: {
+                nome_filtra: nome_filtra,
+                descricao_filtra: descricao_filtra,
+                valor_prod_filtra: valor_prod_filtra,
+                preco_filtra: preco_filtra
             },
-            error: function (xhr, status, error) {
-                console.error("Erro na requisição AJAX:", error);
+            success: function (response) {
+                // Atualize o conteúdo do #product-cards-container com os produtos filtrados
+                $("#product-cards-container").html(response);
+            },
+            error: function (error) {
+                console.error(error);
             }
         });
     }
-
-    // Selecione todos os botões "Adicionar ao pedido" e adicione um evento de clique a cada um deles
-    var addToCartButtons = document.querySelectorAll('.add-to-cart');
-    addToCartButtons.forEach(function (button) {
-        button.addEventListener('click', addToCartClicked);
-    });
 </script>
 
 </body>
