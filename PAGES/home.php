@@ -7,6 +7,9 @@ if (isset($_SESSION['comercio_id']) && isset($_SESSION['usuario_id'])) {
   // Inicialize a variável $nivel_acesso com um valor padrão
   $nivel_acesso = '';
 
+  // Obtenha o valor de $comercio_id da sessão
+  $comercio_id = $_SESSION['comercio_id'];
+
   // Consulta SQL para buscar o nível de acesso do usuário com base no 'usuario_id'
   $usuario_id = $_SESSION['usuario_id'];
   $sql = "SELECT nivel_acesso FROM usuario WHERE ID = '$usuario_id'";
@@ -27,9 +30,10 @@ if (isset($_SESSION['comercio_id']) && isset($_SESSION['usuario_id'])) {
           </script>';
   exit();
 }
+
 $sqlHoje = "SELECT COUNT(*) AS vendas_realizadas, SUM(valor_total) AS faturamento, SUM(lucro_obtido) AS lucro 
             FROM pedido 
-            WHERE DATE(data_pedido) = CURDATE();";
+            WHERE DATE(data_pedido) = CURDATE() AND comercio_id = '$comercio_id';";
 
 $resultHoje = mysqli_query($conexao, $sqlHoje);
 
@@ -45,14 +49,14 @@ if ($resultHoje) {
 // Consulta para o card "Semana"
 $sqlSemana = "SELECT COUNT(*) AS vendas_realizadas, SUM(valor_total) AS faturamento, SUM(lucro_obtido) AS lucro 
               FROM pedido 
-              WHERE YEARWEEK(data_pedido, 1) = YEARWEEK(NOW(), 1);";
+              WHERE YEARWEEK(data_pedido, 1) = YEARWEEK(NOW(), 1) AND comercio_id = '$comercio_id';";
 
 $resultSemana = mysqli_query($conexao, $sqlSemana);
 
 if ($resultSemana) {
   $rowSemana = mysqli_fetch_assoc($resultSemana);
   $vendasSemana = $rowSemana['vendas_realizadas'];
-  $faturamentoSemana = $rowSemana['faturamento'];
+  $faturamentoSemana = $rowHoje['faturamento'];
   $lucroSemana = $rowSemana['lucro'];
 } else {
   // Trate erros aqui, se necessário
@@ -61,7 +65,7 @@ if ($resultSemana) {
 // Consulta para o card "Mês"
 $sqlMes = "SELECT COUNT(*) AS vendas_realizadas, SUM(valor_total) AS faturamento, SUM(lucro_obtido) AS lucro 
            FROM pedido 
-           WHERE YEAR(data_pedido) = YEAR(NOW()) AND MONTH(data_pedido) = MONTH(NOW());";
+           WHERE YEAR(data_pedido) = YEAR(NOW()) AND MONTH(data_pedido) = MONTH(NOW()) AND comercio_id = '$comercio_id';";
 
 $resultMes = mysqli_query($conexao, $sqlMes);
 
@@ -76,6 +80,7 @@ if ($resultMes) {
 
 // ...
 ?>
+
 
 <!DOCTYPE html>
 <html lang="pt-br">
@@ -258,15 +263,39 @@ if ($resultMes) {
   <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.0.18/dist/sweetalert2.min.js"></script>
   <script src="//cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
 
-  <script>
-    $(document).ready(function () {
-      $('#tabela_relatorio').DataTable({
-        "language": {
-          "url": "//cdn.datatables.net/plug-ins/1.10.24/i18n/Portuguese.json"
-        }
+  <?php
+  include_once('config.php');
+
+  $query = "SELECT
+    usuario.nome AS nome_usuario,
+    forma_pagamento.tipo AS nome_forma_pagamento,
+    comercio.nome AS nome_comercio,
+    pedido.*
+FROM
+    pdvher45_PDV.pedido
+INNER JOIN usuario ON pedido.responsavel_id = usuario.id
+INNER JOIN forma_pagamento ON pedido.pagamento_id = forma_pagamento.id
+INNER JOIN comercio ON pedido.comercio_id = comercio.id
+WHERE pedido.comercio_id = '$comercio_id'";
+
+  $result = $conexao->query($query);
+
+  if ($result->num_rows > 0) {
+    ?>
+    <script>
+      $(document).ready(function () {
+        $('#tabela_relatorio').DataTable({
+          "language": {
+            "url": "//cdn.datatables.net/plug-ins/1.10.24/i18n/Portuguese.json"
+          }
+        });
       });
-    });
-  </script>
+    </script>
+    <?php
+  }
+
+  $conexao->close();
+  ?>
 
   <script>
     // Função para realizar o logoff

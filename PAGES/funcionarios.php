@@ -208,8 +208,6 @@ if (isset($_SESSION['comercio_id']) && isset($_SESSION['usuario_id'])) {
                             echo "<tr><td colspan='6' style='text-align: center;'>Nenhum registro encontrado.</td></tr>";
                         }
 
-
-                        mysqli_close($conexao);
                     } else {
                         echo "A variável de sessão comercio_id não está definida.";
                     }
@@ -382,15 +380,30 @@ if (isset($_SESSION['comercio_id']) && isset($_SESSION['usuario_id'])) {
             }
         </script>
 
-        <script>
-            $(document).ready(function () {
+<?php
+  include_once('config.php');
+
+  $query = "SELECT * FROM usuario WHERE comercio_id = '$comercio_id' AND id <> '$usuario_id'";
+
+  $result = $conexao->query($query);
+
+  if ($result->num_rows > 0) {
+    ?>
+    <script>
+        $(document).ready(function () {
                 $('#tabela_users').DataTable({
                     "language": {
                         "url": "//cdn.datatables.net/plug-ins/1.10.24/i18n/Portuguese.json"
                     }
                 });
             });
-        </script>
+    </script>
+    <?php
+  }
+
+  $conexao->close();
+  ?>
+
 
         <script>
             $(document).ready(function () {

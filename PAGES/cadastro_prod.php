@@ -102,7 +102,8 @@ if (isset($_SESSION['comercio_id']) && isset($_SESSION['usuario_id'])) {
             <form id="form_cadastro_prod" name="form_cadastro_prod" method="POST">
                 <div>
                     <label for="descricion">Descrição do produto</label>
-                    <input type="text" placeholder="Digite a descrição do produto aqui..." id="descricion" maxlength="50">
+                    <input type="text" placeholder="Digite a descrição do produto aqui..." id="descricion"
+                        maxlength="50">
                 </div>
                 <div>
                     <label for="name">Nome do produto</label>
@@ -114,7 +115,7 @@ if (isset($_SESSION['comercio_id']) && isset($_SESSION['usuario_id'])) {
                     <div class="valor">
 
                         <label for="valorfab">Valor de produção</label>
-                        <input type="text" placeholder="Valor de fabrica" id="valorfab"maxlength="15">
+                        <input type="text" placeholder="Valor de fabrica" id="valorfab" maxlength="15">
 
                     </div>
                     <div class="valor">
@@ -234,7 +235,7 @@ if (isset($_SESSION['comercio_id']) && isset($_SESSION['usuario_id'])) {
                         echo "<tr><td colspan='8' style='text-align: center;'>Nenhum registro encontrado.</td></tr>";
                     }
 
-                    mysqli_close($conexao);
+
                 }
                 ?>
 
@@ -373,15 +374,29 @@ if (isset($_SESSION['comercio_id']) && isset($_SESSION['usuario_id'])) {
         }
     </script>
 
-    <script>
-        $(document).ready(function () {
-            $('#tb_produtos').DataTable({
-                "language": {
-                    "url": "//cdn.datatables.net/plug-ins/1.10.24/i18n/Portuguese.json"
-                }
+    <?php
+    include_once('config.php');
+
+    $query = "SELECT * FROM pdvher45_PDV.produto WHERE comercio_id = '$comercio_id' ORDER BY status ASC";
+
+    $result = $conexao->query($query);
+
+    if ($result->num_rows > 0) {
+        ?>
+        <script>
+            $(document).ready(function () {
+                $('#tb_produtos').DataTable({
+                    "language": {
+                        "url": "//cdn.datatables.net/plug-ins/1.10.24/i18n/Portuguese.json"
+                    }
+                });
             });
-        });
-    </script>
+        </script>
+        <?php
+    }
+
+    $conexao->close();
+    ?>
 
     <script>
         function abrirModalEdicao(id) {
