@@ -102,11 +102,11 @@ if (isset($_SESSION['comercio_id']) && isset($_SESSION['usuario_id'])) {
             <form id="form_cadastro_prod" name="form_cadastro_prod" method="POST">
                 <div>
                     <label for="descricion">Descrição do produto</label>
-                    <input type="text" placeholder="Digite a descrição do produto aqui..." id="descricion">
+                    <input type="text" placeholder="Digite a descrição do produto aqui..." id="descricion" maxlength="50">
                 </div>
                 <div>
                     <label for="name">Nome do produto</label>
-                    <input type="text" placeholder="Digite o nome do produto aqui..." id="name">
+                    <input type="text" placeholder="Digite o nome do produto aqui..." id="name" maxlength="30">
                 </div>
 
                 <div class="valor-type">
@@ -114,13 +114,13 @@ if (isset($_SESSION['comercio_id']) && isset($_SESSION['usuario_id'])) {
                     <div class="valor">
 
                         <label for="valorfab">Valor de produção</label>
-                        <input type="text" placeholder="Valor de fabrica" id="valorfab">
+                        <input type="text" placeholder="Valor de fabrica" id="valorfab"maxlength="15">
 
                     </div>
                     <div class="valor">
 
                         <label for="price">Preço</label>
-                        <input type="text" placeholder="Digite o preço aqui..." id="price" class="price">
+                        <input type="text" placeholder="Digite o preço aqui..." id="price" class="price" maxlength="15">
                     </div>
 
                 </div>
@@ -163,23 +163,23 @@ if (isset($_SESSION['comercio_id']) && isset($_SESSION['usuario_id'])) {
                 <div class="col-md-3">
                     <label for="nome_filtra" class="form-label" style="font-weight: bold;">Nome</label>
                     <input type="text" class="form-control" id="nome_filtra" name="nome_filtra"
-                        style="height: 40px; border: solid 1.5px;">
+                        style="height: 40px; border: solid 1.5px;" maxlength="30">
                 </div>
                 <div class="col-md-3">
                     <label for="descricao_filtra" class="form-label" style="font-weight: bold;">Descrição</label>
                     <input type="text" class="form-control" id="descricao_filtra" name="descricao_filtra"
-                        style="height: 40px; border: solid 1.5px;">
+                        style="height: 40px; border: solid 1.5px;" maxlength="50">
                 </div>
                 <div class="col-md-3">
                     <label for="valor_prod_filtra" class="form-label" style="font-weight: bold;">Valor de
                         produção</label>
                     <input type="text" class="form-control" id="valor_prod_filtra" name="valor_prod_filtra"
-                        style="height: 40px; border: solid 1.5px;">
+                        style="height: 40px; border: solid 1.5px;" maxlength="15">
                 </div>
                 <div class="col-md-3">
                     <label for="preco_filtra" class="form-label" style="font-weight: bold;">Preço</label>
                     <input type="text" class="form-control" id="preco_filtra" name="preco_filtra"
-                        style="height: 40px; border: solid 1.5px;">
+                        style="height: 40px; border: solid 1.5px;" maxlength="15">
                 </div>
             </div>
 
@@ -255,19 +255,19 @@ if (isset($_SESSION['comercio_id']) && isset($_SESSION['usuario_id'])) {
                         <input type="hidden" id="produto_id">
                         <div class="mb-3">
                             <label for="edit_descricao" class="form-label">Descrição do produto</label>
-                            <input type="text" class="form-control" id="edit_descricao">
+                            <input type="text" class="form-control" id="edit_descricao" maxlength="50">
                         </div>
                         <div class="mb-3">
                             <label for="edit_nome" class="form-label">Nome do produto</label>
-                            <input type="text" class="form-control" id="edit_nome">
+                            <input type="text" class="form-control" id="edit_nome" maxlength="30">
                         </div>
                         <div class="mb-3">
                             <label for="edit_valor_fabrica" class="form-label">Valor de produção</label>
-                            <input type="text" class="form-control" id="edit_valor_fabrica">
+                            <input type="text" class="form-control" id="edit_valor_fabrica" maxlength="15">
                         </div>
                         <div class="mb-3">
                             <label for="edit_valor_venda" class="form-label">Preço</label>
-                            <input type="text" class="form-control" id="edit_valor_venda">
+                            <input type="text" class="form-control" id="edit_valor_venda" maxlength="15">
                         </div>
                         <div class="mb-3">
                             <label for="edit_status" class="form-label">Status</label>

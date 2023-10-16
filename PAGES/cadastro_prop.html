@@ -37,6 +37,7 @@
 
               <label for="nome">Nome</label>
               <input
+                maxlength="50"
                 type="text"
                 placeholder="Digite seu nome..."
                 id="nome"
@@ -44,16 +45,18 @@
                 onkeypress="return apenasLetras(event)"
               />
 
-              <label for="email">Email</label>
+              <label for="email" maxlength="50">Email</label>
               <input
+                maxlength="50"
                 type="email"
                 placeholder="Digite seu Email..."
                 id="email"
                 name="email"
               />
 
-              <label for="senha">Senha</label>
+              <label for="senha" maxlength="50">Senha</label>
               <input
+                maxlength="50"
                 type="password"
                 placeholder="Digite sua senha..."
                 id="senha"

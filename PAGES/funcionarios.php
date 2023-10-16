@@ -99,17 +99,17 @@ if (isset($_SESSION['comercio_id']) && isset($_SESSION['usuario_id'])) {
                         <div class="col-md-3">
                             <label for="nome" class="form-label" style="font-weight: bold;">Nome</label>
                             <input type="text" class="form-control" id="nome" name="nome" required
-                                style="height: 40px; border: solid 1.5px;">
+                                style="height: 40px; border: solid 1.5px;" maxlength="50">
                         </div>
                         <div class="col-md-3">
                             <label for="email" class="form-label" style="font-weight: bold;">Email</label>
                             <input type="email" class="form-control" id="email" name="email" required
-                                style="height: 40px; border: solid 1.5px;">
+                                style="height: 40px; border: solid 1.5px;" maxlength="50">
                         </div>
                         <div class="col-md-3">
                             <label for="senha" class="form-label" style="font-weight: bold;">Senha</label>
                             <input type="password" class="form-control" id="senha" name="senha" required
-                                style="height: 40px; border: solid 1.5px;">
+                                style="height: 40px; border: solid 1.5px;" maxlength="20">
                         </div>
                         <div class="col-md-3">
                             <label for="nivelAcesso" class="form-label" style="font-weight: bold;">Nível de
@@ -139,12 +139,12 @@ if (isset($_SESSION['comercio_id']) && isset($_SESSION['usuario_id'])) {
                         <div class="col-md-3">
                             <label for="nome_filtra" class="form-label" style="font-weight: bold;">Nome</label>
                             <input type="text" class="form-control" id="nome_filtra" name="nome_filtra"
-                                style="height: 40px; border: solid 1.5px;">
+                                style="height: 40px; border: solid 1.5px;" maxlength="50">
                         </div>
                         <div class="col-md-3">
                             <label for="email_filtra" class="form-label" style="font-weight: bold;">Email</label>
                             <input type="email" class="form-control" id="email_filtra" name="email_filtra"
-                                style="height: 40px; border: solid 1.5px;">
+                                style="height: 40px; border: solid 1.5px;" maxlength="50">
                         </div>
                         <div class="col-md-3">
                             <label for="status_filtra" class="form-label" style="font-weight: bold;">Status</label>
@@ -251,11 +251,11 @@ if (isset($_SESSION['comercio_id']) && isset($_SESSION['usuario_id'])) {
                             <input type="hidden" id="usuario_id">
                             <div class="mb-3">
                                 <label for="edit_nome" class="form-label">Nome do usuário</label>
-                                <input type="text" class="form-control" id="edit_nome">
+                                <input type="text" class="form-control" id="edit_nome" maxlength="50">
                             </div>
                             <div class="mb-3">
                                 <label for="edit_email" class="form-label">Email do usuário</label>
-                                <input type="email" class="form-control" id="edit_email">
+                                <input type="email" class="form-control" id="edit_email" maxlength="50">
                             </div>
                             <div class="mb-3">
                                 <label for="edit_nivel_acesso" class="form-label">Nível de Acesso</label>
