@@ -450,80 +450,80 @@ if (isset($_SESSION['comercio_id']) && isset($_SESSION['usuario_id'])) {
 
                 // Função para cadastrar o funcionário via AJAX
                 function cadastraFuncionario() {
-    var nome2 = $("#nome").val();
-    var email2 = $("#email").val();
-    var senha2 = $("#senha").val();
-    var nivelAcesso2 = $("#nivelAcesso").val();
+                    var nome2 = $("#nome").val();
+                    var email2 = $("#email").val();
+                    var senha2 = $("#senha").val();
+                    var nivelAcesso2 = $("#nivelAcesso").val();
 
-    // Validação de email
-    if (!validarEmail(email2)) {
-        // Exibir mensagem de erro de email inválido
-        Swal.fire({
-            icon: 'error',
-            title: 'Erro!',
-            text: 'Por favor, insira um email válido.',
-            confirmButtonColor: '#d33',
-            confirmButtonText: 'Entendi'
-        });
-        return; // Não faz a requisição se o email for inválido
-    }
+                    // Validação de email
+                    if (!validarEmail(email2)) {
+                        // Exibir mensagem de erro de email inválido
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Erro!',
+                            text: 'Por favor, insira um email válido.',
+                            confirmButtonColor: '#d33',
+                            confirmButtonText: 'Entendi'
+                        });
+                        return; // Não faz a requisição se o email for inválido
+                    }
 
-    $.ajax({
-        method: "POST",
-        url: '/TCC/QUERYS/cadastro_funcionario.php', // Certifique-se de fornecer o caminho correto para o seu arquivo PHP
-        data: {
-            nome2: nome2,
-            email2: email2,
-            senha2: senha2,
-            nivel_acesso2: nivelAcesso2
-        },
+                    $.ajax({
+                        method: "POST",
+                        url: '/TCC/QUERYS/cadastro_funcionario.php', // Certifique-se de fornecer o caminho correto para o seu arquivo PHP
+                        data: {
+                            nome2: nome2,
+                            email2: email2,
+                            senha2: senha2,
+                            nivel_acesso2: nivelAcesso2
+                        },
 
-        success: function (response) {
-            // Manipular a resposta do servidor aqui
-            console.log(response);
+                        success: function (response) {
+                            // Manipular a resposta do servidor aqui
+                            console.log(response);
 
-            if (response.status === 'success') {
-                // Exibir uma mensagem de sucesso
-                Swal.fire({
-                    icon: 'success',
-                    title: 'Sucesso!',
-                    text: 'Funcionário cadastrado com sucesso.',
-                    confirmButtonColor: '#4caf50',
-                    confirmButtonText: 'OK'
-                }).then(function () {
-                    // Recarregar a página após a confirmação
-                    location.reload();
-                });
-            } else {
-                // Exibir uma mensagem de erro ao usuário
-                Swal.fire({
-                    icon: 'error',
-                    title: 'Erro!',
-                    text: response.message,
-                    confirmButtonColor: '#d33',
-                    confirmButtonText: 'Entendi'
-                });
-            }
-        },
-        error: function (error) {
-            console.error(error);
-            // Exibir uma mensagem de erro ao usuário, se necessário
-            Swal.fire({
-                icon: 'error',
-                title: 'Erro!',
-                text: 'Houve um erro ao processar sua solicitação.',
-                confirmButtonColor: '#d33',
-                confirmButtonText: 'Entendi'
-            });
-        }
-    });
-}
+                            if (response.status === 'success') {
+                                // Exibir uma mensagem de sucesso
+                                Swal.fire({
+                                    icon: 'success',
+                                    title: 'Sucesso!',
+                                    text: 'Funcionário cadastrado com sucesso.',
+                                    confirmButtonColor: '#4caf50',
+                                    confirmButtonText: 'OK'
+                                }).then(function () {
+                                    // Recarregar a página após a confirmação
+                                    location.reload();
+                                });
+                            } else {
+                                // Exibir uma mensagem de erro ao usuário
+                                Swal.fire({
+                                    icon: 'error',
+                                    title: 'Erro!',
+                                    text: response.message,
+                                    confirmButtonColor: '#d33',
+                                    confirmButtonText: 'Entendi'
+                                });
+                            }
+                        },
+                        error: function (error) {
+                            console.error(error);
+                            // Exibir uma mensagem de erro ao usuário, se necessário
+                            Swal.fire({
+                                icon: 'error',
+                                title: 'Erro!',
+                                text: 'Houve um erro ao processar sua solicitação.',
+                                confirmButtonColor: '#d33',
+                                confirmButtonText: 'Entendi'
+                            });
+                        }
+                    });
+                }
 
-function validarEmail(email) {
-    // Expressão regular para validar email
-    var regex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/;
-    return regex.test(email);
-}
+                function validarEmail(email) {
+                    // Expressão regular para validar email
+                    var regex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/;
+                    return regex.test(email);
+                }
 
             });
         </script>

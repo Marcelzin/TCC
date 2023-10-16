@@ -84,22 +84,3 @@ CREATE TABLE
         FOREIGN KEY (pedido_id) REFERENCES pedido (id),
         FOREIGN KEY (comercio_id) REFERENCES comercio (id)
     );
-
-INSERT INTO pedido (data_pedido, valor_total, lucro_obtido, responsavel_id, pagamento_id, comercio_id)
-VALUES
-    ('2023-10-06 12:30:00', 100.00, 30.00, 1, 1, 1),
-    ('2023-10-08 14:45:00', 75.50, 22.50, 1, 1, 1),
-    ('2023-10-10 10:15:00', 50.25, 15.00, 1, 1, 1);
-INSERT INTO pedido (data_pedido, valor_total, lucro_obtido, responsavel_id, pagamento_id, comercio_id)
-VALUES
-    ('2023-09-15 16:20:00', 120.00, 35.50, 1, 1, 1),
-    ('2023-09-22 11:30:00', 90.75, 27.25, 1, 1, 1),
-    ('2023-09-28 09:45:00', 60.30, 18.50, 1, 1, 1);
-INSERT INTO pedido (data_pedido, valor_total, lucro_obtido, responsavel_id, pagamento_id, comercio_id)
-VALUES
-    ('2023-10-13 08:00:00', 85.00, 25.50, 1, 1, 1),
-    ('2023-10-13 12:30:00', 65.75, 19.25, 1, 1, 1),
-    ('2023-10-13 16:15:00', 45.20, 13.75, 1, 1, 1);
-    
-SELECT * FROM pedido;
-

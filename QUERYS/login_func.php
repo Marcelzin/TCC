@@ -47,7 +47,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         } else {
             // Usuário não está ativo
             $response['status'] = 'error';
-            $response['message'] = 'Usuário não está ativo. Entre em contato com o suporte.';
+            $response['message'] = 'Usuário não está ativo. Entre em contato com seu superior.';
         }
     } else {
         // Usuário não encontrado
