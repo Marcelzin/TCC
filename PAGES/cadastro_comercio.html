@@ -47,72 +47,74 @@
         });
     </script>
 
-    <script>
-        document.addEventListener("DOMContentLoaded", function () {
-            const form = document.getElementById("cadastroForm");
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const form = document.getElementById("cadastroForm");
 
-            form.addEventListener("submit", function (event) {
-                event.preventDefault();
+        form.addEventListener("submit", function (event) {
+            event.preventDefault();
 
-                const nome = document.getElementById("nome").value.trim();
-                const cpfCnpj = document.getElementById("cpfCnpj").value.trim();
+            const nomeInput = document.getElementById("nome");
+            const cpfCnpjInput = document.getElementById("cpfCnpj");
 
-                // Validação simples para verificar se os campos estão preenchidos
-                if (!nome || !cpfCnpj) {
-                    Swal.fire({
-                        icon: 'error',
-                        title: 'Erro',
-                        text: 'Por favor, preencha todos os campos.',
-                        timer: 3000
-                    });
-                    return;
-                }
+            const nome = nomeInput.value.trim();
+            const cpfCnpj = cpfCnpjInput.value.trim();
 
-                // Dados do formulário
-                const formData = new FormData();
-                formData.append('nome', nome);
-                formData.append('cpf_cnpj', cpfCnpj);
+            // Validação simples para verificar se os campos estão preenchidos
+            if (!nome || !cpfCnpj) {
+                showErrorMessage("Por favor, preencha todos os campos.");
+                return;
+            }
 
-                // Requisição AJAX
-                fetch('/TCC/QUERYS/cadastro_comercio.php', {
-                    method: 'POST',
-                    body: formData
-                })
-                    .then(response => response.json())
-                    .then(data => {
-                        if (data.status === 'success') {
-                            Swal.fire({
-                                icon: 'success',
-                                title: 'Cadastro realizado com sucesso!',
-                                text: data.message,
-                                timer: 3000
-                            });
+            // Dados do formulário
+            const formData = new FormData();
+            formData.append('nome', nome);
+            formData.append('cpf_cnpj', cpfCnpj);
 
-                            // Redirecionar para cadastro_prop.php após 3 segundos
-                            setTimeout(function () {
-                                window.location.href = '/TCC/PAGES/cadastro_prop.html';
-                            }, 500);
-                        } else {
-                            Swal.fire({
-                                icon: 'error',
-                                title: 'Erro',
-                                text: data.message,
-                                timer: 3000
-                            });
-                        }
-                    })
-
-                    .catch(error => {
-                        console.error(error);
-                        Swal.fire({
-                            icon: 'error',
-                            title: 'Erro na requisição AJAX',
-                            text: 'Ocorreu um erro ao enviar a solicitação. Verifique a conexão ou tente novamente mais tarde.'
-                        });
-                    });
-            });
+            // Requisição AJAX
+            fetch('/TCC/QUERYS/cadastro_comercio.php', {
+                method: 'POST',
+                body: formData
+            })
+            .then(response => response.json())
+            .then(handleResponse)
+            .catch(handleError);
         });
-    </script>
+
+        function showErrorMessage(message) {
+            Swal.fire({
+                icon: 'error',
+                title: 'Erro',
+                text: message,
+                timer: 3000
+            });
+        }
+
+        function handleResponse(data) {
+            if (data.status === 'success') {
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Cadastro realizado com sucesso!',
+                    text: data.message,
+                    timer: 3000
+                });
+
+                // Redirecionar para cadastro_prop.php após 3 segundos
+                setTimeout(function () {
+                    window.location.href = '/TCC/PAGES/cadastro_prop.html';
+                }, 3000); // Aumentei o tempo para 3000 ms (3 segundos)
+            } else {
+                showErrorMessage(data.message);
+            }
+        }
+
+        function handleError(error) {
+            console.error(error);
+            showErrorMessage('Ocorreu um erro ao enviar a solicitação. Verifique a conexão ou tente novamente mais tarde.');
+        }
+    });
+</script>
+
 </body>
 
 </html>
