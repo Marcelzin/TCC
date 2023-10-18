@@ -98,12 +98,66 @@ if ($resultMes) {
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet"
     integrity="sha384-4bw+/aepP/YC94hEpVNVgiZdgIC5+VKNBQNGCHeKRQN+PtmoHDEXuppvnDJzQIu9" crossorigin="anonymous">
   <link href="//cdn.datatables.net/1.13.6/css/jquery.dataTables.min.css" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
   <title>tela home</title>
   <style>
     .dataTables_wrapper {
       margin-left: 0px;
     }
   </style>
+  <script>
+    window.addEventListener('load', function () {
+      // Dados para os gráficos de colunas (faturamento e lucro)
+      var faturamentoHoje = <?php echo $faturamentoHoje; ?>;
+      var lucroHoje = <?php echo $lucroHoje; ?>;
+      var faturamentoSemana = <?php echo $faturamentoSemana; ?>;
+      var lucroSemana = <?php echo $lucroSemana; ?>;
+      var faturamentoMes = <?php echo $faturamentoMes; ?>;
+      var lucroMes = <?php echo $lucroMes; ?>;
+
+      // Função para criar um gráfico de colunas
+      function createColumnChart(id, faturamento, lucro, title) {
+        var columnOptions = {
+          chart: {
+            type: 'bar',
+            height: 350,
+          },
+          plotOptions: {
+            bar: {
+              horizontal: false,
+              columnWidth: '55%',
+            },
+          },
+          dataLabels: {
+            enabled: false
+          },
+          series: [
+            {
+              name: "Faturamento",
+              data: [faturamento],
+            },
+            {
+              name: "Lucro",
+              data: [lucro],
+            },
+          ],
+          xaxis: {
+            categories: [title],
+          },
+        };
+
+        // Renderização do gráfico de colunas na div especificada pelo ID
+        var columnChart = new ApexCharts(document.querySelector(id), columnOptions);
+        columnChart.render();
+      }
+
+      // Criação dos gráficos de colunas para Hoje, Semana e Mês
+      createColumnChart("#graficoHoje", faturamentoHoje, lucroHoje, "Hoje");
+      createColumnChart("#graficoSemana", faturamentoSemana, lucroSemana, "Semana");
+      createColumnChart("#graficoMes", faturamentoMes, lucroMes, "Mês");
+    });
+  </script>
+
 </head>
 
 <body>
@@ -141,63 +195,20 @@ if ($resultMes) {
     </div>
   </nav>
 
-  <div class="container mt-5">
-    <div class="row justify-content-around">
-      <div class="col-md-4 mb-4">
-        <div class="card">
-          <div class="card-body">
-            <h1 class="card-title">Hoje</h1>
-            <h3>Vendas realizadas:
-              <?php echo $vendasHoje; ?>
-            </h3>
-            <h3>Faturamento: R$
-              <?php echo number_format($faturamentoHoje, 2, ',', '.'); ?>
-            </h3>
-            <h2>Lucro Total: R$
-              <?php echo number_format($lucroHoje, 2, ',', '.'); ?>
-            </h2>
-          </div>
-        </div>
-      </div>
-
-      <div class="col-md-4 mb-4">
-        <div class="card">
-          <div class="card-body">
-            <h1 class="card-title">Semana</h1>
-            <h3>Vendas realizadas:
-              <?php echo $vendasSemana; ?>
-            </h3>
-            <h3>Faturamento: R$
-              <?php echo number_format($faturamentoSemana, 2, ',', '.'); ?>
-            </h3>
-            <h2>Lucro Total: R$
-              <?php echo number_format($lucroSemana, 2, ',', '.'); ?>
-            </h2>
-          </div>
-        </div>
-      </div>
-
-      <div class="col-md-4 mb-4">
-        <div class="card">
-          <div class="card-body">
-            <h1 class="card-title">Mês</h1>
-            <h3>Vendas realizadas:
-              <?php echo $vendasMes; ?>
-            </h3>
-            <h3>Faturamento: R$
-              <?php echo number_format($faturamentoMes, 2, ',', '.'); ?>
-            </h3>
-            <h2>Lucro Total: R$
-              <?php echo number_format($lucroMes, 2, ',', '.'); ?>
-            </h2>
-          </div>
-        </div>
-      </div>
+  <div class="container" style="justify-content: space-between; display: flex; margin-top: 1%" id="Faturamento/Lucro">
+    <div id="graficoHoje" style="width: 33%">
+      <h4 style="text-align: center">Hoje</h4>
+    </div>
+    <div id="graficoSemana" style="width: 33%">
+      <h4 style="text-align: center">Semana</h4>
+    </div>
+    <div id="graficoMes" style="width: 33%">
+      <h4 style="text-align: center">Mês</h4>
     </div>
   </div>
 
-  <div class="container">
-    <h5 style="text-align: center">Tabela de pedidos</h5>
+  <div class="container" style="margin-top: 1%">
+    <h4 style="text-align: center">Tabela de pedidos</h4>
     <table class="table table-striped" id="tabela_relatorio" style="text-align: center;">
       <thead>
         <tr>
@@ -262,6 +273,7 @@ if ($resultMes) {
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.mask/1.14.16/jquery.mask.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.0.18/dist/sweetalert2.min.js"></script>
   <script src="//cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
+
 
   <?php
   include_once('config.php');
