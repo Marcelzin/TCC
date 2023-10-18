@@ -4,13 +4,10 @@ session_start();
 if (isset($_SESSION['comercio_id']) && isset($_SESSION['usuario_id'])) {
   include_once('config.php');
 
-  // Inicialize a variável $nivel_acesso com um valor padrão
   $nivel_acesso = '';
 
-  // Obtenha o valor de $comercio_id da sessão
   $comercio_id = $_SESSION['comercio_id'];
 
-  // Consulta SQL para buscar o nível de acesso do usuário com base no 'usuario_id'
   $usuario_id = $_SESSION['usuario_id'];
   $sql = "SELECT nivel_acesso FROM usuario WHERE ID = '$usuario_id'";
   $result = mysqli_query($conexao, $sql);
@@ -19,7 +16,6 @@ if (isset($_SESSION['comercio_id']) && isset($_SESSION['usuario_id'])) {
     $row = mysqli_fetch_assoc($result);
     $nivel_acesso = $row['nivel_acesso'];
   } else {
-    // Se houver um erro na consulta, você pode lidar com ele aqui
     echo "Erro na consulta: " . mysqli_error($conexao);
     exit();
   }
@@ -43,10 +39,8 @@ if ($resultHoje) {
   $faturamentoHoje = $rowHoje['faturamento'];
   $lucroHoje = $rowHoje['lucro'];
 } else {
-  // Trate erros aqui, se necessário
 }
 
-// Consulta para o card "Semana"
 $sqlSemana = "SELECT COUNT(*) AS vendas_realizadas, SUM(valor_total) AS faturamento, SUM(lucro_obtido) AS lucro 
               FROM pedido 
               WHERE YEARWEEK(data_pedido, 1) = YEARWEEK(NOW(), 1) AND comercio_id = '$comercio_id';";
@@ -59,10 +53,8 @@ if ($resultSemana) {
   $faturamentoSemana = $rowHoje['faturamento'];
   $lucroSemana = $rowSemana['lucro'];
 } else {
-  // Trate erros aqui, se necessário
 }
 
-// Consulta para o card "Mês"
 $sqlMes = "SELECT COUNT(*) AS vendas_realizadas, SUM(valor_total) AS faturamento, SUM(lucro_obtido) AS lucro 
            FROM pedido 
            WHERE YEAR(data_pedido) = YEAR(NOW()) AND MONTH(data_pedido) = MONTH(NOW()) AND comercio_id = '$comercio_id';";
@@ -75,10 +67,8 @@ if ($resultMes) {
   $faturamentoMes = $rowMes['faturamento'];
   $lucroMes = $rowMes['lucro'];
 } else {
-  // Trate erros aqui, se necessário
 }
 
-// ...
 ?>
 
 
@@ -105,59 +95,6 @@ if ($resultMes) {
       margin-left: 0px;
     }
   </style>
-  <script>
-    window.addEventListener('load', function () {
-      // Dados para os gráficos de colunas (faturamento e lucro)
-      var faturamentoHoje = <?php echo $faturamentoHoje; ?>;
-      var lucroHoje = <?php echo $lucroHoje; ?>;
-      var faturamentoSemana = <?php echo $faturamentoSemana; ?>;
-      var lucroSemana = <?php echo $lucroSemana; ?>;
-      var faturamentoMes = <?php echo $faturamentoMes; ?>;
-      var lucroMes = <?php echo $lucroMes; ?>;
-
-      // Função para criar um gráfico de colunas
-      function createColumnChart(id, faturamento, lucro, title) {
-        var columnOptions = {
-          chart: {
-            type: 'bar',
-            height: 350,
-          },
-          plotOptions: {
-            bar: {
-              horizontal: false,
-              columnWidth: '55%',
-            },
-          },
-          dataLabels: {
-            enabled: false
-          },
-          series: [
-            {
-              name: "Faturamento",
-              data: [faturamento],
-            },
-            {
-              name: "Lucro",
-              data: [lucro],
-            },
-          ],
-          xaxis: {
-            categories: [title],
-          },
-        };
-
-        // Renderização do gráfico de colunas na div especificada pelo ID
-        var columnChart = new ApexCharts(document.querySelector(id), columnOptions);
-        columnChart.render();
-      }
-
-      // Criação dos gráficos de colunas para Hoje, Semana e Mês
-      createColumnChart("#graficoHoje", faturamentoHoje, lucroHoje, "Hoje");
-      createColumnChart("#graficoSemana", faturamentoSemana, lucroSemana, "Semana");
-      createColumnChart("#graficoMes", faturamentoMes, lucroMes, "Mês");
-    });
-  </script>
-
 </head>
 
 <body>
@@ -222,12 +159,10 @@ if ($resultMes) {
       </thead>
       <tbody>
         <?php
-        // Conecte-se ao banco de dados aqui
-        
+
         if (isset($_SESSION['comercio_id'])) {
           $comercio_id = $_SESSION['comercio_id'];
 
-          // Consulta SQL para selecionar os dados da tabela "pedido" com base no comercio_id
           $sql = "SELECT
         usuario.nome AS nome_usuario,
         forma_pagamento.tipo AS nome_forma_pagamento,
@@ -260,9 +195,6 @@ if ($resultMes) {
         } else {
           echo "A variável de sessão comercio_id não está definida.";
         }
-
-        // Feche a conexão com o banco de dados
-        
         ?>
       </tbody>
     </table>
@@ -331,10 +263,60 @@ WHERE pedido.comercio_id = '$comercio_id'";
         },
         error: function (error) {
           console.error(error);
-          // Lidar com erros, se necessário
         }
       });
     }
+  </script>
+
+  <script>
+    window.addEventListener('load', function () {
+
+      var faturamentoHoje = <?php echo $faturamentoHoje; ?>;
+      var lucroHoje = <?php echo $lucroHoje; ?>;
+      var faturamentoSemana = <?php echo $faturamentoSemana; ?>;
+      var lucroSemana = <?php echo $lucroSemana; ?>;
+      var faturamentoMes = <?php echo $faturamentoMes; ?>;
+      var lucroMes = <?php echo $lucroMes; ?>;
+
+      // Função para criar um gráfico de colunas
+      function createColumnChart(id, faturamento, lucro, title) {
+        var columnOptions = {
+          chart: {
+            type: 'bar',
+            height: 350,
+          },
+          plotOptions: {
+            bar: {
+              horizontal: false,
+              columnWidth: '55%',
+            },
+          },
+          dataLabels: {
+            enabled: false
+          },
+          series: [
+            {
+              name: "Faturamento",
+              data: [faturamento],
+            },
+            {
+              name: "Lucro",
+              data: [lucro],
+            },
+          ],
+          xaxis: {
+            categories: [title],
+          },
+        };
+
+        var columnChart = new ApexCharts(document.querySelector(id), columnOptions);
+        columnChart.render();
+      }
+
+      createColumnChart("#graficoHoje", faturamentoHoje, lucroHoje, "Hoje");
+      createColumnChart("#graficoSemana", faturamentoSemana, lucroSemana, "Semana");
+      createColumnChart("#graficoMes", faturamentoMes, lucroMes, "Mês");
+    });
   </script>
 </body>
 
