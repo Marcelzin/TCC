@@ -27,7 +27,13 @@ if (isset($_SESSION['comercio_id']) && isset($_SESSION['usuario_id'])) {
           </script>';
     exit();
 }
+
+// Consulta SQL para buscar os produtos na tabela 'produto' com base no 'comercio_id' e status 'Ativo'
+$comercio_id = $_SESSION['comercio_id'];
+$sqlProdutos = "SELECT * FROM produto WHERE comercio_id = '$comercio_id' AND status = 'Ativo'";
+$resultProdutos = mysqli_query($conexao, $sqlProdutos);
 ?>
+
 <!DOCTYPE html>
 <html lang="pt-br">
 
@@ -88,233 +94,161 @@ if (isset($_SESSION['comercio_id']) && isset($_SESSION['usuario_id'])) {
         </div>
     </nav>
 
-    <div class="container-fluid">
-        <div class="container mt-5" style="display: flex; flex-direction: column; margin-top: 0px !important;">
-            <h5 style="text-align: center">Filtrar produtos</h5>
-            <form id="FiltroUsuarioForm" style="display: flex; flex-direction: column">
-                <div class="row mb-3" style="margin-bottom: 0px !important">
-                    <div class="col-md-3">
-                        <label for="nome_filtra" class="form-label" style="font-weight: bold;">Nome</label>
-                        <input type="text" class="form-control" id="nome_filtra" name="nome_filtra"
-                            style="height: 40px; border: solid 1.5px;" maxlength="30">
-                    </div>
-                    <div class="col-md-3">
-                        <label for="descricao_filtra" class="form-label" style="font-weight: bold;">Descrição</label>
-                        <input type="text" class="form-control" id="descricao_filtra" name="descricao_filtra"
-                            style="height: 40px; border: solid 1.5px;" maxlength="50">
-                    </div>
-                    <div class="col-md-3">
-                        <label for="valor_prod_filtra" class="form-label" style="font-weight: bold;">Valor de
-                            produção</label>
-                        <input type="text" class="form-control" id="valor_prod_filtra" name="valor_prod_filtra"
-                            style="height: 40px; border: solid 1.5px;" maxlength="15">
-                    </div>
-                    <div class="col-md-3">
-                        <label for="preco_filtra" class="form-label" style="font-weight: bold;">Preço</label>
-                        <input type="text" class="form-control" id="preco_filtra" name="preco_filtra"
-                            style="height: 40px; border: solid 1.5px;" maxlength="15">
-                    </div>
-                </div>
-
-            </form>
-        </div>
+    <div class="container"
+        style="margin-right: 0px !important; margin-left: 0px !important; padding-left: 0px !important; padding-right: 0px !important; width: 70% !important; float: left">
         <div class="row">
-            <div class="col-md-9">
-                <div class="row">
-                    <div id="product-cards-container">
-                        <!-- Os cards dos produtos serão exibidos aqui -->
-                        <?php
-                        if (isset($_SESSION['comercio_id'])) {
-                            $comercio_id = $_SESSION['comercio_id'];
-
-                            $sql = "SELECT * FROM produto WHERE comercio_id = '$comercio_id' AND status = 'Ativo'";
-                            $result = mysqli_query($conexao, $sql);
-
-                            if (mysqli_num_rows($result) > 0) {
-                                while ($row = mysqli_fetch_assoc($result)) {
-                                    ?>
-                                    <div class="col-md-4">
-                                        <div class="card mb-4 h-100">
-                                            <img src="<?php echo $row['imagem']; ?>" class="card-img-top"
-                                                style="min-height: 200px;max-height: 200px; object-fit: contain;"
-                                                alt="Imagem do Produto">
-                                            <div class="card-body d-flex flex-column">
-                                                <h5 class="card-title">
-                                                    <?php echo $row['nome']; ?>
-                                                </h5>
-                                                <p class="card-text flex-grow-1">
-                                                    <?php echo $row['descricao']; ?>
-                                                </p>
-                                                <p class="card-text">R$
-                                                    <?php echo $row['valor_venda']; ?>
-                                                </p>
-                                                <a href="#" data-product-id="<?php echo $row['id']; ?>"
-                                                    class="btn btn-primary mt-auto add-to-cart">Adicionar ao pedido</a>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <?php
-                                }
-                            } else {
-                                echo '<div class="col-md-12">Nenhum produto encontrado para este comércio.</div>';
-                            }
-                            mysqli_close($conexao);
-                        }
-                        ?>
-                    </div>
-                </div>
-            </div>
-
-            <div class="col-md-3"
-                style="border-color: #999999; border-radius: 20px; border: solid 1px; margin-top: 3.5%">
-                <div class="sticky-top">
-                    <div class="item-list">
-                        <div class="header">
-                            <h4 class="text-center">Resumo do Pedido</h4>
-                        </div>
-                        <ul class="product-list">
-                            <li class="item-list-card">
-                                <div class="item-list-final-description">
-                                    <div class="product-details" id="product-details-container">
-                                        <!-- Conteúdo dos produtos será adicionado aqui dinamicamente -->
-                                    </div>
-                                </div>
-                            </li>
-                        </ul>
-                        <div class="subtotal">
-                            <h4 class="text-end">Subtotal: R$120,00</h4>
+            <?php
+            while ($rowProduto = mysqli_fetch_assoc($resultProdutos)) {
+                // Exiba cada produto usando cartões do Bootstrap
+                echo '<div class="col-md-4">
+                    <div class="card mb-4 h-100">
+                        <img src="' . $rowProduto['imagem'] . '" class="card-img-top" style="min-height: 200px;max-height: 200px; object-fit: contain;" alt="Imagem do Produto">
+                        <div class="card-body d-flex flex-column">
+                            <h5 class="card-title">' . $rowProduto['nome'] . '</h5>
+                            <p class="card-text flex-grow-1">' . $rowProduto['descricao'] . '</p>
+                            <p class="card-text">R$ ' . $rowProduto['valor_venda'] . '</p>
+                            <a data-product-id="' . $rowProduto['id'] . '" class="btn btn-primary mt-auto add-to-cart">Adicionar ao carrinho</a>
                         </div>
                     </div>
-                    <div class="d-flex justify-content-between align-items-center mb-2">
-                        <!-- Divs da forma de pagamento -->
-                        <button id="pay-form" class="btn btn-secondary">
-                            <ion-icon name="card-outline"></ion-icon>
-                            Débito
-                        </button>
-                        <button id="pay-form" class="btn btn-secondary">
-                            <ion-icon name="cash-outline"></ion-icon>
-                            Dinheiro
-                        </button>
-
-                        <button id="pay-form" class="btn btn-secondary">
-                            <ion-icon name="card-outline"></ion-icon>
-                            Crédito
-                        </button>
-                    </div>
-                    <div class="d-flex justify-content-center mb-2" style="justify-content: space-between !important;">
-                        <!-- Botões de Finalizar e Limpar alinhados ao centro -->
-                        <button id="clean" class="btn btn-danger">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24"
-                                fill="none" stroke="#FFFFFF" stroke-width="2" stroke-linecap="round"
-                                stroke-linejoin="round" class="feather feather-trash-2">
-                                <polyline points="3 6 5 6 21 6"></polyline>
-                                <path
-                                    d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2">
-                                </path>
-                                <line x1="10" y1="11" x2="10" y2="17"></line>
-                                <line x1="14" y1="11" x2="14" y2="17"></line>
-                            </svg>Limpar
-                        </button>
-                        <button id="finalize" class="btn btn-success">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24"
-                                fill="none" stroke="#FFFFFF" stroke-width="2" stroke-linecap="round"
-                                stroke-linejoin="round" class="feather feather-check">
-                                <polyline points="20 6 9 17 4 12"></polyline>
-                            </svg>Finalizar
-                        </button>
-                    </div>
-                </div>
-            </div>
+                </div>';
+            }
+            ?>
         </div>
     </div>
-</body>
 
-<script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
-<script nomodule src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.mask/1.14.16/jquery.mask.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.0.18/dist/sweetalert2.min.js"></script>
-<script src="//cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
+    <div style="width: 30%; float: right">
+        <h3 class="mt-4" style="text-align: center">Resumo do pedido</h3>
+        <table id="cart-table" class="table table-bordered table-hover">
+            <thead class="table-primary">
+                <tr>
+                    <th>Produto</th>
+                    <th>Quantidade</th>
+                    <th>Preço Unitário</th>
+                    <th>Subtotal</th>
+                </tr>
+            </thead>
+            <tbody>
+                <?php
+                $totalPedido = 0; // Inicialize a variável para calcular o total do pedido
+                if (isset($_SESSION['carrinho'])) {
+                    foreach ($_SESSION['carrinho'] as $productId => $quantity) {
+                        // Consulte o banco de dados para obter detalhes do produto com base no $productId
+                        $sql = "SELECT nome, valor_venda FROM produto WHERE id = $productId";
+                        $result = mysqli_query($conexao, $sql);
 
-<style>
-    .product-list {
-        list-style-type: none;
-        /* Remove as bolinhas da lista */
-        padding: 0;
-        /* Remove o espaçamento padrão da lista */
-    }
-</style>
+                        if ($result && mysqli_num_rows($result) > 0) {
+                            $row = mysqli_fetch_assoc($result);
+                            $productName = $row['nome'];
+                            $productPrice = $row['valor_venda'];
+                            $subtotal = $productPrice * $quantity;
+                            $totalPedido += $subtotal; // Adicione o subtotal ao total do pedido
+                            echo "<tr>
+                            <td>$productName</td>
+                            <td>$quantity</td>
+                            <td>R$ $productPrice</td>
+                            <td>R$ $subtotal</td>
+                        </tr>";
+                        }
+                    }
+                }
+                ?>
+            </tbody>
+            <tfoot>
+                <tr class="table-primary">
+                    <td colspan="3" align="right"><strong>Total:</strong></td>
+                    <td><strong>R$
+                            <?php echo $totalPedido; ?>
+                        </strong></td>
+                </tr>
+            </tfoot>
+        </table>
+        <div style="width: 100%; justify-content: space-evenly; display: flex">
+            <a class="btn btn-danger" onclick="limparPedido()">Limpar</a>
+            <a class="btn btn-success" onclick="FinalizarPedido()">Finalizar</a>
+        </div>
+    </div>
 
-<script>
-    // Função para realizar o logoff
-    function logoff() {
-        $.ajax({
-            method: "POST",
-            url: '/TCC/QUERYS/logout.php',
-            success: function (response) {
-                // Exibir um alerta SweetAlert2 quando o logoff for bem-sucedido
-                Swal.fire({
-                    icon: 'success', // Ícone de sucesso
-                    title: 'Usuário deslogado com sucesso',
-                    showConfirmButton: false, // Oculta o botão de confirmação
-                    timer: 1500 // Fecha automaticamente após 1,5 segundos
-                });
 
-                // Redirecionar o usuário para a página de login ou fazer outras ações após o logoff
-                setTimeout(function () {
-                    window.location.href = '/TCC/index.html'; // Altere para a URL correta da página de login
-                }, 1500);
-            },
-            error: function (error) {
-                console.error(error);
-                // Lidar com erros, se necessário
-            }
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+    <!-- Seu código JavaScript para adicionar produtos ao carrinho aqui -->
+    <script>
+        // Função para atualizar a tabela do carrinho
+        function updateCartTable() {
+            // Faça uma requisição AJAX para obter os detalhes do carrinho a partir do servidor
+            $.ajax({
+                method: "GET",
+                url: '/TCC/QUERYS/carrinho_detalhes.php', // Substitua pelo URL correto para obter os detalhes do carrinho
+                success: function (data) {
+                    // Atualize a tabela do carrinho com os dados recebidos
+                    $("#cart-table").html(data);
+                },
+                error: function (error) {
+                    console.error(error);
+                    // Lidar com erros, se necessário
+                }
+            });
+        }
+
+        // Lidar com o clique no botão "Adicionar ao Carrinho"
+        $(".add-to-cart").click(function (event) {
+            event.preventDefault(); // Evita o comportamento padrão do link
+
+            var productId = $(this).data("product-id");
+
+            // Envie o ID do produto ao servidor para adicionar ao carrinho
+            $.ajax({
+                method: "POST",
+                url: '/TCC/QUERYS/adicionar_ao_carrinho.php', // Substitua pelo URL correto do seu arquivo PHP para adicionar ao carrinho
+                data: {
+                    productId: productId
+                },
+                success: function (response) {
+                    // Lide com a resposta do servidor, que pode incluir a confirmação de que o produto foi adicionado ao carrinho
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Produto adicionado ao carrinho!',
+                        position: 'top-end', // Posição no topo direito
+                        toast: true, // Notificação estilo "toast"
+                        showConfirmButton: false,
+                        timer: 1500
+                    });
+
+
+                    // Atualize a tabela do carrinho após a adição
+                    updateCartTable();
+                },
+                error: function (error) {
+                    console.error(error);
+                    // Lidar com erros, se necessário
+                }
+            });
         });
-    }
-</script>
 
-<script>
-    $(document).ready(function () {
-        // Adicione evento oninput para cada campo de entrada do formulário de filtragem
-        $("#nome_filtra, #descricao_filtra, #valor_prod_filtra, #preco_filtra").on('input', function () {
-            filtraProdutos(); // Chama a função de filtro quando o usuário insere qualquer valor
-        });
+        // Chame a função para atualizar a tabela do carrinho ao carregar a página
+        updateCartTable();
+    </script>
 
-        $("#FiltroUsuarioForm").submit(function (event) {
-            event.preventDefault(); // Impede o envio do formulário padrão
-            filtraProdutos(); // Chama a função de filtro quando o formulário é enviado
-        });
+    <script>
+        function limparPedido() {
+            $.ajax({
+                method: "POST",
+                url: '/TCC/QUERYS/limpar_carrinho.php', // Substitua pelo URL correto do seu arquivo PHP para limpar o carrinho
+                success: function (response) {
+                    // Limpe a tabela do carrinho
+                    $("#cart-table tbody").html('');
+                    // Atualize o total do pedido para 0
+                    $("#cart-table tfoot td:last-child").text('R$ 0');
+                },
+                error: function (error) {
+                    console.error(error);
+                    // Lidar com erros, se necessário
+                }
+            });
+        }
+    </script>
 
-        // Defina a função de filtro para ser chamada no carregamento da página
-        filtraProdutos();
-    });
-
-    function filtraProdutos() {
-        var nome_filtra = $("#nome_filtra").val();
-        var descricao_filtra = $("#descricao_filtra").val();
-        var valor_prod_filtra = $("#valor_prod_filtra").val();
-        var preco_filtra = $("#preco_filtra").val();
-
-        // Dentro da função que aciona o filtro no seu JavaScript
-        $.ajax({
-            method: "POST",
-            url: '/TCC/QUERYS/filtraProdutos2.php', // Substitua pelo URL correto do seu arquivo PHP
-            data: {
-                nome_filtra: nome_filtra,
-                descricao_filtra: descricao_filtra,
-                valor_prod_filtra: valor_prod_filtra,
-                preco_filtra: preco_filtra
-            },
-            success: function (response) {
-                // Atualize o conteúdo do #product-cards-container com os produtos filtrados
-                $("#product-cards-container").html(response);
-            },
-            error: function (error) {
-                console.error(error);
-            }
-        });
-    }
-</script>
 
 </body>
 
