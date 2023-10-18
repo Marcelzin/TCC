@@ -1,57 +1,49 @@
 <?php
-// Inclua o arquivo de configuração
-include('config.php');
+session_start();
+include_once('config.php');
 
-// Verifique se a variável POST 'productIds' foi enviada
-if (isset($_POST['productIds'])) {
-    // Recupere os IDs dos produtos da requisição POST
-    $productIds = $_POST['productIds'];
+// Verifique se a sessão está configurada e se há itens no carrinho
+if (isset($_SESSION['carrinho']) && !empty($_SESSION['carrinho'])) {
+    // Obtenha os valores necessários para inserir na tabela de pedido
+    $data_pedido = date('Y-m-d H:i:s'); // Data e hora atual
+    $totalPedido = 0; // O valor total deve ser calculado
+    $responsavel_id = $_SESSION['usuario_id']; // ID do usuário na sessão
+    $pagamento_id = 1; // Defina o ID do método de pagamento (no exemplo, é 1)
+    $comercio_id = $_SESSION['comercio_id']; // ID do comércio na sessão
 
-    // Inicialize uma variável para armazenar o HTML dos detalhes dos produtos
-    $productDetailsHTML = '';
+    // Calcule o valor total com base nos itens do carrinho
+    foreach ($_SESSION['carrinho'] as $productId => $quantity) {
+        // Consulte o banco de dados para obter detalhes do produto com base no $productId
+        $sql = "SELECT valor_venda FROM produto WHERE id = $productId";
+        $result = mysqli_query($conexao, $sql);
 
-    // Consulta SQL para buscar informações dos produtos com base nos IDs
-    $query = "SELECT * FROM produto WHERE id IN (" . implode(",", $productIds) . ")";
-
-    // Execute a consulta
-    $result = mysqli_query($conexao, $query);
-
-    if ($result) {
-        // Recupere os detalhes dos produtos e construa o HTML
-        while ($row = mysqli_fetch_assoc($result)) {
-            $productId = $row['id'];
-            $quantity = 1; // Defina a quantidade inicial como 1 (pode ser atualizada pelo JavaScript)
-            $totalPrice = $row['valor_venda'];
-
-            $productDetailsHTML .= '<div class="product-details" data-product-id="' . $productId . '">
-                <div class="product-name">
-                    <span class="name-product">' . $row['nome'] . '</span>
-                </div>
-                <div class="quantity-controls">
-                    <button class="btn btn-secondary quantity-btn-minus">-</button>
-                    <input type="text" class="quantity-input" style="width: 6vh; border: none; text-align: center" value="' . $quantity . '">
-                    <button class="btn btn-secondary quantity-btn-plus">+</button>
-                    <span class="final-price">R$ ' . $totalPrice . '</span>
-                    <div style="float: right">
-                        <button class="btn btn-danger remove-btn">
-                            <ion-icon name="trash-outline"></ion-icon>
-                        </button>
-                    </div>
-                </div>
-            </div>';
+        if ($result && mysqli_num_rows($result) > 0) {
+            $row = mysqli_fetch_assoc($result);
+            $productPrice = $row['valor_venda'];
+            $subtotal = $productPrice * $quantity;
+            $totalPedido += $subtotal;
         }
-
-        // Retorna os detalhes dos produtos como resposta
-        echo $productDetailsHTML;
-    } else {
-        // Se houver um erro na consulta, você pode lidar com ele aqui
-        echo "Erro na consulta: " . mysqli_error($conexao);
     }
 
-    // Feche a conexão com o banco de dados
-    mysqli_close($conexao);
+    // Insira os dados na tabela de pedido
+$sqlInsertPedido = "INSERT INTO pedido (data_pedido, valor_total, lucro_obtido, responsavel_id, pagamento_id, comercio_id)
+                  VALUES (NOW(), $totalPedido, NULL, $responsavel_id, $pagamento_id, $comercio_id)";
+
+    if (mysqli_query($conexao, $sqlInsertPedido)) {
+        // Pedido inserido com sucesso
+
+        // Limpe o carrinho (destrua a sessão)
+        $_SESSION['carrinho'] = array();
+
+        echo "Pedido inserido com sucesso!";
+    } else {
+        // Erro ao inserir o pedido
+        echo "Erro ao processar o pedido: " . mysqli_error($conexao);
+    }
 } else {
-    // Caso 'productIds' não seja recebido, retorne uma resposta de erro
-    echo "Nenhum ID de produto fornecido na requisição.";
+    echo "Carrinho vazio. Adicione produtos ao carrinho antes de finalizar o pedido.";
 }
+
+// Feche a conexão com o banco de dados
+mysqli_close($conexao);
 ?>

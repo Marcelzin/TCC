@@ -143,15 +143,23 @@ $resultProdutos = mysqli_query($conexao, $sqlProdutos);
                             $subtotal = $productPrice * $quantity;
                             $totalPedido += $subtotal; // Adicione o subtotal ao total do pedido
                             echo "<tr>
-                            <td>$productName</td>
-                            <td>$quantity</td>
-                            <td>R$ $productPrice</td>
-                            <td>R$ $subtotal</td>
-                        </tr>";
+            <td>$productName</td>
+            <td>
+                <input type='number' class='form-control' value='$quantity' data-product-id='$productId' onchange='updateQuantity(this)'>
+            </td>
+            <td>R$ $productPrice</td>
+            <td>R$ $subtotal</td>
+            <td>
+                <button class='btn btn-danger' data-product-id='$productId' onclick='removeProduct(this)'>
+                    <i class='fas fa-trash'></i> <!-- Ícone de lixeira do FontAwesome -->
+                </button>
+            </td>
+        </tr>";
                         }
                     }
                 }
                 ?>
+
             </tbody>
             <tfoot>
                 <tr class="table-primary">
@@ -171,6 +179,8 @@ $resultProdutos = mysqli_query($conexao, $sqlProdutos);
 
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+
 
     <!-- Seu código JavaScript para adicionar produtos ao carrinho aqui -->
     <script>
@@ -249,6 +259,95 @@ $resultProdutos = mysqli_query($conexao, $sqlProdutos);
         }
     </script>
 
+    <script>
+        function updateQuantity(input) {
+            var productId = $(input).data("product-id");
+            var newQuantity = $(input).val();
+
+            // Envie uma solicitação AJAX para atualizar a quantidade no servidor
+            $.ajax({
+                method: "POST",
+                url: '/TCC/QUERYS/atualizar_quantidade.php', // Substitua pelo URL correto do arquivo PHP para atualizar a quantidade
+                data: {
+                    productId: productId,
+                    quantity: newQuantity
+                },
+                success: function (response) {
+                    // Atualize a tabela do carrinho após a atualização da quantidade
+                    updateCartTable();
+                },
+                error: function (error) {
+                    console.error(error);
+                    // Lidar com erros, se necessário
+                }
+            });
+        }
+
+    </script>
+
+    <script>
+        function removeProduct(button) {
+            var productId = $(button).data("product-id");
+
+            // Faça uma requisição AJAX para remover o produto do carrinho
+            $.ajax({
+                method: "POST",
+                url: '/TCC/QUERYS/remover_produto.php', // Substitua pelo URL correto do seu arquivo PHP para remover o produto
+                data: {
+                    productId: productId
+                },
+                success: function (response) {
+                    // Atualize a tabela do carrinho após a remoção
+                    updateCartTable();
+                },
+                error: function (error) {
+                    console.error(error);
+                    // Lidar com erros, se necessário
+                }
+            });
+        }
+
+    </script>
+
+    <script>
+        function FinalizarPedido() {
+            $.ajax({
+                method: "POST",
+                url: "/TCC/QUERYS/processa_pedido.php",
+                success: function (response) {
+                    // Lide com a resposta do servidor (mensagem de sucesso ou erro)
+                    if (response.indexOf("Pedido inserido com sucesso") !== -1) {
+                        Swal.fire({
+                            icon: 'success',
+                            title: 'Pedido finalizado com sucesso!',
+                            text: 'Seu pedido foi registrado com sucesso.',
+                            onClose: function () {
+                                // Chame a função limparPedido após fechar o alerta de sucesso
+                                limparPedido();
+                            }
+                        });
+
+                        // Redirecione para a página desejada após o sucesso, se necessário
+                        // window.location.href = "pagina_de_sucesso.php";
+                    } else {
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Erro ao finalizar o pedido',
+                            text: 'Houve um problema ao processar seu pedido. Por favor, tente novamente.',
+                        });
+                    }
+                },
+                error: function (error) {
+                    console.error(error);
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Erro ao finalizar o pedido',
+                        text: 'Houve um problema ao processar seu pedido. Por favor, tente novamente.',
+                    });
+                }
+            });
+        }
+    </script>
 
 </body>
 
