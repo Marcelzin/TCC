@@ -30,9 +30,16 @@ if (isset($_SESSION['comercio_id']) && isset($_SESSION['usuario_id'])) {
 
 // Consulta SQL para buscar os produtos na tabela 'produto' com base no 'comercio_id' e status 'Ativo'
 $comercio_id = $_SESSION['comercio_id'];
-$sqlProdutos = "SELECT * FROM produto WHERE comercio_id = '$comercio_id' AND status = 'Ativo'";
+
+if (isset($_GET['filtrag'])) {
+    $filtro = mysqli_real_escape_string($conexao, $_GET['filtrag']);
+    $sqlProdutos = "SELECT * FROM produto WHERE comercio_id = '$comercio_id' AND status = 'Ativo' AND (nome LIKE '%$filtro%' OR descricao LIKE '%$filtro%' OR valor_venda LIKE '%$filtro%')";
+} else {
+    $sqlProdutos = "SELECT * FROM produto WHERE comercio_id = '$comercio_id' AND status = 'Ativo'";
+}
 $resultProdutos = mysqli_query($conexao, $sqlProdutos);
 ?>
+
 
 <!DOCTYPE html>
 <html lang="pt-br">
@@ -53,6 +60,10 @@ $resultProdutos = mysqli_query($conexao, $sqlProdutos);
     <link href="//cdn.datatables.net/1.13.6/css/jquery.dataTables.min.css" rel="stylesheet">
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700&display=swap');
+
+        ::-webkit-scrollbar {
+            width: 0px;
+        }
     </style>
 </head>
 
@@ -96,28 +107,56 @@ $resultProdutos = mysqli_query($conexao, $sqlProdutos);
 
     <div class="container"
         style="margin-right: 0px !important; margin-left: 0px !important; padding-left: 0px !important; padding-right: 0px !important; width: 70% !important; float: left">
-        <div class="row">
+        <form id="" name="" style="justify-content: center; display: flex; padding: 1.5%">
+            <input id="filtrag" name="filtrag" placeholder="Busque por valor, descrição ou nome." type="text" class="form-control" style="width: 50%">
+        </form>
+    </div>
+
+
+    <div class="container"
+        style="margin-right: 0px !important; margin-left: 0px !important; padding-left: 0px !important; padding-right: 0px !important; width: 70% !important; float: left">
+        <div class="row" id="filtered-products" style="padding: 1.5%">
             <?php
             while ($rowProduto = mysqli_fetch_assoc($resultProdutos)) {
                 // Exiba cada produto usando cartões do Bootstrap
                 echo '<div class="col-md-4">
-                    <div class="card mb-4 h-100">
-                        <img src="' . $rowProduto['imagem'] . '" class="card-img-top" style="min-height: 200px;max-height: 200px; object-fit: contain;" alt="Imagem do Produto">
-                        <div class="card-body d-flex flex-column">
-                            <h5 class="card-title">' . $rowProduto['nome'] . '</h5>
-                            <p class="card-text flex-grow-1">' . $rowProduto['descricao'] . '</p>
-                            <p class="card-text">R$ ' . $rowProduto['valor_venda'] . '</p>
-                            <a data-product-id="' . $rowProduto['id'] . '" class="btn btn-primary mt-auto add-to-cart">Adicionar ao carrinho</a>
-                        </div>
+                <div class="card mb-4 h-100">
+                    <img src="' . $rowProduto['imagem'] . '" class="card-img-top" style="min-height: 200px;max-height: 200px; object-fit: contain;" alt="Imagem do Produto">
+                    <div class="card-body d-flex flex-column">
+                        <h5 class="card-title">' . $rowProduto['nome'] . '</h5>
+                        <p class="card-text flex-grow-1">' . $rowProduto['descricao'] . '</p>
+                        <p class="card-text">R$ ' . $rowProduto['valor_venda'] . '</p>
+                        <a data-product-id="' . $rowProduto['id'] . '" class="btn btn-primary mt-auto add-to-cart">Adicionar ao carrinho</a>
                     </div>
-                </div>';
+                </div>
+            </div>';
             }
             ?>
         </div>
     </div>
 
-    <div style="width: 30%; float: right">
-        <h3 class="mt-4" style="text-align: center">Resumo do pedido</h3>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const filtroInput = document.getElementById('filtrag');
+            const filteredProducts = document.getElementById('filtered-products');
+
+            filtroInput.addEventListener('input', function () {
+                const filtro = filtroInput.value;
+                const xhr = new XMLHttpRequest();
+                xhr.open('GET', '/TCC/QUERYS/filtrados.php?filtrag=' + filtro, true);
+
+                xhr.onreadystatechange = function () {
+                    if (xhr.readyState === 4 && xhr.status === 200) {
+                        filteredProducts.innerHTML = xhr.responseText;
+                    }
+                };
+
+                xhr.send();
+            });
+        });
+    </script>
+    <div style="width: 30%; float: right; padding: 1.5%">
         <table id="cart-table" class="table table-bordered table-hover">
             <thead class="table-primary">
                 <tr>
@@ -346,56 +385,56 @@ $resultProdutos = mysqli_query($conexao, $sqlProdutos);
 
     <script>
         function FinalizarPedido() {
-    var pagamento_id = $('#pagamento_id').val(); // Obtenha o valor do select
+            var pagamento_id = $('#pagamento_id').val(); // Obtenha o valor do select
 
-    // Verifique se a forma de pagamento foi selecionada
-    if (!pagamento_id) {
-        // Exiba um alerta ao usuário
-        Swal.fire({
-            icon: 'error',
-            title: 'Selecione uma forma de pagamento',
-            text: 'Por favor, selecione uma forma de pagamento antes de finalizar o pedido.'
-        });
-        return; // Impede a requisição AJAX de ser enviada
-    }
-
-    $.ajax({
-        method: "POST",
-        url: "/TCC/QUERYS/processa_pedido.php",
-        data: { pagamento_id: pagamento_id }, // Envie o pagamento_id na solicitação
-        success: function (response) {
-            // Lide com a resposta do servidor (mensagem de sucesso ou erro)
-            if (response.indexOf("Pedido inserido com sucesso") !== -1) {
-                Swal.fire({
-                    icon: 'success',
-                    title: 'Pedido finalizado com sucesso!',
-                    text: 'Seu pedido foi registrado com sucesso.',
-                    didClose: function () {
-                        // Chame a função limparPedido após fechar o alerta de sucesso
-                        limparPedido();
-                    }
-                });
-
-                // Redirecione para a página desejada após o sucesso, se necessário
-                // window.location.href = "pagina_de_sucesso.php";
-            } else {
+            // Verifique se a forma de pagamento foi selecionada
+            if (!pagamento_id) {
+                // Exiba um alerta ao usuário
                 Swal.fire({
                     icon: 'error',
-                    title: 'Erro ao finalizar o pedido',
-                    text: 'Houve um problema ao processar seu pedido. Por favor, tente novamente.',
+                    title: 'Selecione uma forma de pagamento',
+                    text: 'Por favor, selecione uma forma de pagamento antes de finalizar o pedido.'
                 });
+                return; // Impede a requisição AJAX de ser enviada
             }
-        },
-        error: function (error) {
-            console.error(error);
-            Swal.fire({
-                icon: 'error',
-                title: 'Erro ao finalizar o pedido',
-                text: 'Houve um problema ao processar seu pedido. Por favor, tente novamente.',
+
+            $.ajax({
+                method: "POST",
+                url: "/TCC/QUERYS/processa_pedido.php",
+                data: { pagamento_id: pagamento_id }, // Envie o pagamento_id na solicitação
+                success: function (response) {
+                    // Lide com a resposta do servidor (mensagem de sucesso ou erro)
+                    if (response.indexOf("Pedido inserido com sucesso") !== -1) {
+                        Swal.fire({
+                            icon: 'success',
+                            title: 'Pedido finalizado com sucesso!',
+                            text: 'Seu pedido foi registrado com sucesso.',
+                            didClose: function () {
+                                // Chame a função limparPedido após fechar o alerta de sucesso
+                                limparPedido();
+                            }
+                        });
+
+                        // Redirecione para a página desejada após o sucesso, se necessário
+                        // window.location.href = "pagina_de_sucesso.php";
+                    } else {
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Erro ao finalizar o pedido',
+                            text: 'Houve um problema ao processar seu pedido. Por favor, tente novamente.',
+                        });
+                    }
+                },
+                error: function (error) {
+                    console.error(error);
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Erro ao finalizar o pedido',
+                        text: 'Houve um problema ao processar seu pedido. Por favor, tente novamente.',
+                    });
+                }
             });
         }
-    });
-}
 
     </script>
 
