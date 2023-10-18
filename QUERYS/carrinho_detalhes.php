@@ -39,7 +39,7 @@ $totalLucro = 0; // Inicialize a variável para calcular o lucro total do pedido
                     echo "<tr>
                     <td>$productName</td>
                     <td>
-                        <input type='number' class='form-control' value='$quantity' data-product-id='$productId' onchange='updateQuantity(this)'>
+                    <input type='number' class='form-control' value='$quantity' data-product-id='$productId' onchange='updateQuantity(this)' min='1'>
                     </td>
                     <td>R$ $productPrice</td>
                     <td>R$ $subtotal</td>

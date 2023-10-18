@@ -194,7 +194,7 @@ $resultProdutos = mysqli_query($conexao, $sqlProdutos);
                             echo "<tr>
                     <td>$productName</td>
                     <td>
-                        <input type='number' class='form-control' value='$quantity' data-product-id='$productId' onchange='updateQuantity(this)'>
+                        <input type='number' class='form-control' value='$quantity' data-product-id='$productId' onchange='updateQuantity(this)' min='1'>
                     </td>
                     <td>R$ $productPrice</td>
                     <td>R$ $productCost</td>
