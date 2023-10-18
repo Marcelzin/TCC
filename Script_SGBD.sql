@@ -9,8 +9,6 @@ CREATE DATABASE IF NOT EXISTS pdvher45_PDV;
 
 USE pdvher45_PDV;
 
-DROP TABLE IF EXISTS itens_pedido;
-
 DROP TABLE IF EXISTS pedido;
 
 DROP TABLE IF EXISTS produto;
@@ -70,17 +68,5 @@ CREATE TABLE
         comercio_id INT NOT NULL,
         FOREIGN KEY (responsavel_id) REFERENCES usuario (id),
         FOREIGN KEY (pagamento_id) REFERENCES forma_pagamento (id),
-        FOREIGN KEY (comercio_id) REFERENCES comercio (id)
-    );
-
-CREATE TABLE
-    itens_pedido (
-        id INT AUTO_INCREMENT PRIMARY KEY,
-        produto_id INT NOT NULL,
-        quantidade INT NOT NULL,
-        pedido_id INT,
-        comercio_id INT,
-        FOREIGN KEY (produto_id) REFERENCES produto (id),
-        FOREIGN KEY (pedido_id) REFERENCES pedido (id),
         FOREIGN KEY (comercio_id) REFERENCES comercio (id)
     );

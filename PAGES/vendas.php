@@ -123,53 +123,92 @@ $resultProdutos = mysqli_query($conexao, $sqlProdutos);
                 <tr>
                     <th>Produto</th>
                     <th>Quantidade</th>
-                    <th>Preço Unitário</th>
+                    <th>Preço de Venda</th>
+                    <th>Preço de Fábrica</th>
+                    <th>Lucro</th>
                     <th>Subtotal</th>
+                    <th>Excluir</th>
                 </tr>
             </thead>
             <tbody>
                 <?php
                 $totalPedido = 0; // Inicialize a variável para calcular o total do pedido
+                $totalLucro = 0; // Inicialize a variável para calcular o lucro total do pedido
                 if (isset($_SESSION['carrinho'])) {
                     foreach ($_SESSION['carrinho'] as $productId => $quantity) {
                         // Consulte o banco de dados para obter detalhes do produto com base no $productId
-                        $sql = "SELECT nome, valor_venda FROM produto WHERE id = $productId";
+                        $sql = "SELECT nome, valor_fabrica, valor_venda FROM produto WHERE id = $productId";
                         $result = mysqli_query($conexao, $sql);
 
                         if ($result && mysqli_num_rows($result) > 0) {
                             $row = mysqli_fetch_assoc($result);
                             $productName = $row['nome'];
+                            $productCost = $row['valor_fabrica'];
                             $productPrice = $row['valor_venda'];
                             $subtotal = $productPrice * $quantity;
                             $totalPedido += $subtotal; // Adicione o subtotal ao total do pedido
+                
+                            // Calcule o lucro para esta linha
+                            $lucro = ($productPrice - $productCost) * $quantity;
+                            $totalLucro += $lucro; // Adicione o lucro desta linha ao lucro total
+                
                             echo "<tr>
-            <td>$productName</td>
-            <td>
-                <input type='number' class='form-control' value='$quantity' data-product-id='$productId' onchange='updateQuantity(this)'>
-            </td>
-            <td>R$ $productPrice</td>
-            <td>R$ $subtotal</td>
-            <td>
-                <button class='btn btn-danger' data-product-id='$productId' onclick='removeProduct(this)'>
-                    <i class='fas fa-trash'></i> <!-- Ícone de lixeira do FontAwesome -->
-                </button>
-            </td>
-        </tr>";
+                    <td>$productName</td>
+                    <td>
+                        <input type='number' class='form-control' value='$quantity' data-product-id='$productId' onchange='updateQuantity(this)'>
+                    </td>
+                    <td>R$ $productPrice</td>
+                    <td>R$ $productCost</td>
+                    <td>R$ $lucro</td>
+                    <td>R$ $subtotal</td>
+                    <td>
+                        <button class='btn btn-danger' data-product-id='$productId' onclick='removeProduct(this)'>
+                            <i class='fas fa-trash'></i>
+                        </button>
+                    </td>
+                </tr>";
                         }
                     }
                 }
                 ?>
-
             </tbody>
             <tfoot>
                 <tr class="table-primary">
-                    <td colspan="3" align="right"><strong>Total:</strong></td>
+                    <td colspan="4" align="right"><strong>Total:</strong></td>
+                    <td><strong>R$
+                            <?php echo $totalLucro; ?>
+                        </strong></td>
                     <td><strong>R$
                             <?php echo $totalPedido; ?>
                         </strong></td>
                 </tr>
             </tfoot>
         </table>
+
+        <div style="width: 100%; display: flex; justify-content: center">
+            <div
+                style="width: 75%; justify-content: center; align-items: center; display: flex; flex-direction: column">
+                <label for="pagamento_id" style="font-weight: bold">Forma de Pagamento:</label>
+                <select name="pagamento_id" id="pagamento_id" class="form-select" style="margin-bottom: 5%"
+                    onchange="mostrarFormaPagamento()">
+                    <option value="">Selecione</option>
+                    <?php
+                    // Consulta SQL para obter as formas de pagamento
+                    $sqlFormaPagamento = "SELECT id, tipo FROM forma_pagamento";
+                    $resultFormaPagamento = mysqli_query($conexao, $sqlFormaPagamento);
+                    if ($resultFormaPagamento && mysqli_num_rows($resultFormaPagamento) > 0) {
+                        while ($rowFormaPagamento = mysqli_fetch_assoc($resultFormaPagamento)) {
+                            $formaPagamentoId = $rowFormaPagamento['id'];
+                            $formaPagamentoTipo = $rowFormaPagamento['tipo'];
+                            echo "<option value='$formaPagamentoId'>$formaPagamentoTipo</option>";
+                        }
+                    }
+                    ?>
+                </select>
+
+            </div>
+        </div>
+
         <div style="width: 100%; justify-content: space-evenly; display: flex">
             <a class="btn btn-danger" onclick="limparPedido()">Limpar</a>
             <a class="btn btn-success" onclick="FinalizarPedido()">Finalizar</a>
@@ -180,7 +219,6 @@ $resultProdutos = mysqli_query($conexao, $sqlProdutos);
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
-
 
     <!-- Seu código JavaScript para adicionar produtos ao carrinho aqui -->
     <script>
@@ -224,7 +262,6 @@ $resultProdutos = mysqli_query($conexao, $sqlProdutos);
                         showConfirmButton: false,
                         timer: 1500
                     });
-
 
                     // Atualize a tabela do carrinho após a adição
                     updateCartTable();
@@ -282,7 +319,6 @@ $resultProdutos = mysqli_query($conexao, $sqlProdutos);
                 }
             });
         }
-
     </script>
 
     <script>
@@ -306,46 +342,75 @@ $resultProdutos = mysqli_query($conexao, $sqlProdutos);
                 }
             });
         }
-
     </script>
 
     <script>
         function FinalizarPedido() {
-            $.ajax({
-                method: "POST",
-                url: "/TCC/QUERYS/processa_pedido.php",
-                success: function (response) {
-                    // Lide com a resposta do servidor (mensagem de sucesso ou erro)
-                    if (response.indexOf("Pedido inserido com sucesso") !== -1) {
-                        Swal.fire({
-                            icon: 'success',
-                            title: 'Pedido finalizado com sucesso!',
-                            text: 'Seu pedido foi registrado com sucesso.',
-                            onClose: function () {
-                                // Chame a função limparPedido após fechar o alerta de sucesso
-                                limparPedido();
-                            }
-                        });
+    var pagamento_id = $('#pagamento_id').val(); // Obtenha o valor do select
 
-                        // Redirecione para a página desejada após o sucesso, se necessário
-                        // window.location.href = "pagina_de_sucesso.php";
-                    } else {
-                        Swal.fire({
-                            icon: 'error',
-                            title: 'Erro ao finalizar o pedido',
-                            text: 'Houve um problema ao processar seu pedido. Por favor, tente novamente.',
-                        });
+    // Verifique se a forma de pagamento foi selecionada
+    if (!pagamento_id) {
+        // Exiba um alerta ao usuário
+        Swal.fire({
+            icon: 'error',
+            title: 'Selecione uma forma de pagamento',
+            text: 'Por favor, selecione uma forma de pagamento antes de finalizar o pedido.'
+        });
+        return; // Impede a requisição AJAX de ser enviada
+    }
+
+    $.ajax({
+        method: "POST",
+        url: "/TCC/QUERYS/processa_pedido.php",
+        data: { pagamento_id: pagamento_id }, // Envie o pagamento_id na solicitação
+        success: function (response) {
+            // Lide com a resposta do servidor (mensagem de sucesso ou erro)
+            if (response.indexOf("Pedido inserido com sucesso") !== -1) {
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Pedido finalizado com sucesso!',
+                    text: 'Seu pedido foi registrado com sucesso.',
+                    didClose: function () {
+                        // Chame a função limparPedido após fechar o alerta de sucesso
+                        limparPedido();
                     }
-                },
-                error: function (error) {
-                    console.error(error);
-                    Swal.fire({
-                        icon: 'error',
-                        title: 'Erro ao finalizar o pedido',
-                        text: 'Houve um problema ao processar seu pedido. Por favor, tente novamente.',
-                    });
-                }
+                });
+
+                // Redirecione para a página desejada após o sucesso, se necessário
+                // window.location.href = "pagina_de_sucesso.php";
+            } else {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Erro ao finalizar o pedido',
+                    text: 'Houve um problema ao processar seu pedido. Por favor, tente novamente.',
+                });
+            }
+        },
+        error: function (error) {
+            console.error(error);
+            Swal.fire({
+                icon: 'error',
+                title: 'Erro ao finalizar o pedido',
+                text: 'Houve um problema ao processar seu pedido. Por favor, tente novamente.',
             });
+        }
+    });
+}
+
+    </script>
+
+    <script>
+        function mostrarFormaPagamento() {
+            var select = document.getElementById("pagamento_id");
+            var selectedOption = select.options[select.selectedIndex];
+            var pagamentoId = selectedOption.value;
+            console.log("ID da forma de pagamento selecionada: " + pagamentoId);
+
+            // Armazene o ID na sessão
+            // Supondo que você tenha uma variável de sessão chamada 'pagamento_id', você pode definir assim:
+            <?php $_SESSION['pagamento_id'] = "' + pagamentoId + '"; ?>
+
+            // Ou você pode armazená-lo usando uma solicitação AJAX, se necessário
         }
     </script>
 

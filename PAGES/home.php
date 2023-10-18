@@ -204,9 +204,9 @@ if ($resultMes) {
           <th style="text-align: center;">Data do Pedido</th>
           <th style="text-align: center;">Valor Total</th>
           <th style="text-align: center;">Lucro Obtido</th>
-          <th style="text-align: center;">Responsável ID</th>
-          <th style="text-align: center;">Pagamento ID</th>
-          <th style="text-align: center;">Comércio ID</th>
+          <th style="text-align: center;">Responsável</th>
+          <th style="text-align: center;">Pagamento</th>
+          <th style="text-align: center;">Comércio</th>
         </tr>
       </thead>
       <tbody>
