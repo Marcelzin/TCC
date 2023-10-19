@@ -267,48 +267,42 @@ $resultProdutos = mysqli_query($conexao, $sqlProdutos);
             // Faça uma requisição AJAX para obter os detalhes do carrinho a partir do servidor
             $.ajax({
                 method: "GET",
-                url: '/TCC/QUERYS/carrinho_detalhes.php', // Substitua pelo URL correto para obter os detalhes do carrinho
+                url: '/TCC/QUERYS/carrinho_detalhes.php',
                 success: function (data) {
-                    // Atualize a tabela do carrinho com os dados recebidos
                     $("#cart-table").html(data);
                 },
                 error: function (error) {
                     console.error(error);
-                    // Lidar com erros, se necessário
                 }
             });
         }
 
-        // Lidar com o clique no botão "Adicionar ao Carrinho"
-        $(".add-to-cart").click(function (event) {
-            event.preventDefault(); // Evita o comportamento padrão do link
+        // Lidar com o clique no botão "Adicionar ao Carrinho" - Usando evento delegado
+        $(document).on("click", ".add-to-cart", function (event) {
+            event.preventDefault();
 
             var productId = $(this).data("product-id");
 
-            // Envie o ID do produto ao servidor para adicionar ao carrinho
             $.ajax({
                 method: "POST",
-                url: '/TCC/QUERYS/adicionar_ao_carrinho.php', // Substitua pelo URL correto do seu arquivo PHP para adicionar ao carrinho
+                url: '/TCC/QUERYS/adicionar_ao_carrinho.php',
                 data: {
                     productId: productId
                 },
                 success: function (response) {
-                    // Lide com a resposta do servidor, que pode incluir a confirmação de que o produto foi adicionado ao carrinho
                     Swal.fire({
                         icon: 'success',
                         title: 'Produto adicionado ao carrinho!',
-                        position: 'top-end', // Posição no topo direito
-                        toast: true, // Notificação estilo "toast"
+                        position: 'top-end',
+                        toast: true,
                         showConfirmButton: false,
                         timer: 1500
                     });
 
-                    // Atualize a tabela do carrinho após a adição
                     updateCartTable();
                 },
                 error: function (error) {
                     console.error(error);
-                    // Lidar com erros, se necessário
                 }
             });
         });
