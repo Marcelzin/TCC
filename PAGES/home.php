@@ -5,10 +5,9 @@ if (isset($_SESSION['comercio_id']) && isset($_SESSION['usuario_id'])) {
   include_once('config.php');
 
   $nivel_acesso = '';
-
   $comercio_id = $_SESSION['comercio_id'];
-
   $usuario_id = $_SESSION['usuario_id'];
+
   $sql = "SELECT nivel_acesso FROM usuario WHERE ID = '$usuario_id'";
   $result = mysqli_query($conexao, $sql);
 
@@ -27,46 +26,167 @@ if (isset($_SESSION['comercio_id']) && isset($_SESSION['usuario_id'])) {
   exit();
 }
 
-$sqlHoje = "SELECT COUNT(*) AS vendas_realizadas, SUM(valor_total) AS faturamento, SUM(lucro_obtido) AS lucro 
-            FROM pedido 
-            WHERE DATE(data_pedido) = CURDATE() AND comercio_id = '$comercio_id';";
+$sqlHoje = "SELECT 
+    COUNT(*) AS vendas_realizadas, 
+    SUM(valor_total) AS faturamento, 
+    SUM(lucro_obtido) AS lucro
+FROM pedido 
+WHERE DATE(data_pedido) = CURDATE() AND comercio_id = '$comercio_id';";
+
+$sqlSemana = "SELECT 
+    COUNT(*) AS vendas_realizadas, 
+    SUM(valor_total) AS faturamento, 
+    SUM(lucro_obtido) AS lucro 
+FROM pedido 
+WHERE YEARWEEK(data_pedido, 1) = YEARWEEK(NOW(), 1) AND comercio_id = '$comercio_id';";
+
+$sqlMes = "SELECT 
+    COUNT(*) AS vendas_realizadas, 
+    SUM(valor_total) AS faturamento, 
+    SUM(lucro_obtido) AS lucro 
+FROM pedido 
+WHERE YEAR(data_pedido) = YEAR(NOW()) AND MONTH(data_pedido) = MONTH(NOW()) AND comercio_id = '$comercio_id';";
 
 $resultHoje = mysqli_query($conexao, $sqlHoje);
-
-if ($resultHoje) {
-  $rowHoje = mysqli_fetch_assoc($resultHoje);
-  $vendasHoje = $rowHoje['vendas_realizadas'];
-  $faturamentoHoje = $rowHoje['faturamento'];
-  $lucroHoje = $rowHoje['lucro'];
-} else {
-}
-
-$sqlSemana = "SELECT COUNT(*) AS vendas_realizadas, SUM(valor_total) AS faturamento, SUM(lucro_obtido) AS lucro 
-              FROM pedido 
-              WHERE YEARWEEK(data_pedido, 1) = YEARWEEK(NOW(), 1) AND comercio_id = '$comercio_id';";
-
 $resultSemana = mysqli_query($conexao, $sqlSemana);
-
-if ($resultSemana) {
-  $rowSemana = mysqli_fetch_assoc($resultSemana);
-  $vendasSemana = $rowSemana['vendas_realizadas'];
-  $faturamentoSemana = $rowHoje['faturamento'];
-  $lucroSemana = $rowSemana['lucro'];
-} else {
-}
-
-$sqlMes = "SELECT COUNT(*) AS vendas_realizadas, SUM(valor_total) AS faturamento, SUM(lucro_obtido) AS lucro 
-           FROM pedido 
-           WHERE YEAR(data_pedido) = YEAR(NOW()) AND MONTH(data_pedido) = MONTH(NOW()) AND comercio_id = '$comercio_id';";
-
 $resultMes = mysqli_query($conexao, $sqlMes);
 
-if ($resultMes) {
-  $rowMes = mysqli_fetch_assoc($resultMes);
-  $vendasMes = $rowMes['vendas_realizadas'];
-  $faturamentoMes = $rowMes['faturamento'];
-  $lucroMes = $rowMes['lucro'];
-} else {
+if (!$resultHoje || !$resultSemana || !$resultMes) {
+  echo "Erro na consulta: " . mysqli_error($conexao);
+  exit();
+}
+
+$rowHoje = mysqli_fetch_assoc($resultHoje);
+$rowSemana = mysqli_fetch_assoc($resultSemana);
+$rowMes = mysqli_fetch_assoc($resultMes);
+
+$vendasHoje = $rowHoje['vendas_realizadas'];
+$faturamentoHoje = $rowHoje['faturamento'];
+$lucroHoje = $rowHoje['lucro'];
+
+$vendasSemana = $rowSemana['vendas_realizadas'];
+$faturamentoSemana = $rowSemana['faturamento'];
+$lucroSemana = $rowSemana['lucro'];
+
+$vendasMes = $rowMes['vendas_realizadas'];
+$faturamentoMes = $rowMes['faturamento'];
+$lucroMes = $rowMes['lucro'];
+
+$sqlTiposPagamentoHoje = "SELECT forma_pagamento.tipo, COUNT(*) AS quantidade
+FROM pedido
+INNER JOIN forma_pagamento ON pedido.pagamento_id = forma_pagamento.id
+WHERE DATE(pedido.data_pedido) = CURDATE() AND pedido.comercio_id = '$comercio_id'
+GROUP BY forma_pagamento.tipo;";
+
+$sqlTiposPagamentoSemana = "SELECT forma_pagamento.tipo, COUNT(*) AS quantidade
+FROM pedido
+INNER JOIN forma_pagamento ON pedido.pagamento_id = forma_pagamento.id
+WHERE YEARWEEK(pedido.data_pedido, 1) = YEARWEEK(NOW(), 1) AND pedido.comercio_id = '$comercio_id'
+GROUP BY forma_pagamento.tipo;";
+
+$sqlTiposPagamentoMes = "SELECT forma_pagamento.tipo, COUNT(*) AS quantidade
+FROM pedido
+INNER JOIN forma_pagamento ON pedido.pagamento_id = forma_pagamento.id
+WHERE DATE(pedido.data_pedido) >= DATE_SUB(NOW(), INTERVAL 30 DAY) AND pedido.comercio_id = '$comercio_id'
+GROUP BY forma_pagamento.tipo;";
+
+// Executar as consultas SQL para obter os tipos de pagamento
+$resultTiposPagamentoHoje = mysqli_query($conexao, $sqlTiposPagamentoHoje);
+$resultTiposPagamentoSemana = mysqli_query($conexao, $sqlTiposPagamentoSemana);
+$resultTiposPagamentoMes = mysqli_query($conexao, $sqlTiposPagamentoMes);
+
+if (!$resultTiposPagamentoHoje || !$resultTiposPagamentoSemana || !$resultTiposPagamentoMes) {
+  echo "Erro na consulta de tipos de pagamento: " . mysqli_error($conexao);
+  exit();
+}
+
+// Inicializar arrays para armazenar os tipos de pagamento
+$tiposPagamentoHoje = array();
+$tiposPagamentoSemana = array();
+$tiposPagamentoMes = array();
+
+// Obter os tipos de pagamento para hoje
+while ($row = mysqli_fetch_assoc($resultTiposPagamentoHoje)) {
+  $tiposPagamentoHoje[] = $row;
+}
+
+// Obter os tipos de pagamento para a semana
+while ($row = mysqli_fetch_assoc($resultTiposPagamentoSemana)) {
+  $tiposPagamentoSemana[] = $row;
+}
+
+// Obter os tipos de pagamento para o mês
+while ($row = mysqli_fetch_assoc($resultTiposPagamentoMes)) {
+  $tiposPagamentoMes[] = $row;
+}
+
+$sqlResponsavelHoje = "SELECT 
+    usuario.nome AS nome_responsavel, 
+    COUNT(*) AS vendas_realizadas, 
+    SUM(pedido.valor_total) AS faturamento, 
+    SUM(pedido.lucro_obtido) AS lucro
+FROM pedido 
+INNER JOIN usuario ON pedido.responsavel_id = usuario.id
+WHERE DATE(pedido.data_pedido) = CURDATE() AND pedido.comercio_id = '$comercio_id'
+GROUP BY usuario.nome;";
+
+$sqlResponsavelSemana = "SELECT 
+    usuario.nome AS nome_responsavel, 
+    COUNT(*) AS vendas_realizadas, 
+    SUM(pedido.valor_total) AS faturamento, 
+    SUM(pedido.lucro_obtido) AS lucro 
+FROM pedido 
+INNER JOIN usuario ON pedido.responsavel_id = usuario.id
+WHERE YEARWEEK(pedido.data_pedido, 1) = YEARWEEK(NOW(), 1) AND pedido.comercio_id = '$comercio_id'
+GROUP BY usuario.nome;";
+
+$sqlResponsavelMes = "SELECT 
+    usuario.nome AS nome_responsavel, 
+    COUNT(*) AS vendas_realizadas, 
+    SUM(pedido.valor_total) AS faturamento, 
+    SUM(pedido.lucro_obtido) AS lucro 
+FROM pedido 
+INNER JOIN usuario ON pedido.responsavel_id = usuario.id
+WHERE DATE(pedido.data_pedido) >= DATE_SUB(NOW(), INTERVAL 30 DAY) AND pedido.comercio_id = '$comercio_id'
+GROUP BY usuario.nome;";
+
+// Array para armazenar os resultados do responsável pelas vendas de hoje
+$responsavelHojeData = array();
+$resultResponsavelHoje = mysqli_query($conexao, $sqlResponsavelHoje);
+
+if (!$resultResponsavelHoje) {
+  echo "Erro na consulta do responsável pelas vendas de hoje: " . mysqli_error($conexao);
+  exit();
+}
+
+while ($row = mysqli_fetch_assoc($resultResponsavelHoje)) {
+  $responsavelHojeData[] = $row;
+}
+
+// Array para armazenar os resultados do responsável pelas vendas da semana
+$responsavelSemanaData = array();
+$resultResponsavelSemana = mysqli_query($conexao, $sqlResponsavelSemana);
+
+if (!$resultResponsavelSemana) {
+  echo "Erro na consulta do responsável pelas vendas da semana: " . mysqli_error($conexao);
+  exit();
+}
+
+while ($row = mysqli_fetch_assoc($resultResponsavelSemana)) {
+  $responsavelSemanaData[] = $row;
+}
+
+// Array para armazenar os resultados do responsável pelas vendas do mês
+$responsavelMesData = array();
+$resultResponsavelMes = mysqli_query($conexao, $sqlResponsavelMes);
+
+if (!$resultResponsavelMes) {
+  echo "Erro na consulta do responsável pelas vendas do mês: " . mysqli_error($conexao);
+  exit();
+}
+
+while ($row = mysqli_fetch_assoc($resultResponsavelMes)) {
+  $responsavelMesData[] = $row;
 }
 
 ?>
@@ -132,15 +252,47 @@ if ($resultMes) {
     </div>
   </nav>
 
-  <div class="container" style="justify-content: space-between; display: flex; margin-top: 1%" id="Faturamento/Lucro">
+  <select id="seletorGraficos">
+    <option value="faturamento">Faturamento</option>
+    <option value="tiposPagamentos">Tipos de Pagamentos</option>
+    <option value="responsaveis">Responsáveis</option>
+  </select>
+
+  <div class="container" style="justify-content: space-between; display: flex; margin-top: 1%" id="faturamento">
     <div id="graficoHoje" style="width: 33%">
-      <h4 style="text-align: center">Hoje</h4>
+      <h4 style="text-align: center">Hoje - Faturamento</h4>
     </div>
     <div id="graficoSemana" style="width: 33%">
-      <h4 style="text-align: center">Semana</h4>
+      <h4 style="text-align: center">Semana - Faturamento</h4>
     </div>
     <div id="graficoMes" style="width: 33%">
-      <h4 style="text-align: center">Mês</h4>
+      <h4 style="text-align: center">Mês - Faturamento</h4>
+    </div>
+  </div>
+
+  <!-- Gráficos tipos de pagamentos -->
+  <div class="container" style="justify-content: space-between; display: flex; margin-top: 1%" id="tiposPagamentos">
+    <div id="graficoHojePagamento" style="width: 33%">
+      <h4 style="text-align: center">Hoje - Tipos de Pagamentos</h4>
+    </div>
+    <div id="graficoSemanaPagamento" style="width: 33%">
+      <h4 style="text-align: center">Semana - Tipos de Pagamentos</h4>
+    </div>
+    <div id="graficoMesPagamento" style="width: 33%">
+      <h4 style="text-align: center">Mês - Tipos de Pagamentos</h4>
+    </div>
+  </div>
+
+  <!-- Gráficos responsáveis -->
+  <div class="container" style="justify-content: space-between; display: flex; margin-top: 1%" id="responsaveis">
+    <div id="graficoHojeResponsavel" style="width: 33%">
+      <h4 style="text-align: center">Hoje - Responsáveis</h4>
+    </div>
+    <div id="graficoSemanaResponsavel" style="width: 33%">
+      <h4 style="text-align: center">Semana - Responsáveis</h4>
+    </div>
+    <div id="graficoMesResponsavel" style="width: 33%">
+      <h4 style="text-align: center">Mês - Responsáveis</h4>
     </div>
   </div>
 
@@ -318,6 +470,135 @@ WHERE pedido.comercio_id = '$comercio_id'";
       createColumnChart("#graficoMes", faturamentoMes, lucroMes, "Mês");
     });
   </script>
+
+  <script>
+    window.addEventListener('load', function () {
+      var tiposPagamentoHoje = <?php echo json_encode($tiposPagamentoHoje); ?>;
+      var tiposPagamentoSemana = <?php echo json_encode($tiposPagamentoSemana); ?>;
+      var tiposPagamentoMes = <?php echo json_encode($tiposPagamentoMes); ?>;
+
+      // Função para criar um gráfico de barras
+      function createBarChart(id, data, title) {
+        var categories = [];
+        var dataValues = [];
+
+        data.forEach(function (item) {
+          categories.push(item.tipo); // Adicione o tipo de pagamento como categoria
+          dataValues.push(item.quantidade); // Adicione a quantidade como valor de dados
+        });
+
+        var barOptions = {
+          chart: {
+            type: 'bar',
+            height: 350,
+          },
+          plotOptions: {
+            bar: {
+              horizontal: false,
+              columnWidth: '55%',
+            },
+          },
+          dataLabels: {
+            enabled: false,
+          },
+          series: [
+            {
+              name: "Quantidade",
+              data: dataValues, // Use os valores de quantidade
+            },
+          ],
+          xaxis: {
+            categories: categories, // Use as categorias (tipos de pagamento)
+          },
+        };
+
+        var barChart = new ApexCharts(document.querySelector(id), barOptions);
+        barChart.render();
+      }
+
+      createBarChart("#graficoHojePagamento", tiposPagamentoHoje, "Hoje");
+      createBarChart("#graficoSemanaPagamento", tiposPagamentoSemana, "Semana");
+      createBarChart("#graficoMesPagamento", tiposPagamentoMes, "Mês");
+    });
+  </script>
+
+  <script>
+    window.addEventListener('load', function () {
+      var responsavelHojeData = <?php echo json_encode($responsavelHojeData); ?>;
+      var responsavelSemanaData = <?php echo json_encode($responsavelSemanaData); ?>;
+      var responsavelMesData = <?php echo json_encode($responsavelMesData); ?>;
+
+      // Função para criar um gráfico de barras
+      function createBarChart(id, data, title) {
+        var categories = [];
+        var dataValues = [];
+
+        data.forEach(function (item) {
+          categories.push(item.nome_responsavel); // Adicione o nome do responsável como categoria
+          dataValues.push(item.vendas_realizadas); // Adicione a quantidade de vendas realizadas como valor de dados
+        });
+
+        var barOptions = {
+          chart: {
+            type: 'bar',
+            height: 350,
+          },
+          plotOptions: {
+            bar: {
+              horizontal: false,
+              columnWidth: '55%',
+            },
+          },
+          dataLabels: {
+            enabled: false,
+          },
+          series: [
+            {
+              name: "Vendas Realizadas",
+              data: dataValues, // Use os valores de vendas realizadas
+            },
+          ],
+          xaxis: {
+            categories: categories, // Use as categorias (nomes dos responsáveis)
+          },
+        };
+
+        var barChart = new ApexCharts(document.querySelector(id), barOptions);
+        barChart.render();
+      }
+
+      createBarChart("#graficoHojeResponsavel", responsavelHojeData, "Hoje");
+      createBarChart("#graficoSemanaResponsavel", responsavelSemanaData, "Semana");
+      createBarChart("#graficoMesResponsavel", responsavelMesData, "Mês");
+    });
+  </script>
+
+  <script>
+    var responsavelHojeData = <?php echo json_encode($responsavelHojeData); ?>;
+    var responsavelSemanaData = <?php echo json_encode($responsavelSemanaData); ?>;
+    var responsavelMesData = <?php echo json_encode($responsavelMesData); ?>;
+
+    console.log(responsavelHojeData); // Exibe o conteúdo da variável responsavelHojeData
+    console.log(responsavelSemanaData); // Exibe o conteúdo da variável responsavelSemanaData
+    console.log(responsavelMesData); // Exibe o conteúdo da variável responsavelMesData
+  </script>
+
+  <script>
+    // Função para controlar a exibição dos gráficos com base na seleção do <select>
+    document.getElementById("seletorGraficos").addEventListener("change", function () {
+      // Oculta todos os containers de gráficos
+      document.getElementById("faturamento").style.display = "none";
+      document.getElementById("tiposPagamentos").style.display = "none";
+      document.getElementById("responsaveis").style.display = "none";
+
+      // Obtém o valor selecionado no <select>
+      var selectedValue = this.value;
+
+      // Exibe o container de gráficos correspondente à seleção
+      document.getElementById(selectedValue).style.display = "flex";
+    });
+  </script>
+
 </body>
 
 </html>
