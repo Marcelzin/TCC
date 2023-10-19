@@ -253,50 +253,53 @@ while ($row = mysqli_fetch_assoc($resultResponsavelMes)) {
   </nav>
 
   <div class="container mt-4 text-end">
-  <select id="seletorGraficos" class="form-select" style="width: 25%">
+    <select id="seletorGraficos" class="form-select" style="width: 25%">
       <option value="">Selecione o gráfico</option>
       <option value="faturamento">Faturamento</option>
       <option value="tiposPagamentos">Tipos de Pagamentos</option>
       <option value="responsaveis">Responsáveis</option>
     </select>
 
-  <div class="container" style="justify-content: space-between; display: flex; margin-top: 1%; display: none;" id="faturamento">
-    <div id="graficoHoje" style="width: 33%">
-      <h4 style="text-align: center">Hoje - Faturamento</h4>
+    <div class="container" style="justify-content: space-between; display: flex; margin-top: 1%; display: none;"
+      id="faturamento">
+      <div id="graficoHoje" style="width: 33%">
+        <h4 style="text-align: center">Hoje - Faturamento</h4>
+      </div>
+      <div id="graficoSemana" style="width: 33%">
+        <h4 style="text-align: center">Semana - Faturamento</h4>
+      </div>
+      <div id="graficoMes" style="width: 33%">
+        <h4 style="text-align: center">Mês - Faturamento</h4>
+      </div>
     </div>
-    <div id="graficoSemana" style="width: 33%">
-      <h4 style="text-align: center">Semana - Faturamento</h4>
-    </div>
-    <div id="graficoMes" style="width: 33%">
-      <h4 style="text-align: center">Mês - Faturamento</h4>
-    </div>
-  </div>
 
-  <!-- Gráficos tipos de pagamentos -->
-  <div class="container" style="justify-content: space-between; display: flex; margin-top: 1%; display: none;" id="tiposPagamentos">
-    <div id="graficoHojePagamento" style="width: 33%">
-      <h4 style="text-align: center">Hoje - Tipos de Pagamentos</h4>
+    <!-- Gráficos tipos de pagamentos -->
+    <div class="container" style="justify-content: space-between; display: flex; margin-top: 1%; display: none;"
+      id="tiposPagamentos">
+      <div id="graficoHojePagamento" style="width: 33%">
+        <h4 style="text-align: center">Hoje - Tipos de Pagamentos</h4>
+      </div>
+      <div id="graficoSemanaPagamento" style="width: 33%">
+        <h4 style="text-align: center">Semana - Tipos de Pagamentos</h4>
+      </div>
+      <div id="graficoMesPagamento" style="width: 33%">
+        <h4 style="text-align: center">Mês - Tipos de Pagamentos</h4>
+      </div>
     </div>
-    <div id="graficoSemanaPagamento" style="width: 33%">
-      <h4 style="text-align: center">Semana - Tipos de Pagamentos</h4>
-    </div>
-    <div id="graficoMesPagamento" style="width: 33%">
-      <h4 style="text-align: center">Mês - Tipos de Pagamentos</h4>
-    </div>
-  </div>
 
-  <!-- Gráficos responsáveis -->
-  <div class="container" style="justify-content: space-between; display: flex; margin-top: 1%; display: none;" id="responsaveis">
-    <div id="graficoHojeResponsavel" style="width: 33%">
-      <h4 style="text-align: center">Hoje - Responsáveis</h4>
+    <!-- Gráficos responsáveis -->
+    <div class="container" style="justify-content: space-between; display: flex; margin-top: 1%; display: none;"
+      id="responsaveis">
+      <div id="graficoHojeResponsavel" style="width: 33%">
+        <h4 style="text-align: center">Hoje - Responsáveis</h4>
+      </div>
+      <div id="graficoSemanaResponsavel" style="width: 33%">
+        <h4 style="text-align: center">Semana - Responsáveis</h4>
+      </div>
+      <div id="graficoMesResponsavel" style="width: 33%">
+        <h4 style="text-align: center">Mês - Responsáveis</h4>
+      </div>
     </div>
-    <div id="graficoSemanaResponsavel" style="width: 33%">
-      <h4 style="text-align: center">Semana - Responsáveis</h4>
-    </div>
-    <div id="graficoMesResponsavel" style="width: 33%">
-      <h4 style="text-align: center">Mês - Responsáveis</h4>
-    </div>
-  </div>
   </div>
 
   <div class="container" style="margin-top: 1%">
@@ -462,6 +465,18 @@ WHERE pedido.comercio_id = '$comercio_id'";
           xaxis: {
             categories: [title],
           },
+          colors: ['#2e93d9', '#5bc0de'], // Defina as cores desejadas
+          title: {
+            text: 'Desempenho de Vendas',
+            align: 'center',
+          },
+          yaxis: {
+            labels: {
+              formatter: function (value) {
+                return "R$ " + value; // Formate o eixo Y com R$
+              }
+            }
+          },
         };
 
         var columnChart = new ApexCharts(document.querySelector(id), columnOptions);
@@ -473,6 +488,7 @@ WHERE pedido.comercio_id = '$comercio_id'";
       createColumnChart("#graficoMes", faturamentoMes, lucroMes, "Mês");
     });
   </script>
+
 
   <script>
     window.addEventListener('load', function () {
@@ -513,6 +529,21 @@ WHERE pedido.comercio_id = '$comercio_id'";
           xaxis: {
             categories: categories, // Use as categorias (tipos de pagamento)
           },
+          colors: ['#5cb85c'], // Defina a cor desejada
+          title: {
+            text: 'Tipos de Pagamento',
+            align: 'center',
+          },
+          yaxis: {
+            title: {
+              text: 'Quantidade',
+            },
+            labels: {
+              formatter: function (value) {
+                return value; // Mantenha a formatação padrão para o eixo Y
+              }
+            }
+          },
         };
 
         var barChart = new ApexCharts(document.querySelector(id), barOptions);
@@ -524,6 +555,7 @@ WHERE pedido.comercio_id = '$comercio_id'";
       createBarChart("#graficoMesPagamento", tiposPagamentoMes, "Mês");
     });
   </script>
+
 
   <script>
     window.addEventListener('load', function () {
@@ -564,6 +596,21 @@ WHERE pedido.comercio_id = '$comercio_id'";
           xaxis: {
             categories: categories, // Use as categorias (nomes dos responsáveis)
           },
+          colors: ['#f0ad4e'], // Defina a cor desejada
+          title: {
+            text: 'Desempenho dos Responsáveis',
+            align: 'center',
+          },
+          yaxis: {
+            title: {
+              text: 'Vendas Realizadas',
+            },
+            labels: {
+              formatter: function (value) {
+                return value; // Mantenha a formatação padrão para o eixo Y
+              }
+            }
+          },
         };
 
         var barChart = new ApexCharts(document.querySelector(id), barOptions);
@@ -575,6 +622,8 @@ WHERE pedido.comercio_id = '$comercio_id'";
       createBarChart("#graficoMesResponsavel", responsavelMesData, "Mês");
     });
   </script>
+
+
 
   <script>
     var responsavelHojeData = <?php echo json_encode($responsavelHojeData); ?>;
