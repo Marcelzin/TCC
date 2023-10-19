@@ -13,6 +13,34 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     // Recupere o valor da coluna "comercio_id" da sessão
     $comercio_id = $_SESSION['comercio_id'];
 
+    // Verifique se o email já existe no banco de dados
+    $checkEmailQuery = "SELECT id FROM usuario WHERE email = ? LIMIT 1";
+    $stmtCheckEmail = mysqli_prepare($conexao, $checkEmailQuery);
+
+    if ($stmtCheckEmail) {
+        mysqli_stmt_bind_param($stmtCheckEmail, "s", $email);
+        mysqli_stmt_execute($stmtCheckEmail);
+        $result = mysqli_stmt_get_result($stmtCheckEmail);
+
+        if (mysqli_num_rows($result) > 0) {
+            $response = [
+                'status' => 'error',
+                'message' => 'Este email já está em uso. Por favor, escolha outro.'
+            ];
+            echo json_encode($response);
+            exit;
+        }
+
+        mysqli_stmt_close($stmtCheckEmail);
+    } else {
+        $response = [
+            'status' => 'error',
+            'message' => 'Erro na preparação da declaração para verificar o email: ' . mysqli_error($conexao)
+        ];
+        echo json_encode($response);
+        exit;
+    }
+
     // Criptografe a senha usando password_hash()
     $senha_hash = password_hash($senha, PASSWORD_DEFAULT);
 

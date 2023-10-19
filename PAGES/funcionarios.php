@@ -369,8 +369,13 @@ if (isset($_SESSION['comercio_id']) && isset($_SESSION['usuario_id'])) {
                         if (response.status === 'success') {
                             $("#editarModal").modal("hide");
                             location.reload();
-                        } else {
-                            console.error(response.message);
+                        } else if (response.status === 'error') {
+                            // Verifique se a mensagem de erro contém a informação de email duplicado
+                            if (response.message.includes("email já está em uso")) {
+                                alert("Este email já está em uso. Por favor, escolha outro.");
+                            } else {
+                                console.error(response.message);
+                            }
                         }
                     },
                     error: function (error) {
@@ -378,6 +383,7 @@ if (isset($_SESSION['comercio_id']) && isset($_SESSION['usuario_id'])) {
                     }
                 });
             }
+
         </script>
 
         <?php
@@ -507,6 +513,15 @@ if (isset($_SESSION['comercio_id']) && isset($_SESSION['usuario_id'])) {
                                     // Recarregar a página após a confirmação
                                     location.reload();
                                 });
+                            } else if (response.status === 'error' && response.message.includes("email já está em uso")) {
+                                // Exibir uma mensagem de erro ao usuário
+                                Swal.fire({
+                                    icon: 'error',
+                                    title: 'Erro!',
+                                    text: 'Este email já está em uso. Por favor, escolha outro.',
+                                    confirmButtonColor: '#d33',
+                                    confirmButtonText: 'Entendi'
+                                });
                             } else {
                                 // Exibir uma mensagem de erro ao usuário
                                 Swal.fire({
@@ -531,6 +546,7 @@ if (isset($_SESSION['comercio_id']) && isset($_SESSION['usuario_id'])) {
                         }
                     });
                 }
+
 
                 function validarEmail(email) {
                     // Expressão regular para validar email
