@@ -108,7 +108,8 @@ $resultProdutos = mysqli_query($conexao, $sqlProdutos);
     <div class="container"
         style="margin-right: 0px !important; margin-left: 0px !important; padding-left: 0px !important; padding-right: 0px !important; width: 70% !important; float: left">
         <form id="" name="" style="justify-content: center; display: flex; padding: 1.5%">
-            <input id="filtrag" name="filtrag" placeholder="Busque por valor, descrição ou nome." type="text" class="form-control" style="width: 50%">
+            <input id="filtrag" name="filtrag" placeholder="Busque por valor, descrição ou nome." type="text"
+                class="form-control" style="width: 50%">
         </form>
     </div>
 
