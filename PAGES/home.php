@@ -252,13 +252,15 @@ while ($row = mysqli_fetch_assoc($resultResponsavelMes)) {
     </div>
   </nav>
 
-  <select id="seletorGraficos">
-    <option value="faturamento">Faturamento</option>
-    <option value="tiposPagamentos">Tipos de Pagamentos</option>
-    <option value="responsaveis">Responsáveis</option>
-  </select>
+  <div class="container mt-4 text-end">
+  <select id="seletorGraficos" class="form-select" style="width: 25%">
+      <option value="">Selecione o gráfico</option>
+      <option value="faturamento">Faturamento</option>
+      <option value="tiposPagamentos">Tipos de Pagamentos</option>
+      <option value="responsaveis">Responsáveis</option>
+    </select>
 
-  <div class="container" style="justify-content: space-between; display: flex; margin-top: 1%" id="faturamento">
+  <div class="container" style="justify-content: space-between; display: flex; margin-top: 1%; display: none;" id="faturamento">
     <div id="graficoHoje" style="width: 33%">
       <h4 style="text-align: center">Hoje - Faturamento</h4>
     </div>
@@ -271,7 +273,7 @@ while ($row = mysqli_fetch_assoc($resultResponsavelMes)) {
   </div>
 
   <!-- Gráficos tipos de pagamentos -->
-  <div class="container" style="justify-content: space-between; display: flex; margin-top: 1%" id="tiposPagamentos">
+  <div class="container" style="justify-content: space-between; display: flex; margin-top: 1%; display: none;" id="tiposPagamentos">
     <div id="graficoHojePagamento" style="width: 33%">
       <h4 style="text-align: center">Hoje - Tipos de Pagamentos</h4>
     </div>
@@ -284,7 +286,7 @@ while ($row = mysqli_fetch_assoc($resultResponsavelMes)) {
   </div>
 
   <!-- Gráficos responsáveis -->
-  <div class="container" style="justify-content: space-between; display: flex; margin-top: 1%" id="responsaveis">
+  <div class="container" style="justify-content: space-between; display: flex; margin-top: 1%; display: none;" id="responsaveis">
     <div id="graficoHojeResponsavel" style="width: 33%">
       <h4 style="text-align: center">Hoje - Responsáveis</h4>
     </div>
@@ -294,6 +296,7 @@ while ($row = mysqli_fetch_assoc($resultResponsavelMes)) {
     <div id="graficoMesResponsavel" style="width: 33%">
       <h4 style="text-align: center">Mês - Responsáveis</h4>
     </div>
+  </div>
   </div>
 
   <div class="container" style="margin-top: 1%">
