@@ -70,3 +70,10 @@ CREATE TABLE
         FOREIGN KEY (pagamento_id) REFERENCES forma_pagamento (id),
         FOREIGN KEY (comercio_id) REFERENCES comercio (id)
     );
+    
+INSERT INTO forma_pagamento (tipo)
+VALUES ('Cartão de crédito'),
+       ('Boleto'),
+       ('Dinheiro'),
+       ('PIX'),
+       ('Cartão de débito');

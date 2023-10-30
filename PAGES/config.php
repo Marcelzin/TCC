@@ -1,8 +1,8 @@
 <?php
 
-$dbHost = 'ns272.hostgator.com.br';
-$dbUsername = 'pdvher45_adm';
-$dbPassword = 'iA8HKEm?(b}}';
+$dbHost = 'localhost';
+$dbUsername = 'root';
+$dbPassword = 'idfc9856';
 $dbName = 'pdvher45_PDV';
 
 // Estabelecer conexão
