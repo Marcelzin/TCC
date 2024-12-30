@@ -371,7 +371,7 @@ while ($row = mysqli_fetch_assoc($resultResponsavelMes)) {
         comercio.nome AS nome_comercio,
         pedido.*
       FROM
-        pdvher45_PDV.pedido
+        hermes_db.pedido
       INNER JOIN usuario ON pedido.responsavel_id = usuario.id
       INNER JOIN forma_pagamento ON pedido.pagamento_id = forma_pagamento.id
       INNER JOIN comercio ON pedido.comercio_id = comercio.id
@@ -459,7 +459,7 @@ while ($row = mysqli_fetch_assoc($resultResponsavelMes)) {
     comercio.nome AS nome_comercio,
     pedido.*
 FROM
-    pdvher45_PDV.pedido
+    hermes_db.pedido
 INNER JOIN usuario ON pedido.responsavel_id = usuario.id
 INNER JOIN forma_pagamento ON pedido.pagamento_id = forma_pagamento.id
 INNER JOIN comercio ON pedido.comercio_id = comercio.id

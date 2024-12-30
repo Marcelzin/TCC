@@ -209,7 +209,7 @@ if (isset($_SESSION['comercio_id']) && isset($_SESSION['usuario_id'])) {
                     $comercio_id = $_SESSION['comercio_id'];
 
                     // Consulta SQL para selecionar todos os dados da tabela "produto" para o comercio_id atual
-                    $sql = "SELECT * FROM pdvher45_PDV.produto WHERE comercio_id = '$comercio_id' ORDER BY status ASC";
+                    $sql = "SELECT * FROM hermes_db.produto WHERE comercio_id = '$comercio_id' ORDER BY status ASC";
                     $result = mysqli_query($conexao, $sql);
 
                     if (mysqli_num_rows($result) > 0) {
@@ -377,7 +377,7 @@ if (isset($_SESSION['comercio_id']) && isset($_SESSION['usuario_id'])) {
     <?php
     include_once('config.php');
 
-    $query = "SELECT * FROM pdvher45_PDV.produto WHERE comercio_id = '$comercio_id' ORDER BY status ASC";
+    $query = "SELECT * FROM hermes_db.produto WHERE comercio_id = '$comercio_id' ORDER BY status ASC";
 
     $result = $conexao->query($query);
 

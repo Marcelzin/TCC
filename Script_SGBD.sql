@@ -1,13 +1,6 @@
-/* INTEGRANTES - pdvher45_PDV Hermes - INF3GM
-Gustavo da Silva Ferreira - 5
-Kauê Hugo Almeida Cavalcanti - 12
-Marcel Pereira dos Santos - 14
-Ricardo Gabriel de Souza Lopes - 22
-Vinicius Santos Rocha - 31
- */
-CREATE DATABASE IF NOT EXISTS pdvher45_PDV;
+CREATE DATABASE IF NOT EXISTS hermes_db;
 
-USE pdvher45_PDV;
+USE hermes_db;
 
 DROP TABLE IF EXISTS pedido;
 

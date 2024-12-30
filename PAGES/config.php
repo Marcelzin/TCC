@@ -3,7 +3,7 @@
 $dbHost = 'localhost';
 $dbUsername = 'root';
 $dbPassword = '';
-$dbName = 'pdvher45_PDV';
+$dbName = 'hermes_db';
 
 // Estabelecer conexão
 
