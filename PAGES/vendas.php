@@ -23,7 +23,7 @@ if (isset($_SESSION['comercio_id']) && isset($_SESSION['usuario_id'])) {
 } else {
     echo '<script type="text/javascript">
             alert("Acesso Negado. Você precisa efetuar login novamente.");
-            window.location.href = "../index.html"; // Redirecione imediatamente
+            window.location.href = "../index.php"; // Redirecione imediatamente
           </script>';
     exit();
 }

@@ -3,7 +3,7 @@ session_start();
 
 session_destroy();
 
-header("Location: /TCC/index.html");
+header("Location: /TCC/index.php");
 
 exit;
 ?>

@@ -20,7 +20,7 @@ if (isset($_SESSION['comercio_id']) && isset($_SESSION['usuario_id'])) {
 } else {
     echo '<script type="text/javascript">
             alert("Acesso Negado. Você precisa efetuar login novamente.");
-            window.location.href = "../index.html"; // Redirecione imediatamente
+            window.location.href = "../index.php"; // Redirecione imediatamente
           </script>';
     exit();
 }
@@ -620,7 +620,7 @@ if (isset($_SESSION['comercio_id']) && isset($_SESSION['usuario_id'])) {
 
                         // Redirecionar o usuário para a página de login ou fazer outras ações após o logoff
                         setTimeout(function () {
-                            window.location.href = '/TCC/index.html'; // Altere para a URL correta da página de login
+                            window.location.href = '/TCC/index.php'; // Altere para a URL correta da página de login
                         }, 1500);
                     },
                     error: function (error) {
